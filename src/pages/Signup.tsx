@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
-import { Icon } from "@iconify/react";
-import { Button, Input, Checkbox, Divider, Form } from "@heroui/react";
 import { BSLogo } from "@assets/svg/BSLogo";
 import HeroLink from "@components/HeroLink";
+import { Button, Checkbox, Divider, Form, Input } from "@heroui/react";
+import { Icon } from "@iconify/react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 const Signup = () => {
