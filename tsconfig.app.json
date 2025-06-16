@@ -28,8 +28,8 @@
     "paths": {
       "@components/*": ["src/components/*"],
       "@layouts/*": ["src/layouts/*"],
+      "@stores/*": ["src/stores/*"],
       "@assets/*": ["src/assets/*"],
-      "@types/*": ["src/types/*"],
       "@pages/*": ["src/pages/*"],
       "@/*": ["src/*"],
     }

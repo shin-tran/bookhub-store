@@ -1,4 +1,3 @@
-import AuthLayout from "@layouts/AuthLayout";
 import RootLayout from "@layouts/RootLayout";
 import About from "@pages/About";
 import Book from "@pages/Book";
@@ -17,12 +16,6 @@ export const router = createBrowserRouter([
       { path: "about", Component: About },
     ],
   },
-  {
-    path: "auth",
-    Component: AuthLayout,
-    children: [
-      { path: "login", Component: Login },
-      { path: "signup", Component: Signup },
-    ],
-  },
+  { path: "login", Component: Login },
+  { path: "signup", Component: Signup },
 ]);
