@@ -2,6 +2,7 @@ import { Navbar, NavbarBrand, NavbarContent, NavbarItem } from "@heroui/react";
 import ThemeToggle from "@components/ThemeToggle";
 import HeroLink from "@components/HeroLink";
 import { Icon } from "@iconify/react";
+import LanguageSwitcher from "@components/LanguageSwitcher";
 
 const Header = () => {
   return (
@@ -34,6 +35,9 @@ const Header = () => {
         </NavbarItem>
         <NavbarItem>
           <ThemeToggle size="sm" />
+        </NavbarItem>
+        <NavbarItem>
+          <LanguageSwitcher />
         </NavbarItem>
       </NavbarContent>
     </Navbar>

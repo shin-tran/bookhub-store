@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Button, Input, Checkbox, Divider } from "@heroui/react";
+import { Button, Input, Checkbox, Divider, Form } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import useLoginStore from "@stores/useLoginStore";
 import { BSLogo } from "@assets/svg/BSLogo";
@@ -37,7 +37,7 @@ const Login = () => {
             Log in to your account to continue
           </p>
         </div>
-        <form
+        <Form
           className="flex flex-col gap-3"
           onSubmit={handleSubmit}
         >
@@ -83,7 +83,7 @@ const Login = () => {
           <Button className="w-full" color="primary" type="submit">
             Sign In
           </Button>
-        </form>
+        </Form>
         <div className="flex items-center gap-4 py-2">
           <Divider className="flex-1" />
           <p className="text-tiny text-default-500 shrink-0">OR</p>

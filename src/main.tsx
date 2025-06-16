@@ -4,6 +4,7 @@ import "./index.css";
 import { HeroUIProvider, ToastProvider } from "@heroui/react";
 import { RouterProvider } from "react-router";
 import { router } from "./routes";
+import "../i18n";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
