@@ -15,6 +15,12 @@ export interface LoginResponse extends User {
   access_token: string;
 }
 
+export interface SignupResponse {
+  _id: string;
+  email: string;
+  fullName: string;
+}
+
 // API functions using Axios
 export const userService = {
   // Get all user
@@ -25,14 +31,33 @@ export const userService = {
   // Get user by id
 
   // Login user
-  loginUser: async (username: string, password: string): Promise<ApiResult<LoginResponse>> => {
+  loginUser: async (
+    username: string,
+    password: string,
+  ): Promise<ApiResult<LoginResponse>> => {
     const response = await instance.post("/api/v1/auth/login", {
       username,
       password,
     });
     return response.data;
   },
-  // Create new book
+
+  // Signup user
+  signupUser: async (
+    fullName: string,
+    email: string,
+    password: string,
+    phone: string,
+  ): Promise<ApiResult<SignupResponse>> => {
+    const response = await instance.post("/api/v1/user/register", {
+      fullName,
+      email,
+      password,
+      phone,
+    });
+    return response.data;
+  },
+
   // Update book
   // Delete book
   // Search books

@@ -1,27 +1,48 @@
 import { BSLogo } from "@assets/svg/BSLogo";
 import HeroLink from "@components/HeroLink";
-import { Button, Checkbox, Divider, Form, Input } from "@heroui/react";
+import {
+  addToast,
+  Button,
+  Checkbox,
+  Divider,
+  Form,
+  Input,
+} from "@heroui/react";
 import { useThemeManager } from "@hooks/useThemeManager";
+import { useSignupUser } from "@hooks/useUsers";
 import { Icon } from "@iconify/react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 const Signup = () => {
+  useThemeManager();
   const { t } = useTranslation();
   const [isVisible, setIsVisible] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-
-  useThemeManager();
-
+  const [isSignuping, setIsSignuping] = useState(false);
   const toggleVisibility = () => setIsVisible(!isVisible);
-  const handleSignupSubmit = (e: { preventDefault: () => void }) => {
+
+  const signupMutation = useSignupUser();
+
+  const handleSignupSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsLoading(true);
-    console.log(e);
-    setTimeout(() => {
-      console.log("Signup form submitted successfully");
-      setIsLoading(false);
-    }, 2000);
+    setIsSignuping(true);
+    const data = Object.fromEntries(new FormData(e.currentTarget));
+    const res = await signupMutation.mutateAsync({
+      fullName: String(data.fullName),
+      email: String(data.email),
+      password: String(data.password),
+      phone: String(data.phone),
+    });
+    if (res?.data) {
+      addToast({
+        title: t("signup.onSignupSuccess"),
+      });
+    } else {
+      addToast({
+        title: res.message,
+      });
+    }
+    setIsSignuping(false);
   };
 
   return (
@@ -114,7 +135,7 @@ const Signup = () => {
             color="primary"
             className="w-full"
             type="submit"
-            isLoading={isLoading}
+            isLoading={isSignuping}
           >
             {t("signup.signUpButton")}
           </Button>

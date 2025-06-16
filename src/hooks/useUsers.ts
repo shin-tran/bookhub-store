@@ -27,10 +27,34 @@ export const useLoginUser = () => {
       password: string;
     }) => userService.loginUser(username, password),
     onSuccess(data) {
-      console.log("data",data);
+      console.log("data", data);
     },
     onError(error) {
-      console.log("error",error);
+      console.log("error", error);
     },
+  });
+};
+
+// Signup user
+export const useSignupUser = () => {
+  return useMutation({
+    mutationFn: ({
+      fullName,
+      email,
+      password,
+      phone,
+    }: {
+      fullName: string;
+      email: string;
+      password: string;
+      phone: string;
+    }) => userService.signupUser(fullName, email, password, phone),
+    onSuccess(data) {
+      console.log("data", data);
+    },
+    onError(error) {
+      console.log("error", error);
+    },
+
   });
 };

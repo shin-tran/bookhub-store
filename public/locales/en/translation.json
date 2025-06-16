@@ -39,6 +39,7 @@
     "signUpWithGoogle": "Sign Up with Google",
     "signUpWithGithub": "Sign Up with Github",
     "haveAccount": "Already have an account?",
-    "logInLink": "Log In"
+    "logInLink": "Log In",
+    "onSignupSuccess": "Congratulations you have successfully created an account"
   }
 }

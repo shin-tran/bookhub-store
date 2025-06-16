@@ -39,6 +39,7 @@
     "signUpWithGoogle": "Đăng ký với Google",
     "signUpWithGithub": "Đăng ký với Github",
     "haveAccount": "Đã có tài khoản?",
-    "logInLink": "Đăng nhập"
+    "logInLink": "Đăng nhập",
+    "onSignupSuccess": "Xin chúc mừng bạn đã tạo tài khoản thành công"
   }
 }
