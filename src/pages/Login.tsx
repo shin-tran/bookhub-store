@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Button, Input, Checkbox, Form, Divider } from "@heroui/react";
+import { Button, Input, Checkbox, Divider } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import useLoginStore from "@stores/useLoginStore";
 import { BSLogo } from "@assets/svg/BSLogo";
@@ -10,16 +10,14 @@ const Login = () => {
 
   useEffect(() => {
     const theme = localStorage.getItem("heroui-theme");
-    if (theme) {
+    if (theme && theme !== "system") {
       document.documentElement.classList.add(theme);
     } else {
-      // Set default theme if none is stored
       const prefersDark = window.matchMedia(
         "(prefers-color-scheme: dark)",
       ).matches;
       const defaultTheme = prefersDark ? "dark" : "light";
       document.documentElement.classList.add(defaultTheme);
-      localStorage.setItem("heroui-theme", defaultTheme);
     }
   }, []);
 
@@ -39,9 +37,8 @@ const Login = () => {
             Log in to your account to continue
           </p>
         </div>
-        <Form
+        <form
           className="flex flex-col gap-3"
-          validationBehavior="native"
           onSubmit={handleSubmit}
         >
           <Input
@@ -86,7 +83,7 @@ const Login = () => {
           <Button className="w-full" color="primary" type="submit">
             Sign In
           </Button>
-        </Form>
+        </form>
         <div className="flex items-center gap-4 py-2">
           <Divider className="flex-1" />
           <p className="text-tiny text-default-500 shrink-0">OR</p>

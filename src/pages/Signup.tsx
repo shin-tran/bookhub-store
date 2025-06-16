@@ -14,16 +14,14 @@ const Signup = () => {
 
   useEffect(() => {
     const theme = localStorage.getItem("heroui-theme");
-    if (theme) {
+    if (theme && theme !== "system") {
       document.documentElement.classList.add(theme);
     } else {
-      // Set default theme if none is stored
       const prefersDark = window.matchMedia(
         "(prefers-color-scheme: dark)",
       ).matches;
       const defaultTheme = prefersDark ? "dark" : "light";
       document.documentElement.classList.add(defaultTheme);
-      localStorage.setItem("heroui-theme", defaultTheme);
     }
   }, []);
 
