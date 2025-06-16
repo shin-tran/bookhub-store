@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Icon } from "@iconify/react";
 import { Button, Input, Checkbox, Divider, Form } from "@heroui/react";
 import useSignupStore from "@stores/useSignupStore";
@@ -9,6 +9,7 @@ import { useTranslation } from "react-i18next";
 const Signup = () => {
   const { t } = useTranslation();
   const { isVisible, setIsVisible } = useSignupStore();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const toggleVisibility = () => setIsVisible(!isVisible);
 
@@ -24,6 +25,15 @@ const Signup = () => {
       document.documentElement.classList.add(defaultTheme);
     }
   }, []);
+  const handleSignupSubmit = (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+    setIsLoading(true);
+    console.log(e);
+    setTimeout(() => {
+      console.log("Signup form submitted successfully");
+      setIsLoading(false); // Chuyển setIsLoading(false) vào trong setTimeout
+    }, 2000);
+  };
 
   return (
     <div className="flex h-screen w-screen items-center justify-center">
@@ -34,13 +44,7 @@ const Signup = () => {
             {t("signup.tagline")}
           </p>
         </div>
-        <Form
-          className="flex flex-col gap-3"
-          onSubmit={(e) => {
-            e.preventDefault();
-            console.log(e);
-          }}
-        >
+        <Form className="flex flex-col gap-3" onSubmit={handleSignupSubmit}>
           <Input
             isRequired
             classNames={{
@@ -117,13 +121,20 @@ const Signup = () => {
               {t("signup.privacyPolicy")}
             </HeroLink>
           </Checkbox>
-          <Button color="primary" className="w-full" type="submit">
+          <Button
+            color="primary"
+            className="w-full"
+            type="submit"
+            isLoading={isLoading}
+          >
             {t("signup.signUpButton")}
           </Button>
         </Form>
         <div className="flex items-center gap-4 py-2">
           <Divider className="flex-1" />
-          <p className="text-tiny text-default-500 shrink-0">{t("signup.or")}</p>
+          <p className="text-tiny text-default-500 shrink-0">
+            {t("signup.or")}
+          </p>
           <Divider className="flex-1" />
         </div>
         <div className="flex flex-col gap-2">
