@@ -1,0 +1,36 @@
+import { userService } from "@services/userService";
+import { useQuery, useMutation } from "@tanstack/react-query";
+
+// Query keys
+export const USER_QUERY_KEYS = {
+  all: ["user"] as const,
+  lists: () => [...USER_QUERY_KEYS.all, "list"] as const,
+};
+
+// Get all users
+export const useUsers = () => {
+  return useQuery({
+    queryKey: USER_QUERY_KEYS.lists(),
+    queryFn: userService.getUsers,
+    staleTime: 5 * 60 * 1000,
+  });
+};
+
+// Login user
+export const useLoginUser = () => {
+  return useMutation({
+    mutationFn: ({
+      username,
+      password,
+    }: {
+      username: string;
+      password: string;
+    }) => userService.loginUser(username, password),
+    onSuccess(data) {
+      console.log("data",data);
+    },
+    onError(error) {
+      console.log("error",error);
+    },
+  });
+};

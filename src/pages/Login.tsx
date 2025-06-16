@@ -1,32 +1,31 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button, Input, Checkbox, Divider, Form } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import { BSLogo } from "@assets/svg/BSLogo";
 import HeroLink from "@components/HeroLink";
 import { useTranslation } from "react-i18next";
+import { useLoginUser } from "@hooks/useUsers";
+import { useThemeManager } from "@hooks/useThemeManager";
 
 const Login = () => {
+  useThemeManager();
   const { t } = useTranslation();
   const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const theme = localStorage.getItem("heroui-theme");
-    if (theme && theme !== "system") {
-      document.documentElement.classList.add(theme);
-    } else {
-      const prefersDark = window.matchMedia(
-        "(prefers-color-scheme: dark)",
-      ).matches;
-      const defaultTheme = prefersDark ? "dark" : "light";
-      document.documentElement.classList.add(defaultTheme);
-    }
-  }, []);
-
+  const [isLogin, setIsLogin] = useState(false);
   const toggleVisibility = () => setIsVisible(!isVisible);
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    console.log("handleSubmit");
+  // Mutations
+  const loginMutation = useLoginUser();
+
+  const handleUserLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const data = Object.fromEntries(new FormData(e.currentTarget));
+    setIsLogin(true);
+    await loginMutation.mutateAsync({
+      username: String(data.email),
+      password: String(data.password),
+    });
+    setIsLogin(false);
   };
 
   return (
@@ -38,7 +37,7 @@ const Login = () => {
             {t("login.tagline")}
           </p>
         </div>
-        <Form className="flex flex-col gap-3" onSubmit={handleSubmit}>
+        <Form className="flex flex-col gap-3" onSubmit={handleUserLogin}>
           <Input
             isRequired
             label={t("login.emailLabel")}
@@ -78,7 +77,12 @@ const Login = () => {
               {t("login.forgotPassword")}
             </HeroLink>
           </div>
-          <Button className="w-full" color="primary" type="submit">
+          <Button
+            className="w-full"
+            color="primary"
+            type="submit"
+            isLoading={isLogin}
+          >
             {t("login.signIn")}
           </Button>
         </Form>

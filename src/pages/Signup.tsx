@@ -1,8 +1,9 @@
 import { BSLogo } from "@assets/svg/BSLogo";
 import HeroLink from "@components/HeroLink";
 import { Button, Checkbox, Divider, Form, Input } from "@heroui/react";
+import { useThemeManager } from "@hooks/useThemeManager";
 import { Icon } from "@iconify/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 const Signup = () => {
@@ -10,20 +11,9 @@ const Signup = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const toggleVisibility = () => setIsVisible(!isVisible);
+  useThemeManager();
 
-  useEffect(() => {
-    const theme = localStorage.getItem("heroui-theme");
-    if (theme && theme !== "system") {
-      document.documentElement.classList.add(theme);
-    } else {
-      const prefersDark = window.matchMedia(
-        "(prefers-color-scheme: dark)",
-      ).matches;
-      const defaultTheme = prefersDark ? "dark" : "light";
-      document.documentElement.classList.add(defaultTheme);
-    }
-  }, []);
+  const toggleVisibility = () => setIsVisible(!isVisible);
   const handleSignupSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
     setIsLoading(true);

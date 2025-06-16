@@ -1,0 +1,39 @@
+import type { ApiResult } from "@cusTypes/api";
+import instance from "./axiosCustomize";
+
+// Types
+export interface User {
+  email: string;
+  phone: string;
+  fullName: string;
+  role: string;
+  avatar: string;
+  id: string;
+}
+
+export interface LoginResponse extends User {
+  access_token: string;
+}
+
+// API functions using Axios
+export const userService = {
+  // Get all user
+  getUsers: async (): Promise<User[]> => {
+    const response = await instance.get("/api/v1/auth/account");
+    return response.data;
+  },
+  // Get user by id
+
+  // Login user
+  loginUser: async (username: string, password: string): Promise<ApiResult<LoginResponse>> => {
+    const response = await instance.post("/api/v1/auth/login", {
+      username,
+      password,
+    });
+    return response.data;
+  },
+  // Create new book
+  // Update book
+  // Delete book
+  // Search books
+};
