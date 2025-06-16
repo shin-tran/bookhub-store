@@ -1,14 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Input, Checkbox, Divider, Form } from "@heroui/react";
 import { Icon } from "@iconify/react";
-import useLoginStore from "@stores/useLoginStore";
 import { BSLogo } from "@assets/svg/BSLogo";
 import HeroLink from "@components/HeroLink";
 import { useTranslation } from "react-i18next";
 
 const Login = () => {
   const { t } = useTranslation();
-  const { isVisible, setIsVisible } = useLoginStore();
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     const theme = localStorage.getItem("heroui-theme");

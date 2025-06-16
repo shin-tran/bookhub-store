@@ -1,15 +1,14 @@
 import { useEffect, useState } from "react";
 import { Icon } from "@iconify/react";
 import { Button, Input, Checkbox, Divider, Form } from "@heroui/react";
-import useSignupStore from "@stores/useSignupStore";
 import { BSLogo } from "@assets/svg/BSLogo";
 import HeroLink from "@components/HeroLink";
 import { useTranslation } from "react-i18next";
 
 const Signup = () => {
   const { t } = useTranslation();
-  const { isVisible, setIsVisible } = useSignupStore();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const toggleVisibility = () => setIsVisible(!isVisible);
 
@@ -31,7 +30,7 @@ const Signup = () => {
     console.log(e);
     setTimeout(() => {
       console.log("Signup form submitted successfully");
-      setIsLoading(false); // Chuyển setIsLoading(false) vào trong setTimeout
+      setIsLoading(false);
     }, 2000);
   };
 
