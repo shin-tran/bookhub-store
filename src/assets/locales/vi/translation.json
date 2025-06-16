@@ -1,9 +1,0 @@
-{
-  "welcome_message": "Chào mừng đến với Cửa hàng BookHub!",
-  "greeting": "Xin chào, {{name}}",
-  "header": {
-    "home": "Trang chủ",
-    "about": "Giới thiệu",
-    "books": "Sách"
-  }
-}

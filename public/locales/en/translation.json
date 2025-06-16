@@ -1,0 +1,44 @@
+{
+  "header": {
+    "home": "Home",
+    "about": "About",
+    "login": "Login"
+  },
+  "login": {
+    "tagline": "Log in to your account to continue",
+    "emailLabel": "Email Address",
+    "emailPlaceholder": "Enter your email",
+    "passwordLabel": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "rememberMe": "Remember me",
+    "forgotPassword": "Forgot password?",
+    "signIn": "Sign In",
+    "or": "OR",
+    "continueWithGoogle": "Continue with Google",
+    "continueWithGithub": "Continue with Github",
+    "needAccount": "Need to create an account?",
+    "signUp": "Sign Up"
+  },
+  "signup": {
+    "tagline": "Create an account to get started",
+    "fullnameLabel": "Full Name",
+    "fullnamePlaceholder": "Enter your full name",
+    "emailLabel": "Email Address",
+    "emailPlaceholder": "Enter your email",
+    "emailErrorMessage": "Please enter a valid email",
+    "passwordLabel": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "phoneNumberLabel": "Phone Number",
+    "phoneNumberPlaceholder": "Enter your phone number",
+    "agreeWith": "I agree with the",
+    "terms": "Terms",
+    "and": "and",
+    "privacyPolicy": "Privacy Policy",
+    "signUpButton": "Sign Up",
+    "or": "OR",
+    "signUpWithGoogle": "Sign Up with Google",
+    "signUpWithGithub": "Sign Up with Github",
+    "haveAccount": "Already have an account?",
+    "logInLink": "Log In"
+  }
+}

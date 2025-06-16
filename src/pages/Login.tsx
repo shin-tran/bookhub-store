@@ -4,8 +4,10 @@ import { Icon } from "@iconify/react";
 import useLoginStore from "@stores/useLoginStore";
 import { BSLogo } from "@assets/svg/BSLogo";
 import HeroLink from "@components/HeroLink";
+import { useTranslation } from "react-i18next";
 
 const Login = () => {
+  const { t } = useTranslation();
   const { isVisible, setIsVisible } = useLoginStore();
 
   useEffect(() => {
@@ -34,18 +36,15 @@ const Login = () => {
         <div className="flex flex-col items-center pb-6">
           <BSLogo size={100} />
           <p className="text-small text-default-500 mt-3">
-            Log in to your account to continue
+            {t("login.tagline")}
           </p>
         </div>
-        <Form
-          className="flex flex-col gap-3"
-          onSubmit={handleSubmit}
-        >
+        <Form className="flex flex-col gap-3" onSubmit={handleSubmit}>
           <Input
             isRequired
-            label="Email Address"
+            label={t("login.emailLabel")}
             name="email"
-            placeholder="Enter your email"
+            placeholder={t("login.emailPlaceholder")}
             type="email"
             variant="bordered"
           />
@@ -66,27 +65,27 @@ const Login = () => {
                 )}
               </button>
             }
-            label="Password"
+            label={t("login.passwordLabel")}
             name="password"
-            placeholder="Enter your password"
+            placeholder={t("login.passwordPlaceholder")}
             type={isVisible ? "text" : "password"}
             variant="bordered"
           />
           <div className="flex w-full items-center justify-between px-1 py-2">
             <Checkbox name="remember" size="sm">
-              Remember me
+              {t("login.rememberMe")}
             </Checkbox>
             <HeroLink className="text-default-500" to="#" size="sm">
-              Forgot password?
+              {t("login.forgotPassword")}
             </HeroLink>
           </div>
           <Button className="w-full" color="primary" type="submit">
-            Sign In
+            {t("login.signIn")}
           </Button>
         </Form>
         <div className="flex items-center gap-4 py-2">
           <Divider className="flex-1" />
-          <p className="text-tiny text-default-500 shrink-0">OR</p>
+          <p className="text-tiny text-default-500 shrink-0">{t("login.or")}</p>
           <Divider className="flex-1" />
         </div>
         <div className="flex flex-col gap-2">
@@ -94,7 +93,7 @@ const Login = () => {
             startContent={<Icon icon="flat-color-icons:google" width={24} />}
             variant="bordered"
           >
-            Continue with Google
+            {t("login.continueWithGoogle")}
           </Button>
           <Button
             startContent={
@@ -102,12 +101,12 @@ const Login = () => {
             }
             variant="bordered"
           >
-            Continue with Github
+            {t("login.continueWithGithub")}
           </Button>
         </div>
         <p className="text-small text-center">
-          Need to create an account?&nbsp;
-          <HeroLink to="/signup">Sign Up</HeroLink>
+          {t("login.needAccount")}&nbsp;
+          <HeroLink to="/signup">{t("login.signUp")}</HeroLink>
         </p>
       </div>
     </div>

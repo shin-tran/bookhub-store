@@ -1,0 +1,44 @@
+{
+  "header": {
+    "home": "Trang chủ",
+    "about": "Giới thiệu",
+    "login": "Đăng nhập"
+  },
+  "login": {
+    "tagline": "Đăng nhập vào tài khoản của bạn để tiếp tục",
+    "emailLabel": "Địa chỉ Email",
+    "emailPlaceholder": "Nhập email của bạn",
+    "passwordLabel": "Mật khẩu",
+    "passwordPlaceholder": "Nhập mật khẩu của bạn",
+    "rememberMe": "Ghi nhớ tôi",
+    "forgotPassword": "Quên mật khẩu?",
+    "signIn": "Đăng nhập",
+    "or": "HOẶC",
+    "continueWithGoogle": "Tiếp tục với Google",
+    "continueWithGithub": "Tiếp tục với Github",
+    "needAccount": "Cần tạo tài khoản?",
+    "signUp": "Đăng ký"
+  },
+  "signup": {
+    "tagline": "Tạo tài khoản để bắt đầu",
+    "fullnameLabel": "Tên đầy đủ",
+    "fullnamePlaceholder": "Nhập tên đầy đủ của bạn",
+    "emailLabel": "Địa chỉ Email",
+    "emailPlaceholder": "Nhập email của bạn",
+    "emailErrorMessage": "Sai định dạng email",
+    "passwordLabel": "Mật khẩu",
+    "passwordPlaceholder": "Nhập mật khẩu của bạn",
+    "phoneNumberLabel": "Số điện thoại",
+    "phoneNumberPlaceholder": "Nhập số điện thoại của bạn",
+    "agreeWith": "Tôi đồng ý với",
+    "terms": "Điều khoản",
+    "and": "và",
+    "privacyPolicy": "Chính sách Bảo mật",
+    "signUpButton": "Đăng Ký",
+    "or": "HOẶC",
+    "signUpWithGoogle": "Đăng ký với Google",
+    "signUpWithGithub": "Đăng ký với Github",
+    "haveAccount": "Đã có tài khoản?",
+    "logInLink": "Đăng nhập"
+  }
+}

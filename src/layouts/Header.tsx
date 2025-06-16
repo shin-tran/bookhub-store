@@ -1,12 +1,46 @@
-import { Navbar, NavbarBrand, NavbarContent, NavbarItem } from "@heroui/react";
+import {
+  Navbar,
+  NavbarBrand,
+  NavbarContent,
+  NavbarItem,
+  NavbarMenu,
+  NavbarMenuItem,
+  NavbarMenuToggle,
+} from "@heroui/react";
 import ThemeToggle from "@components/ThemeToggle";
 import HeroLink from "@components/HeroLink";
 import { Icon } from "@iconify/react";
 import LanguageSwitcher from "@components/LanguageSwitcher";
+import { useTranslation } from "react-i18next";
+import { useState } from "react";
 
 const Header = () => {
+  const { t } = useTranslation();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const menuItems = [
+    "Profile",
+    "Dashboard",
+    "Activity",
+    "Analytics",
+    "System",
+    "Deployments",
+    "My Settings",
+    "Team Settings",
+    "Help & Feedback",
+    "Log Out",
+  ];
+
   return (
-    <Navbar className="shadow-sm">
+    <Navbar
+      className="shadow-sm"
+      isMenuOpen={isMenuOpen}
+      onMenuOpenChange={setIsMenuOpen}
+    >
+      <NavbarContent className="sm:hidden" justify="start">
+        <NavbarMenuToggle aria-label={isMenuOpen ? "Close menu" : "Open menu"} />
+      </NavbarContent>
+
       <NavbarBrand>
         <HeroLink to="/" className="text-xl font-bold text-inherit">
           <Icon icon="oi:book" className="mr-2" />
@@ -17,12 +51,12 @@ const Header = () => {
       <NavbarContent className="hidden gap-4 sm:flex" justify="center">
         <NavbarItem>
           <HeroLink to="/" color="foreground">
-            Home
+            {t("header.home")}
           </HeroLink>
         </NavbarItem>
         <NavbarItem>
           <HeroLink to="/about" color="foreground">
-            About
+            {t("header.about")}
           </HeroLink>
         </NavbarItem>
       </NavbarContent>
@@ -30,16 +64,37 @@ const Header = () => {
       <NavbarContent justify="end">
         <NavbarItem>
           <HeroLink color="primary" to="/login">
-            Login
+            {t("header.login")}
           </HeroLink>
-        </NavbarItem>
-        <NavbarItem>
-          <ThemeToggle size="sm" />
         </NavbarItem>
         <NavbarItem>
           <LanguageSwitcher />
         </NavbarItem>
+        <NavbarItem>
+          <ThemeToggle size="sm" />
+        </NavbarItem>
       </NavbarContent>
+
+      <NavbarMenu>
+        {menuItems.map((item, index) => (
+          <NavbarMenuItem key={`${item}-${index}`}>
+            <HeroLink
+              className="w-full"
+              color={
+                index === 2
+                  ? "warning"
+                  : index === menuItems.length - 1
+                    ? "danger"
+                    : "foreground"
+              }
+              to="#"
+              size="lg"
+            >
+              {item}
+            </HeroLink>
+          </NavbarMenuItem>
+        ))}
+      </NavbarMenu>
     </Navbar>
   );
 };

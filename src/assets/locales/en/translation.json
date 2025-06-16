@@ -1,9 +1,0 @@
-{
-  "welcome_message": "Welcome to BookHub Store!",
-  "greeting": "Hello, {{name}}",
-  "header": {
-    "home": "Home",
-    "about": "About",
-    "books": "Books"
-  }
-}

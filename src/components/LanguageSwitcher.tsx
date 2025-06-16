@@ -1,32 +1,35 @@
-import { useTranslation } from 'react-i18next';
+import {
+  Button,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+} from "@heroui/react";
+import { Icon } from "@iconify/react";
+import { useTranslation } from "react-i18next";
 
-const languages = [
-  { code: 'vi', name: 'Tiếng Việt' },
-  { code: 'en', name: 'English' },
-];
-
-function LanguageSwitcher() {
+const LanguageSwitcher = () => {
   const { i18n } = useTranslation();
 
-  const changeLanguage = (lng: string) => {
-    i18n.changeLanguage(lng);
-  };
+  const currentLanguage = i18n.language;
 
   return (
-    <div className="language-switcher">
-      {languages.map((lng) => (
-        <button
-          key={lng.code}
-          onClick={() => changeLanguage(lng.code)}
-          // Làm nổi bật ngôn ngữ đang được chọn
-          style={{ fontWeight: i18n.language === lng.code ? 'bold' : 'normal' }}
-          disabled={i18n.language === lng.code}
-        >
-          {lng.name}
-        </button>
-      ))}
-    </div>
+    <Dropdown>
+      <DropdownTrigger>
+        <Button variant="light" size="sm" isIconOnly>
+          <Icon icon="heroicons:language-20-solid" className="text-lg" />
+        </Button>
+      </DropdownTrigger>
+      <DropdownMenu
+        aria-label="Language selection"
+        selectedKeys={[currentLanguage]}
+        onAction={(key) => i18n.changeLanguage(key as string)}
+      >
+        <DropdownItem key="vi">Tiếng Việt</DropdownItem>
+        <DropdownItem key="en">English</DropdownItem>
+      </DropdownMenu>
+    </Dropdown>
   );
-}
+};
 
 export default LanguageSwitcher;
