@@ -23,9 +23,9 @@ export interface SignupResponse {
 
 // API functions using Axios
 export const userService = {
-  getUsers: async (): Promise<User[]> => {
+  getUser: async (): Promise<User> => {
     const response = await instance.get("/api/v1/auth/account");
-    return response.data;
+    return response.data.data.user;
   },
 
   loginUser: async (

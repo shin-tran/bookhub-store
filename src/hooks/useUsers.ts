@@ -4,13 +4,13 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 // Query keys
 export const USER_QUERY_KEYS = {
   all: ["user"] as const,
-  lists: () => [...USER_QUERY_KEYS.all, "list"] as const,
+  current: () => [...USER_QUERY_KEYS.all, "current"] as const,
 };
 
-export const useUsers = () => {
+export const useGetUser = () => {
   return useQuery({
-    queryKey: USER_QUERY_KEYS.lists(),
-    queryFn: userService.getUsers,
+    queryKey: USER_QUERY_KEYS.current(),
+    queryFn: userService.getUser,
     staleTime: 5 * 60 * 1000,
   });
 };

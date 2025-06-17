@@ -16,7 +16,11 @@ import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import { useAuthStore } from "@stores/authStore";
 
-const Header = () => {
+type TProps = {
+  isLoading?: boolean;
+};
+
+const Header = ({ isLoading }: TProps) => {
   const { t } = useTranslation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
