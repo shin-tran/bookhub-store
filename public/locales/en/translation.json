@@ -17,7 +17,8 @@
     "continueWithGoogle": "Continue with Google",
     "continueWithGithub": "Continue with Github",
     "needAccount": "Need to create an account?",
-    "signUp": "Sign Up"
+    "signUp": "Sign Up",
+    "onLoginSuccess": "You have successfully logged in"
   },
   "signup": {
     "tagline": "Create an account to get started",

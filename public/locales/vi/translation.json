@@ -17,7 +17,8 @@
     "continueWithGoogle": "Tiếp tục với Google",
     "continueWithGithub": "Tiếp tục với Github",
     "needAccount": "Cần tạo tài khoản?",
-    "signUp": "Đăng ký"
+    "signUp": "Đăng ký",
+    "onLoginSuccess": "Bạn đã đăng nhập thành công"
   },
   "signup": {
     "tagline": "Tạo tài khoản để bắt đầu",

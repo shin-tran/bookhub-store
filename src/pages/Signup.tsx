@@ -36,13 +36,16 @@ const Signup = () => {
       phone: String(data.phone),
     });
     if (res?.data) {
-      addToast({
-        title: t("signup.onSignupSuccess"),
-      });
+      addToast({ title: t("signup.onSignupSuccess"), color: "success" });
       navigate("/login");
     } else {
       addToast({
-        title: res.message,
+        title: "Error Signup",
+        description:
+          res.message && Array.isArray(res.message)
+            ? res.message[0]
+            : res.message,
+        color: "danger",
       });
     }
     setIsSignuping(false);

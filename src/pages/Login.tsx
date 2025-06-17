@@ -1,15 +1,24 @@
 import { useState } from "react";
-import { Button, Input, Checkbox, Divider, Form } from "@heroui/react";
+import {
+  Button,
+  Input,
+  Checkbox,
+  Divider,
+  Form,
+  addToast,
+} from "@heroui/react";
 import { Icon } from "@iconify/react";
 import { BSLogo } from "@assets/svg/BSLogo";
 import HeroLink from "@components/HeroLink";
 import { useTranslation } from "react-i18next";
 import { useLoginUser } from "@hooks/useUsers";
 import { useThemeManager } from "@hooks/useThemeManager";
+import { useNavigate } from "react-router";
 
 const Login = () => {
   useThemeManager();
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const [isVisible, setIsVisible] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
   const toggleVisibility = () => setIsVisible(!isVisible);
@@ -21,10 +30,24 @@ const Login = () => {
     e.preventDefault();
     const data = Object.fromEntries(new FormData(e.currentTarget));
     setIsLogin(true);
-    await loginMutation.mutateAsync({
+    const res = await loginMutation.mutateAsync({
       username: String(data.email),
       password: String(data.password),
     });
+    if (res?.data) {
+      addToast({ title: t("login.onLoginSuccess"), color: "success" });
+      localStorage.setItem("access_token", res.data.access_token);
+      navigate("/");
+    } else {
+      addToast({
+        title: "Error Login",
+        description:
+          res.message && Array.isArray(res.message)
+            ? res.message[0]
+            : res.message,
+        color: "danger",
+      });
+    }
     setIsLogin(false);
   };
 
