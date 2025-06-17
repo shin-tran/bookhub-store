@@ -1,6 +1,8 @@
 import RootLayout from "@layouts/RootLayout";
 import About from "@pages/About";
-import Book from "@pages/Book";
+import Admin from "@pages/Admin";
+import Books from "@pages/Books";
+import Checkout from "@pages/Checkout";
 import Home from "@pages/Home";
 import Login from "@pages/Login";
 import Signup from "@pages/Signup";
@@ -12,10 +14,12 @@ export const router = createBrowserRouter([
     Component: RootLayout,
     children: [
       { index: true, Component: Home },
-      { path: "book", Component: Book },
+      { path: "books", Component: Books },
       { path: "about", Component: About },
+      { path: "checkout", Component: Checkout },
     ],
   },
   { path: "login", Component: Login },
   { path: "signup", Component: Signup },
+  { path: "admin", Component: Admin },
 ]);

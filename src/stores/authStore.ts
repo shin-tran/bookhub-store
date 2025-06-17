@@ -10,12 +10,15 @@ interface AuthState {
 
 export const useAuthStore = create<AuthState>()((set) => ({
   user: null,
-  isAuthenticated: false,
+  access_token: null,
+  isAuthenticated: !!localStorage.getItem("isAuthenticated"),
   isGetUserLoading: false,
   setUser: (user) => {
     set({ user, isAuthenticated: true });
   },
   logout: () => {
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("isAuthenticated");
     set({ user: null, isAuthenticated: false });
   },
 }));

@@ -6,18 +6,19 @@ import { useAuthStore } from "@stores/authStore";
 import { useEffect } from "react";
 
 const RootLayout = () => {
-  const { data: user, isLoading } = useGetUser();
-  const { setUser } = useAuthStore();
+  const { data: user, isSuccess, isLoading } = useGetUser();
+  const { setUser, isAuthenticated } = useAuthStore();
 
   useEffect(() => {
-    if (user) {
-      setUser(user);
-    }
-  }, [user, setUser]);
+    if (isSuccess && user) setUser(user);
+  }, [user, setUser, isSuccess]);
+
+  const isUserLoading =
+    (isAuthenticated || !!localStorage.getItem("isAuthenticated")) && isLoading;
 
   return (
     <>
-      <Header isLoading={isLoading} />
+      <Header isUserLoading={isUserLoading} />
       <Outlet />
       <Footer />
     </>

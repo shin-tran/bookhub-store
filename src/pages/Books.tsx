@@ -1,6 +1,6 @@
-const Book = () => {
+const Books = () => {
   return (
     <div>BookPage</div>
   )
 }
-export default Book
+export default Books

@@ -7,6 +7,7 @@ import {
   NavbarMenu,
   NavbarMenuItem,
   NavbarMenuToggle,
+  Spinner,
 } from "@heroui/react";
 import ThemeToggle from "@components/ThemeToggle";
 import HeroLink from "@components/HeroLink";
@@ -17,16 +18,13 @@ import { useState } from "react";
 import { useAuthStore } from "@stores/authStore";
 
 type TProps = {
-  isLoading?: boolean;
+  isUserLoading?: boolean;
 };
 
-const Header = ({ isLoading }: TProps) => {
+const Header = ({ isUserLoading }: TProps) => {
   const { t } = useTranslation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
-  const user = useAuthStore((state) => state.user);
-  const logout = useAuthStore((state) => state.logout);
+  const { user, logout, isAuthenticated } = useAuthStore();
 
   const menuItems = [
     "Profile",
@@ -76,14 +74,25 @@ const Header = ({ isLoading }: TProps) => {
       <NavbarContent justify="end">
         {isAuthenticated ? (
           <>
-            <NavbarItem>
-              <span>Hi, {user?.fullName}</span>
-            </NavbarItem>
-            <NavbarItem>
-              <Button color="danger" variant="flat" size="sm" onClick={logout}>
-                Logout
-              </Button>
-            </NavbarItem>
+            {isUserLoading ? (
+              <Spinner variant="dots" />
+            ) : (
+              <>
+                <NavbarItem>
+                  <span>Hi, {user?.fullName}</span>
+                </NavbarItem>
+                <NavbarItem>
+                  <Button
+                    color="danger"
+                    variant="flat"
+                    size="sm"
+                    onClick={logout}
+                  >
+                    Logout
+                  </Button>
+                </NavbarItem>
+              </>
+            )}
           </>
         ) : (
           <>

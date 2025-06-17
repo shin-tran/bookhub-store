@@ -12,6 +12,7 @@ export const useGetUser = () => {
     queryKey: USER_QUERY_KEYS.current(),
     queryFn: userService.getUser,
     staleTime: 5 * 60 * 1000,
+    enabled: !!localStorage.getItem("isAuthenticated"),
   });
 };
 
