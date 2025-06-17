@@ -55,6 +55,5 @@ export const useSignupUser = () => {
     onError(error) {
       console.log("error", error);
     },
-
   });
 };

@@ -13,10 +13,12 @@ import { useSignupUser } from "@hooks/useUsers";
 import { Icon } from "@iconify/react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router";
 
 const Signup = () => {
   useThemeManager();
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const [isVisible, setIsVisible] = useState(false);
   const [isSignuping, setIsSignuping] = useState(false);
   const toggleVisibility = () => setIsVisible(!isVisible);
@@ -37,6 +39,7 @@ const Signup = () => {
       addToast({
         title: t("signup.onSignupSuccess"),
       });
+      navigate("/login");
     } else {
       addToast({
         title: res.message,
