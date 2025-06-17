@@ -27,7 +27,8 @@ const Login = () => {
 
   const handleUserLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const data = Object.fromEntries(new FormData(e.currentTarget));
+    const form = e.currentTarget;
+    const data = Object.fromEntries(new FormData(form));
     const res = await loginMutation.mutateAsync({
       username: String(data.email),
       password: String(data.password),
@@ -35,6 +36,7 @@ const Login = () => {
     if (res?.data) {
       addToast({ title: t("login.onLoginSuccess"), color: "success" });
       localStorage.setItem("access_token", res.data.access_token);
+      form.reset();
       navigate("/");
     } else {
       addToast({

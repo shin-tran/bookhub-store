@@ -26,7 +26,8 @@ const Signup = () => {
 
   const handleSignupSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const data = Object.fromEntries(new FormData(e.currentTarget));
+    const form = e.currentTarget;
+    const data = Object.fromEntries(new FormData(form));
     const res = await signupMutation.mutateAsync({
       fullName: String(data.fullName),
       email: String(data.email),
@@ -35,6 +36,7 @@ const Signup = () => {
     });
     if (res?.data) {
       addToast({ title: t("signup.onSignupSuccess"), color: "success" });
+      form.reset();
       navigate("/login");
     } else {
       addToast({
