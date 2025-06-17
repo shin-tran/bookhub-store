@@ -1,4 +1,5 @@
 import {
+  Button,
   Navbar,
   NavbarBrand,
   NavbarContent,
@@ -13,10 +14,15 @@ import { Icon } from "@iconify/react";
 import LanguageSwitcher from "@components/LanguageSwitcher";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
+import { useAuthStore } from "@stores/authStore";
 
 const Header = () => {
   const { t } = useTranslation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const user = useAuthStore((state) => state.user);
+  const logout = useAuthStore((state) => state.logout);
 
   const menuItems = [
     "Profile",
@@ -38,7 +44,9 @@ const Header = () => {
       onMenuOpenChange={setIsMenuOpen}
     >
       <NavbarContent className="sm:hidden" justify="start">
-        <NavbarMenuToggle aria-label={isMenuOpen ? "Close menu" : "Open menu"} />
+        <NavbarMenuToggle
+          aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+        />
       </NavbarContent>
 
       <NavbarBrand>
@@ -62,11 +70,26 @@ const Header = () => {
       </NavbarContent>
 
       <NavbarContent justify="end">
-        <NavbarItem>
-          <HeroLink color="primary" to="/login">
-            {t("header.login")}
-          </HeroLink>
-        </NavbarItem>
+        {isAuthenticated ? (
+          <>
+            <NavbarItem>
+              <span>Hi, {user?.fullName}</span>
+            </NavbarItem>
+            <NavbarItem>
+              <Button color="danger" variant="flat" size="sm" onClick={logout}>
+                Logout
+              </Button>
+            </NavbarItem>
+          </>
+        ) : (
+          <>
+            <NavbarItem>
+              <HeroLink color="primary" to="/login">
+                {t("header.login")}
+              </HeroLink>
+            </NavbarItem>
+          </>
+        )}
         <NavbarItem>
           <LanguageSwitcher />
         </NavbarItem>

@@ -1,7 +1,6 @@
 import type { ApiResult } from "@cusTypes/api";
 import instance from "./axiosCustomize";
 
-// Types
 export interface User {
   email: string;
   phone: string;
@@ -11,8 +10,9 @@ export interface User {
   id: string;
 }
 
-export interface LoginResponse extends User {
+export interface LoginResponse {
   access_token: string;
+  user: User;
 }
 
 export interface SignupResponse {
@@ -23,14 +23,11 @@ export interface SignupResponse {
 
 // API functions using Axios
 export const userService = {
-  // Get all user
   getUsers: async (): Promise<User[]> => {
     const response = await instance.get("/api/v1/auth/account");
     return response.data;
   },
-  // Get user by id
 
-  // Login user
   loginUser: async (
     username: string,
     password: string,
@@ -42,7 +39,6 @@ export const userService = {
     return response.data;
   },
 
-  // Signup user
   signupUser: async (
     fullName: string,
     email: string,

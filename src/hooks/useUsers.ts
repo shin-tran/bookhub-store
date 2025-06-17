@@ -7,7 +7,6 @@ export const USER_QUERY_KEYS = {
   lists: () => [...USER_QUERY_KEYS.all, "list"] as const,
 };
 
-// Get all users
 export const useUsers = () => {
   return useQuery({
     queryKey: USER_QUERY_KEYS.lists(),
@@ -16,7 +15,6 @@ export const useUsers = () => {
   });
 };
 
-// Login user
 export const useLoginUser = () => {
   return useMutation({
     mutationFn: ({
@@ -35,7 +33,6 @@ export const useLoginUser = () => {
   });
 };
 
-// Signup user
 export const useSignupUser = () => {
   return useMutation({
     mutationFn: ({

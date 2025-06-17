@@ -14,6 +14,7 @@ import { useTranslation } from "react-i18next";
 import { useLoginUser } from "@hooks/useUsers";
 import { useThemeManager } from "@hooks/useThemeManager";
 import { useNavigate } from "react-router";
+import { useAuthStore } from "@stores/authStore";
 
 const Login = () => {
   useThemeManager();
@@ -21,6 +22,7 @@ const Login = () => {
   const navigate = useNavigate();
   const [isVisible, setIsVisible] = useState(false);
   const toggleVisibility = () => setIsVisible(!isVisible);
+  const setUser = useAuthStore((state) => state.setUser);
 
   // Mutations
   const loginMutation = useLoginUser();
@@ -35,7 +37,7 @@ const Login = () => {
     });
     if (res?.data) {
       addToast({ title: t("login.onLoginSuccess"), color: "success" });
-      localStorage.setItem("access_token", res.data.access_token);
+      setUser(res.data.user, res.data.access_token)
       form.reset();
       navigate("/");
     } else {
