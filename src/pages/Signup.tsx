@@ -20,14 +20,12 @@ const Signup = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [isVisible, setIsVisible] = useState(false);
-  const [isSignuping, setIsSignuping] = useState(false);
   const toggleVisibility = () => setIsVisible(!isVisible);
 
   const signupMutation = useSignupUser();
 
   const handleSignupSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsSignuping(true);
     const data = Object.fromEntries(new FormData(e.currentTarget));
     const res = await signupMutation.mutateAsync({
       fullName: String(data.fullName),
@@ -48,7 +46,6 @@ const Signup = () => {
         color: "danger",
       });
     }
-    setIsSignuping(false);
   };
 
   return (
@@ -141,7 +138,7 @@ const Signup = () => {
             color="primary"
             className="w-full"
             type="submit"
-            isLoading={isSignuping}
+            isLoading={signupMutation.isPending}
           >
             {t("signup.signUpButton")}
           </Button>

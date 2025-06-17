@@ -20,7 +20,6 @@ const Login = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [isVisible, setIsVisible] = useState(false);
-  const [isLogin, setIsLogin] = useState(false);
   const toggleVisibility = () => setIsVisible(!isVisible);
 
   // Mutations
@@ -29,7 +28,6 @@ const Login = () => {
   const handleUserLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const data = Object.fromEntries(new FormData(e.currentTarget));
-    setIsLogin(true);
     const res = await loginMutation.mutateAsync({
       username: String(data.email),
       password: String(data.password),
@@ -48,7 +46,6 @@ const Login = () => {
         color: "danger",
       });
     }
-    setIsLogin(false);
   };
 
   return (
@@ -104,7 +101,7 @@ const Login = () => {
             className="w-full"
             color="primary"
             type="submit"
-            isLoading={isLogin}
+            isLoading={loginMutation.isPending}
           >
             {t("login.signIn")}
           </Button>
