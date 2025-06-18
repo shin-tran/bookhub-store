@@ -1,8 +1,6 @@
 import { userService } from "@services/userService";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useCallback } from "react";
 
-// Query keys
 export const USER_QUERY_KEYS = {
   all: ["user"] as const,
   current: () => [...USER_QUERY_KEYS.all, "current"] as const,
@@ -23,7 +21,6 @@ export const useGetUser = () => {
 
 export const useLoginUser = () => {
   const queryClient = useQueryClient();
-
   return useMutation({
     mutationFn: ({
       username,
@@ -43,7 +40,6 @@ export const useLoginUser = () => {
 
 export const useSignupUser = () => {
   const queryClient = useQueryClient();
-
   return useMutation({
     mutationFn: ({
       fullName,
@@ -68,14 +64,8 @@ export const useSignupUser = () => {
   });
 };
 
-export const useRefetchUser = () => {
-  const queryClient = useQueryClient();
-
-  const refetchUser = useCallback(() => {
-    return queryClient.invalidateQueries({
-      queryKey: USER_QUERY_KEYS.current(),
-    });
-  }, [queryClient]);
-
-  return { refetchUser };
+export const useLogoutUser = () => {
+  return useMutation({
+    mutationFn: () => userService.logoutUser(),
+  });
 };

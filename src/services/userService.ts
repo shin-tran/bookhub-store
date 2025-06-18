@@ -54,6 +54,11 @@ export const userService = {
     return response.data;
   },
 
+  logoutUser: async (): Promise<string> => {
+    const response = await instance.post("/api/v1/auth/logout");
+    return response.data;
+  },
+
   // Update book
   // Delete book
   // Search books

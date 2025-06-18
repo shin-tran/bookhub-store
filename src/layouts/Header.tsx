@@ -25,12 +25,23 @@ import { useState } from "react";
 import { useAuth } from "@hooks/useAuth";
 import { useQueryClient } from "@tanstack/react-query";
 import { Link, NavLink } from "react-router";
+import { useLogoutUser } from "@hooks/useUsers";
 
 const Header = () => {
   const { t } = useTranslation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { user, logout, isAuthenticated, isUserLoading } = useAuth();
   const queryClient = useQueryClient();
+  const logoutMutation = useLogoutUser();
+
+  const handleLogoutUser = async () => {
+    const res = await logoutMutation.mutateAsync();
+    if (res) {
+      addToast({ title: t("header.logout"), color: "success" });
+      queryClient.clear();
+      logout();
+    }
+  };
 
   const menuItems = [
     "Profile",
@@ -103,9 +114,7 @@ const Header = () => {
   const handleUserMenuAction = (action: string) => {
     switch (action) {
       case "logout":
-        addToast({ title: t("header.logout"), color: "success" });
-        queryClient.clear();
-        logout();
+        handleLogoutUser();
         break;
       case "profile":
         // Navigate to profile
@@ -224,6 +233,7 @@ const Header = () => {
                             }
                             color={item.isDanger ? "danger" : "default"}
                             className={item.isDanger ? "text-danger" : ""}
+                            textValue={item.label}
                           >
                             {item.path ? (
                               <Link to={item.path}>{item.label}</Link>
