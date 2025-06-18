@@ -3,6 +3,7 @@
     "about": "About",
     "login": "Login",
     "signup": "Sign Up",
+    "logout": "Logout success",
     "checkout": "Checkout"
   },
   "login": {

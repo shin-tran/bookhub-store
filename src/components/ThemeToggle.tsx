@@ -41,7 +41,7 @@ const ThemeToggle = ({
           size={size}
           startContent={<Icon icon={themeIcons[theme]} className="text-lg" />}
         >
-          {showLabel && themeLabels[theme]}
+          <span className="hidden sm:inline-block">{showLabel && themeLabels[theme]}</span>
         </Button>
       </DropdownTrigger>
       <DropdownMenu

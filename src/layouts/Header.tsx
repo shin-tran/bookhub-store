@@ -1,4 +1,5 @@
 import {
+  addToast,
   Avatar,
   Badge,
   Button,
@@ -34,13 +35,9 @@ const Header = () => {
   const menuItems = [
     "Profile",
     "Dashboard",
-    "Activity",
-    "Analytics",
-    "System",
-    "Deployments",
-    "My Settings",
-    "Team Settings",
-    "Help & Feedback",
+    "Checkout",
+    "Favorites",
+    "Settings",
     "Log Out",
   ];
 
@@ -106,6 +103,7 @@ const Header = () => {
   const handleUserMenuAction = (action: string) => {
     switch (action) {
       case "logout":
+        addToast({ title: t("header.logout"), color: "success" });
         queryClient.clear();
         logout();
         break;
@@ -127,12 +125,14 @@ const Header = () => {
       onMenuOpenChange={setIsMenuOpen}
       maxWidth="2xl"
     >
+      {/* Mobie menu btn */}
       <NavbarContent className="sm:hidden" justify="start">
         <NavbarMenuToggle
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
         />
       </NavbarContent>
 
+      {/* Logo */}
       <NavbarBrand>
         <HeroLink to="/" className="text-xl font-bold text-inherit">
           <Icon icon="oi:book" className="mr-2" />
@@ -141,7 +141,7 @@ const Header = () => {
       </NavbarBrand>
 
       {/* Navigation Links - Desktop */}
-      <NavbarContent className="hidden gap-2 lg:flex" justify="center">
+      <NavbarContent className="hidden gap-2 sm:flex" justify="center">
         {navigationItems.map((item) => (
           <NavbarItem key={item.path}>
             <NavLink
@@ -261,6 +261,7 @@ const Header = () => {
         </NavbarItem>
       </NavbarContent>
 
+      {/* Nav menu mobile */}
       <NavbarMenu>
         {menuItems.map((item, index) => (
           <NavbarMenuItem key={`${item}-${index}`}>

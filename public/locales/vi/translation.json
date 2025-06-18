@@ -3,6 +3,7 @@
     "about": "Giới thiệu",
     "login": "Đăng nhập",
     "signup": "Đăng ký",
+    "logout": "Đăng xuất thành công",
     "checkout": "Thanh toán"
   },
   "login": {
