@@ -38,7 +38,7 @@ const Login = () => {
     if (res?.data) {
       addToast({ title: t("login.onLoginSuccess"), color: "success" });
       setUser(res.data.user);
-      localStorage.setItem("isAuthenticated", "false");
+      localStorage.setItem("isAuthenticated", "true");
       localStorage.setItem("access_token", res.data.access_token);
       form.reset();
       navigate("/");

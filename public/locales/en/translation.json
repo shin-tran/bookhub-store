@@ -1,8 +1,8 @@
-{
-  "header": {
+{  "header": {
     "home": "Home",
     "about": "About",
-    "login": "Login"
+    "login": "Login",
+    "signup": "Sign Up"
   },
   "login": {
     "tagline": "Log in to your account to continue",

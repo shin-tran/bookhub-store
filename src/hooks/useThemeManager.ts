@@ -7,7 +7,6 @@ import { useEffect } from "react";
 export const useThemeManager = () => {
   useEffect(() => {
     const applyTheme = () => {
-      // Xóa tất cả theme classes trước
       document.documentElement.classList.remove("light", "dark");
 
       const savedTheme = localStorage.getItem("heroui-theme");

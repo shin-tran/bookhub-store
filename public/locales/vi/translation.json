@@ -1,8 +1,8 @@
-{
-  "header": {
+{  "header": {
     "home": "Trang chủ",
     "about": "Giới thiệu",
-    "login": "Đăng nhập"
+    "login": "Đăng nhập",
+    "signup": "Đăng ký"
   },
   "login": {
     "tagline": "Đăng nhập vào tài khoản của bạn để tiếp tục",

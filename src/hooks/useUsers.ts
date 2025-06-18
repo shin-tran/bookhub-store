@@ -1,5 +1,6 @@
 import { userService } from "@services/userService";
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useCallback } from "react";
 
 // Query keys
 export const USER_QUERY_KEYS = {
@@ -12,11 +13,16 @@ export const useGetUser = () => {
     queryKey: USER_QUERY_KEYS.current(),
     queryFn: userService.getUser,
     staleTime: 5 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
     enabled: !!localStorage.getItem("isAuthenticated"),
+    refetchOnWindowFocus: false,
+    retry: 1,
   });
 };
 
 export const useLoginUser = () => {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: ({
       username,
@@ -25,8 +31,8 @@ export const useLoginUser = () => {
       username: string;
       password: string;
     }) => userService.loginUser(username, password),
-    onSuccess(data) {
-      console.log("data", data);
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: USER_QUERY_KEYS.current() });
     },
     onError(error) {
       console.log("error", error);
@@ -35,6 +41,8 @@ export const useLoginUser = () => {
 };
 
 export const useSignupUser = () => {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: ({
       fullName,
@@ -49,9 +57,22 @@ export const useSignupUser = () => {
     }) => userService.signupUser(fullName, email, password, phone),
     onSuccess(data) {
       console.log("data", data);
+      if (localStorage.getItem("isAuthenticated")) {
+        queryClient.invalidateQueries({ queryKey: USER_QUERY_KEYS.current() });
+      }
     },
     onError(error) {
       console.log("error", error);
     },
   });
+};
+
+export const useRefetchUser = () => {
+  const queryClient = useQueryClient();
+
+  const refetchUser = useCallback(() => {
+    return queryClient.invalidateQueries({ queryKey: USER_QUERY_KEYS.current() });
+  }, [queryClient]);
+
+  return { refetchUser };
 };
