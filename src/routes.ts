@@ -10,37 +10,31 @@ import Login from "@pages/Login";
 import Signup from "@pages/Signup";
 import { createElement } from "react";
 import { createBrowserRouter } from "react-router";
-import App from "./App";
 
 export const router = createBrowserRouter([
   {
-    Component: App,
+    path: "/",
+    Component: RootLayout,
     children: [
+      { index: true, Component: Home },
+      { path: "books", Component: Books },
+      { path: "about", Component: About },
       {
-        path: "/",
-        Component: RootLayout,
-        children: [
-          { index: true, Component: Home },
-          { path: "books", Component: Books },
-          { path: "about", Component: About },
-          {
-            path: "checkout",
-            element: createElement(ProtectedRoute, {
-              children: createElement(Checkout),
-            }),
-          },
-          { path: "error", Component: Error },
-        ],
-      },
-      { path: "login", Component: Login },
-      { path: "signup", Component: Signup },
-      {
-        path: "admin",
+        path: "checkout",
         element: createElement(ProtectedRoute, {
-          children: createElement(Admin),
+          children: createElement(Checkout),
         }),
       },
-      { path: "*", Component: Error },
+      { path: "error", Component: Error },
     ],
   },
+  { path: "login", Component: Login },
+  { path: "signup", Component: Signup },
+  {
+    path: "admin",
+    element: createElement(ProtectedRoute, {
+      children: createElement(Admin),
+    }),
+  },
+  { path: "*", Component: Error },
 ]);
