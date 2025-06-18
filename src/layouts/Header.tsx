@@ -1,6 +1,7 @@
 import {
   Avatar,
   Badge,
+  Button,
   Dropdown,
   DropdownItem,
   DropdownMenu,
@@ -63,37 +64,42 @@ const Header = () => {
       icon: "heroicons:user",
       action: "profile",
       roles: ["USER"],
+      path: "/profile",
     },
     {
       label: "Dashboard",
       icon: "heroicons:squares-2x2",
       action: "dashboard",
       roles: ["ADMIN"],
+      path: "/admin",
     },
     {
-      label: "Orders",
+      label: "Checkout",
       icon: "heroicons:shopping-bag",
-      action: "orders",
+      action: "/checkout",
       roles: ["USER"],
+      path: "/checkout",
     },
     {
       label: "Favorites",
       icon: "heroicons:heart",
       action: "favorites",
       roles: ["USER"],
+      path: "/favorites",
     },
     {
       label: "Settings",
       icon: "heroicons:cog-6-tooth",
       action: "settings",
       roles: ["USER"],
+      path: "/settings",
     },
     {
       label: "Logout",
       icon: "heroicons:arrow-right-on-rectangle",
       action: "logout",
       isDanger: true,
-      roles: ["USER", "ADMIN"],
+      roles: ["USER"],
     },
   ];
 
@@ -219,7 +225,11 @@ const Header = () => {
                             color={item.isDanger ? "danger" : "default"}
                             className={item.isDanger ? "text-danger" : ""}
                           >
-                            {item.label}
+                            {item.path ? (
+                              <Link to={item.path}>{item.label}</Link>
+                            ) : (
+                              item.label
+                            )}
                           </DropdownItem>
                         ))}
                     </DropdownMenu>
@@ -230,11 +240,13 @@ const Header = () => {
           </>
         ) : (
           <>
-            <NavbarItem className="hidden sm:flex">
-              <HeroLink to="/signup">{t("header.signup")}</HeroLink>
-            </NavbarItem>
-            <NavbarItem>
-              <HeroLink to="/login">{t("header.login")}</HeroLink>
+            <NavbarItem className="hidden gap-2 sm:flex">
+              <Button as={HeroLink} color="primary" to="/login" variant="flat">
+                {t("header.login")}
+              </Button>
+              <Button as={HeroLink} color="primary" to="/signup" variant="flat">
+                {t("header.signup")}
+              </Button>
             </NavbarItem>
           </>
         )}

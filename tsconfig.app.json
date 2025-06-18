@@ -28,6 +28,7 @@
     "paths": {
       "@components/*": ["src/components/*"],
       "@services/*": ["src/services/*"],
+      "@dashboard/*": ["src/dashboard/*"],
       "@layouts/*": ["src/layouts/*"],
       "@cusTypes/*": ["src/types/*"],
       "@stores/*": ["src/stores/*"],

@@ -1,7 +1,8 @@
 import ProtectedRoute from "@components/ProtectedRoute";
+import DashboardLayout from "@dashboard/layouts/DashboardLayout";
+import Overview from "@dashboard/pages/Overview";
 import RootLayout from "@layouts/RootLayout";
 import About from "@pages/About";
-import Admin from "@pages/Admin";
 import Books from "@pages/Books";
 import Checkout from "@pages/Checkout";
 import Error from "@pages/Error";
@@ -32,9 +33,15 @@ export const router = createBrowserRouter([
   { path: "signup", Component: Signup },
   {
     path: "admin",
-    element: createElement(ProtectedRoute, {
-      children: createElement(Admin),
-    }),
+    Component: DashboardLayout,
+    children: [
+      {
+        index: true,
+        element: createElement(ProtectedRoute, {
+          children: createElement(Overview),
+        }),
+      },
+    ],
   },
   { path: "*", Component: Error },
 ]);
