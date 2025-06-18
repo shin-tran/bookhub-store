@@ -5,7 +5,7 @@ import type { User } from "@services/userService";
 
 export const useAuth = () => {
   const { data: user, isSuccess, isLoading, isError } = useGetUser();
-  const { setUser, clearUser, isAuthenticated, logout } = useAuthStore();
+  const { setUser, isAuthenticated, logout } = useAuthStore();
 
   const handleSetUser = useCallback(
     (userData: User) => {
@@ -14,24 +14,11 @@ export const useAuth = () => {
     [setUser],
   );
 
-  const handleClearUser = useCallback(() => {
-    clearUser();
-  }, [clearUser]);
-
   useEffect(() => {
     if (isSuccess && user && !isError) {
       handleSetUser(user);
-    } else if (isError && isAuthenticated) {
-      handleClearUser();
     }
-  }, [
-    isSuccess,
-    user,
-    isError,
-    isAuthenticated,
-    handleSetUser,
-    handleClearUser,
-  ]);
+  }, [isSuccess, user, isError, handleSetUser]);
 
   const isUserLoading = isAuthenticated && isLoading && !isError;
 

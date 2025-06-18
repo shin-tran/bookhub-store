@@ -20,13 +20,13 @@ import LanguageSwitcher from "@components/LanguageSwitcher";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import { useAuth } from "@hooks/useAuth";
+import { useQueryClient } from "@tanstack/react-query";
 
 const Header = () => {
   const { t } = useTranslation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { user, logout, isAuthenticated, isUserLoading } = useAuth();
-
-  console.log(user);
+  const queryClient = useQueryClient();
 
   const menuItems = [
     "Profile",
@@ -53,25 +53,57 @@ const Header = () => {
       path: "/about",
       icon: "heroicons:information-circle",
     },
+    {
+      label: t("header.checkout"),
+      path: "/checkout",
+      icon: "material-symbols:shopping-cart-checkout",
+    },
   ];
 
   const userMenuItems = [
-    { label: "Profile", icon: "heroicons:user", action: "profile" },
-    { label: "Dashboard", icon: "heroicons:squares-2x2", action: "dashboard" },
-    { label: "Orders", icon: "heroicons:shopping-bag", action: "orders" },
-    { label: "Favorites", icon: "heroicons:heart", action: "favorites" },
-    { label: "Settings", icon: "heroicons:cog-6-tooth", action: "settings" },
+    {
+      label: "Profile",
+      icon: "heroicons:user",
+      action: "profile",
+      roles: ["USER"],
+    },
+    {
+      label: "Dashboard",
+      icon: "heroicons:squares-2x2",
+      action: "dashboard",
+      roles: ["ADMIN"],
+    },
+    {
+      label: "Orders",
+      icon: "heroicons:shopping-bag",
+      action: "orders",
+      roles: ["USER"],
+    },
+    {
+      label: "Favorites",
+      icon: "heroicons:heart",
+      action: "favorites",
+      roles: ["USER"],
+    },
+    {
+      label: "Settings",
+      icon: "heroicons:cog-6-tooth",
+      action: "settings",
+      roles: ["USER"],
+    },
     {
       label: "Logout",
       icon: "heroicons:arrow-right-on-rectangle",
       action: "logout",
       isDanger: true,
+      roles: ["USER", "ADMIN"],
     },
   ];
 
   const handleUserMenuAction = (action: string) => {
     switch (action) {
       case "logout":
+        queryClient.clear();
         logout();
         break;
       case "profile":
@@ -162,18 +194,26 @@ const Header = () => {
                       aria-label="User menu"
                       onAction={(key) => handleUserMenuAction(key as string)}
                     >
-                      {userMenuItems.map((item) => (
-                        <DropdownItem
-                          key={item.action}
-                          startContent={
-                            <Icon icon={item.icon} className="text-lg" />
-                          }
-                          color={item.isDanger ? "danger" : "default"}
-                          className={item.isDanger ? "text-danger" : ""}
-                        >
-                          {item.label}
-                        </DropdownItem>
-                      ))}
+                      {userMenuItems
+                        .filter((item) => {
+                          if (user?.role === "ADMIN") return true;
+                          else
+                            return (
+                              user?.role && item.roles?.includes(user.role)
+                            );
+                        })
+                        .map((item) => (
+                          <DropdownItem
+                            key={item.action}
+                            startContent={
+                              <Icon icon={item.icon} className="text-lg" />
+                            }
+                            color={item.isDanger ? "danger" : "default"}
+                            className={item.isDanger ? "text-danger" : ""}
+                          >
+                            {item.label}
+                          </DropdownItem>
+                        ))}
                     </DropdownMenu>
                   </Dropdown>
                 </NavbarItem>

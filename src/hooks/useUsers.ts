@@ -16,6 +16,7 @@ export const useGetUser = () => {
     gcTime: 10 * 60 * 1000,
     enabled: !!localStorage.getItem("isAuthenticated"),
     refetchOnWindowFocus: false,
+    refetchOnMount: false,
     retry: 1,
   });
 };
@@ -71,7 +72,9 @@ export const useRefetchUser = () => {
   const queryClient = useQueryClient();
 
   const refetchUser = useCallback(() => {
-    return queryClient.invalidateQueries({ queryKey: USER_QUERY_KEYS.current() });
+    return queryClient.invalidateQueries({
+      queryKey: USER_QUERY_KEYS.current(),
+    });
   }, [queryClient]);
 
   return { refetchUser };

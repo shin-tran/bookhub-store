@@ -2,7 +2,8 @@
     "home": "Home",
     "about": "About",
     "login": "Login",
-    "signup": "Sign Up"
+    "signup": "Sign Up",
+    "checkout": "Checkout"
   },
   "login": {
     "tagline": "Log in to your account to continue",

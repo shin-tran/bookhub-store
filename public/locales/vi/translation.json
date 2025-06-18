@@ -2,7 +2,8 @@
     "home": "Trang chủ",
     "about": "Giới thiệu",
     "login": "Đăng nhập",
-    "signup": "Đăng ký"
+    "signup": "Đăng ký",
+    "checkout": "Thanh toán"
   },
   "login": {
     "tagline": "Đăng nhập vào tài khoản của bạn để tiếp tục",
