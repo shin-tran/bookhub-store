@@ -1,5 +1,6 @@
 import {
   Avatar,
+  Badge,
   Dropdown,
   DropdownItem,
   DropdownMenu,
@@ -21,6 +22,7 @@ import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import { useAuth } from "@hooks/useAuth";
 import { useQueryClient } from "@tanstack/react-query";
+import { Link, NavLink } from "react-router";
 
 const Header = () => {
   const { t } = useTranslation();
@@ -52,11 +54,6 @@ const Header = () => {
       label: t("header.about"),
       path: "/about",
       icon: "heroicons:information-circle",
-    },
-    {
-      label: t("header.checkout"),
-      path: "/checkout",
-      icon: "material-symbols:shopping-cart-checkout",
     },
   ];
 
@@ -141,15 +138,17 @@ const Header = () => {
       <NavbarContent className="hidden gap-2 lg:flex" justify="center">
         {navigationItems.map((item) => (
           <NavbarItem key={item.path}>
-            <HeroLink
+            <NavLink
               to={item.path}
-              className="group flex items-center space-x-2 rounded-lg px-3 py-2 transition-all duration-200"
+              className={({ isActive }) =>
+                `group flex items-center space-x-2 rounded-lg px-3 py-2 ${isActive ? "bg-white/20" : "transition-all duration-200 hover:bg-white/20"}`
+              }
             >
               <Icon icon={item.icon} className="transition-colors" />
               <span className="font-medium transition-colors">
                 {item.label}
               </span>
-            </HeroLink>
+            </NavLink>
           </NavbarItem>
         ))}
       </NavbarContent>
@@ -166,6 +165,15 @@ const Header = () => {
               </NavbarItem>
             ) : (
               <>
+                {/* Cart badge */}
+                <Link to="/checkout">
+                  <Badge color="danger" content={5} shape="circle">
+                    <Icon
+                      icon={"material-symbols:shopping-cart-checkout"}
+                      fontSize={26}
+                    />
+                  </Badge>
+                </Link>
                 {/* User Menu */}
                 <NavbarItem>
                   <Dropdown placement="bottom-end">
