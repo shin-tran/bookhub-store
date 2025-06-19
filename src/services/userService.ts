@@ -1,31 +1,27 @@
-import type { ApiResult } from "@cusTypes/api";
+import type {
+  ApiResult,
+  LoginResponse,
+  SignupResponse,
+  User,
+  UsersPaginatedResponse,
+} from "@/types/api";
 import instance from "./axiosCustomize";
-
-export interface User {
-  email: string;
-  phone: string;
-  fullName: string;
-  role: string;
-  avatar: string;
-  id: string;
-}
-
-export interface LoginResponse {
-  access_token: string;
-  user: User;
-}
-
-export interface SignupResponse {
-  _id: string;
-  email: string;
-  fullName: string;
-}
 
 // API functions using Axios
 export const userService = {
   getUser: async (): Promise<User> => {
     const response = await instance.get("/api/v1/auth/account");
     return response.data.data.user;
+  },
+
+  getPaginations: async (
+    current: number,
+    pageSize: number,
+  ): Promise<UsersPaginatedResponse> => {
+    const response = await instance.get(
+      `/api/v1/user?current=${current}&pageSize=${pageSize}`,
+    );
+    return response.data.data;
   },
 
   loginUser: async (

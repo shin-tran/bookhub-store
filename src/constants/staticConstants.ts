@@ -1,11 +1,10 @@
-// Static constants không cần i18n
 export const STATIC_CONSTANTS = {
   NAVIGATION_ITEMS: [
     { path: "/", icon: "heroicons:home", key: "home" },
     { path: "/books", icon: "heroicons:book-open", key: "books" },
     { path: "/about", icon: "heroicons:information-circle", key: "about" },
   ],
-  
+
   USER_MENU_ITEMS: [
     {
       icon: "heroicons:user",
@@ -49,5 +48,13 @@ export const STATIC_CONSTANTS = {
       roles: ["USER"],
       key: "logout",
     },
+  ],
+
+  COLUMNS: [
+    { name: "FULL NAME", uid: "fullName" },
+    { name: "ROLE", uid: "role" },
+    { name: "EMAIL", uid: "email" },
+    { name: "STATUS", uid: "isActive" },
+    { name: "ACTIONS", uid: "actions" },
   ],
 } as const;

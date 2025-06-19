@@ -1,22 +1,24 @@
-import type { User } from "@services/userService";
 import { create } from "zustand";
 
 interface AuthState {
-  user: User | null;
   isAuthenticated: boolean;
-  setUser: (user: User) => void;
+  setIsAuthenticated: (v: boolean, access_token?: string) => void;
   logout: () => void;
 }
 
 export const useAuthStore = create<AuthState>()((set) => ({
-  user: null,
   isAuthenticated: !!localStorage.getItem("isAuthenticated"),
-  setUser: (user) => {
-    set({ user, isAuthenticated: true });
+  setIsAuthenticated: (value, access_token) => {
+    if (value) {
+      localStorage.setItem("isAuthenticated", "true");
+      if (access_token) localStorage.setItem("access_token", access_token);
+    } else {
+      localStorage.removeItem("isAuthenticated");
+      localStorage.removeItem("access_token");
+    }
+    set({ isAuthenticated: value });
   },
   logout: () => {
-    localStorage.removeItem("access_token");
-    localStorage.removeItem("isAuthenticated");
-    set({ user: null, isAuthenticated: false });
+    useAuthStore.getState().setIsAuthenticated(false);
   },
 }));

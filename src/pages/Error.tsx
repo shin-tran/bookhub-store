@@ -1,5 +1,4 @@
 import { Button } from "@heroui/react";
-import { useThemeManager } from "@hooks/useThemeManager";
 import { Icon } from "@iconify/react";
 import { useNavigate, useSearchParams } from "react-router";
 
@@ -15,7 +14,6 @@ interface ErrorConfig {
 const Error = ({ code = "404" }: { code?: string }) => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  useThemeManager();
 
   const errorCode = searchParams.get("code") || code;
 

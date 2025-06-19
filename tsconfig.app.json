@@ -27,15 +27,14 @@
     "baseUrl": "./",
     "paths": {
       "@components/*": ["src/components/*"],
-      "@services/*": ["src/services/*"],
       "@dashboard/*": ["src/dashboard/*"],
+      "@services/*": ["src/services/*"],
       "@layouts/*": ["src/layouts/*"],
-      "@cusTypes/*": ["src/types/*"],
       "@stores/*": ["src/stores/*"],
       "@assets/*": ["src/assets/*"],
       "@pages/*": ["src/pages/*"],
       "@hooks/*": ["src/hooks/*"],
-      "@/*": ["src/*"],
+      "@/*": ["src/*"]
     }
   },
   "include": ["src"]

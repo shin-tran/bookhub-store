@@ -2,8 +2,14 @@ import { userService } from "@services/userService";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 export const USER_QUERY_KEYS = {
+  // Base key
   all: ["user"] as const,
+  // Current user
   current: () => [...USER_QUERY_KEYS.all, "current"] as const,
+  // Pagination
+  paginations: () => [...USER_QUERY_KEYS.all, "pagination"] as const,
+  pagination: (current: number, pageSize: number) =>
+    [...USER_QUERY_KEYS.paginations(), current, pageSize] as const,
 };
 
 export const useGetUser = () => {
@@ -16,6 +22,15 @@ export const useGetUser = () => {
     refetchOnWindowFocus: false,
     refetchOnMount: false,
     retry: 1,
+  });
+};
+
+export const useGetPaginations = (current: number, pageSize: number) => {
+  return useQuery({
+    queryKey: USER_QUERY_KEYS.pagination(current, pageSize),
+    queryFn: () => userService.getPaginations(current, pageSize),
+    staleTime: 5 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
   });
 };
 

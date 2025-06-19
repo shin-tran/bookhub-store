@@ -20,8 +20,7 @@ const Login = () => {
   const navigate = useNavigate();
   const [isVisible, setIsVisible] = useState(false);
   const toggleVisibility = () => setIsVisible(!isVisible);
-  const { setUser } = useAuthStore();
-
+  const { setIsAuthenticated } = useAuthStore();
   // Mutations
   const loginMutation = useLoginUser();
 
@@ -40,9 +39,7 @@ const Login = () => {
         timeout: 3000,
         shouldShowTimeoutProgress: true,
       });
-      setUser(res.data.user);
-      localStorage.setItem("isAuthenticated", "true");
-      localStorage.setItem("access_token", res.data.access_token);
+      setIsAuthenticated(true, res.data.access_token);
       form.reset();
       navigate("/");
     } else {

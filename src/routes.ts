@@ -58,7 +58,7 @@ export const router = createBrowserRouter([
           element: createProtectedRoute(Component),
         })),
       },
+      { path: "*", Component: Error },
     ],
   },
-  { path: "*", Component: Error },
 ]);

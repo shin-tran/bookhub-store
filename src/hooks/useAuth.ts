@@ -1,24 +1,16 @@
-import { useEffect, useCallback } from "react";
+import { useEffect } from "react";
 import { useGetUser } from "./useUsers";
 import { useAuthStore } from "@stores/authStore";
-import type { User } from "@services/userService";
 
 export const useAuth = () => {
   const { data: user, isSuccess, isLoading, isError } = useGetUser();
-  const { setUser, isAuthenticated, logout } = useAuthStore();
-
-  const handleSetUser = useCallback(
-    (userData: User) => {
-      setUser(userData);
-    },
-    [setUser],
-  );
+  const { isAuthenticated, setIsAuthenticated, logout } = useAuthStore();
 
   useEffect(() => {
     if (isSuccess && user && !isError) {
-      handleSetUser(user);
+      setIsAuthenticated(true);
     }
-  }, [isSuccess, user, isError, handleSetUser]);
+  }, [isSuccess, user, isError, setIsAuthenticated]);
 
   const isUserLoading = isAuthenticated && isLoading && !isError;
 
