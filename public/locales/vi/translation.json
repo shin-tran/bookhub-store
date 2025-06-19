@@ -1,10 +1,21 @@
-{  "header": {
+{
+  "navigation": {
     "home": "Trang chủ",
     "about": "Giới thiệu",
+    "books": "Sách"
+  },
+  "auth": {
     "login": "Đăng nhập",
     "signup": "Đăng ký",
-    "logout": "Đăng xuất thành công",
-    "checkout": "Thanh toán"
+    "logout": "Đăng xuất",
+    "logoutSuccess": "Đăng xuất thành công"
+  },
+  "menu": {
+    "profile": "Cá Nhân",
+    "dashboard": "Dashboard",
+    "checkout": "Thanh toán",
+    "favorites": "Yêu thích",
+    "settings": "Cài đặt"
   },
   "login": {
     "tagline": "Đăng nhập vào tài khoản của bạn để tiếp tục",

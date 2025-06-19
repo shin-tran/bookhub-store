@@ -24,80 +24,14 @@ import { useState } from "react";
 import { useAuth } from "@hooks/useAuth";
 import { useLogout } from "@hooks/useLogout";
 import { Link, NavLink } from "react-router";
+import { useConstants } from "@dashboard/hooks/useConstants";
 
 const Header = () => {
   const { t } = useTranslation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { user, isAuthenticated, isUserLoading } = useAuth();
   const { handleLogout } = useLogout();
-
-  const menuItems = [
-    "Profile",
-    "Dashboard",
-    "Checkout",
-    "Favorites",
-    "Settings",
-    "Log Out",
-  ];
-
-  const navigationItems = [
-    { label: t("header.home"), path: "/", icon: "heroicons:home" },
-    {
-      label: t("header.books", "Books"),
-      path: "/books",
-      icon: "heroicons:book-open",
-    },
-    {
-      label: t("header.about"),
-      path: "/about",
-      icon: "heroicons:information-circle",
-    },
-  ];
-
-  const userMenuItems = [
-    {
-      label: "Profile",
-      icon: "heroicons:user",
-      action: "profile",
-      roles: ["USER"],
-      path: "/profile",
-    },
-    {
-      label: "Dashboard",
-      icon: "heroicons:squares-2x2",
-      action: "dashboard",
-      roles: ["ADMIN"],
-      path: "/admin",
-    },
-    {
-      label: "Checkout",
-      icon: "heroicons:shopping-bag",
-      action: "/checkout",
-      roles: ["USER"],
-      path: "/checkout",
-    },
-    {
-      label: "Favorites",
-      icon: "heroicons:heart",
-      action: "favorites",
-      roles: ["USER"],
-      path: "/favorites",
-    },
-    {
-      label: "Settings",
-      icon: "heroicons:cog-6-tooth",
-      action: "settings",
-      roles: ["USER"],
-      path: "/settings",
-    },
-    {
-      label: "Logout",
-      icon: "heroicons:arrow-right-on-rectangle",
-      action: "logout",
-      isDanger: true,
-      roles: ["USER"],
-    },
-  ];
+  const { navigationItems, userMenuItems, menuItems } = useConstants();
 
   const handleUserMenuAction = (action: string) => {
     switch (action) {

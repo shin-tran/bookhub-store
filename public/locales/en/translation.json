@@ -1,10 +1,21 @@
-{  "header": {
+{
+  "navigation": {
     "home": "Home",
     "about": "About",
+    "books": "Books"
+  },
+  "auth": {
     "login": "Login",
-    "signup": "Sign Up",
-    "logout": "Logout success",
-    "checkout": "Checkout"
+    "signup": "Signup",
+    "logout": "Logout",
+    "logoutSuccess": "Logout success"
+  },
+  "menu": {
+    "profile": "Profile",
+    "dashboard": "Dashboard",
+    "checkout": "Checkout",
+    "favorites": "Favorites",
+    "settings": "Settings"
   },
   "login": {
     "tagline": "Log in to your account to continue",
