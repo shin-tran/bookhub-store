@@ -48,7 +48,11 @@ export const UserDropdown = () => {
         {dashboardMenuItems.map((item) => {
           if (item.isProfile) {
             return (
-              <DropdownItem key={item.action} className={item.className}>
+              <DropdownItem
+                key={item.action}
+                className={item.className}
+                textValue={item.label}
+              >
                 <p>{t("menu.signedInAs")}</p>
                 <p>{user?.email}</p>
               </DropdownItem>
@@ -61,13 +65,18 @@ export const UserDropdown = () => {
                 key={item.action}
                 color={item.color as "danger"}
                 className={item.className}
+                textValue={item.label}
               >
                 {isLoggingOut ? t("auth.loggingOut") : item.label}
               </DropdownItem>
             );
           }
 
-          return <DropdownItem key={item.action}>{item.label}</DropdownItem>;
+          return (
+            <DropdownItem key={item.action} textValue={item.label}>
+              {item.label}
+            </DropdownItem>
+          );
         })}
       </DropdownMenu>
     </Dropdown>
