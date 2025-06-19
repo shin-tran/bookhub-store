@@ -4,7 +4,6 @@ import ManageBooks from "@dashboard/pages/ManageBooks";
 import ManageOrders from "@dashboard/pages/ManageOrders";
 import ManageUsers from "@dashboard/pages/ManageUsers";
 import Overview from "@dashboard/pages/Overview";
-import AuthLayout from "@layouts/AuthLayout";
 import RootLayout from "@layouts/RootLayout";
 import About from "@pages/About";
 import Books from "@pages/Books";
@@ -15,6 +14,7 @@ import Login from "@pages/Login";
 import Signup from "@pages/Signup";
 import { createElement } from "react";
 import { createBrowserRouter } from "react-router";
+import App from "./App";
 
 const createProtectedRoute = (Component: React.ComponentType) =>
   createElement(ProtectedRoute, {
@@ -30,35 +30,35 @@ const adminRoutesConfig = [
 
 export const router = createBrowserRouter([
   {
-    path: "/",
-    Component: RootLayout,
+    Component: App,
     children: [
-      { index: true, Component: Home },
-      { path: "books", Component: Books },
-      { path: "about", Component: About },
       {
-        path: "checkout",
-        element: createElement(ProtectedRoute, {
-          children: createElement(Checkout),
-        }),
+        path: "/",
+        Component: RootLayout,
+        children: [
+          { index: true, Component: Home },
+          { path: "books", Component: Books },
+          { path: "about", Component: About },
+          {
+            path: "checkout",
+            element: createElement(ProtectedRoute, {
+              children: createElement(Checkout),
+            }),
+          },
+          { path: "error", Component: Error },
+        ],
       },
-      { path: "error", Component: Error },
-    ],
-  },
-  {
-    Component: AuthLayout,
-    children: [
       { path: "login", Component: Login },
       { path: "signup", Component: Signup },
+      {
+        path: "admin",
+        Component: DashboardLayout,
+        children: adminRoutesConfig.map(({ Component, path, isIndex }) => ({
+          ...(isIndex ? { index: true } : { path }),
+          element: createProtectedRoute(Component),
+        })),
+      },
     ],
-  },
-  {
-    path: "admin",
-    Component: DashboardLayout,
-    children: adminRoutesConfig.map(({ Component, path, isIndex }) => ({
-      ...(isIndex ? { index: true } : { path }),
-      element: createProtectedRoute(Component),
-    })),
   },
   { path: "*", Component: Error },
 ]);
