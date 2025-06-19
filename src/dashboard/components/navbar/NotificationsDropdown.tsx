@@ -13,7 +13,7 @@ export const NotificationsDropdown = () => {
     <Dropdown placement="bottom-end">
       <DropdownTrigger>
         <NavbarItem>
-          <Icon icon={"iconamoon:notification-fill"} />
+          <Icon icon={"iconamoon:notification-fill"} fontSize={24} cursor={"pointer"} />
         </NavbarItem>
       </DropdownTrigger>
       <DropdownMenu className="w-80" aria-label="Avatar Actions">
