@@ -4,6 +4,7 @@ import ManageBooks from "@dashboard/pages/ManageBooks";
 import ManageOrders from "@dashboard/pages/ManageOrders";
 import ManageUsers from "@dashboard/pages/ManageUsers";
 import Overview from "@dashboard/pages/Overview";
+import AuthLayout from "@layouts/AuthLayout";
 import RootLayout from "@layouts/RootLayout";
 import About from "@pages/About";
 import Books from "@pages/Books";
@@ -14,7 +15,6 @@ import Login from "@pages/Login";
 import Signup from "@pages/Signup";
 import { createElement } from "react";
 import { createBrowserRouter } from "react-router";
-
 
 const createProtectedRoute = (Component: React.ComponentType) =>
   createElement(ProtectedRoute, {
@@ -45,8 +45,13 @@ export const router = createBrowserRouter([
       { path: "error", Component: Error },
     ],
   },
-  { path: "login", Component: Login },
-  { path: "signup", Component: Signup },
+  {
+    Component: AuthLayout,
+    children: [
+      { path: "login", Component: Login },
+      { path: "signup", Component: Signup },
+    ],
+  },
   {
     path: "admin",
     Component: DashboardLayout,

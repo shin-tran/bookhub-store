@@ -8,7 +8,6 @@ import {
   Form,
   Input,
 } from "@heroui/react";
-import { useThemeManager } from "@hooks/useThemeManager";
 import { useSignupUser } from "@hooks/useUsers";
 import { Icon } from "@iconify/react";
 import { useState } from "react";
@@ -16,7 +15,6 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router";
 
 const Signup = () => {
-  useThemeManager();
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [isVisible, setIsVisible] = useState(false);
@@ -46,6 +44,7 @@ const Signup = () => {
             ? res.message[0]
             : res.message,
         color: "danger",
+        timeout: 2000,
       });
     }
   };
