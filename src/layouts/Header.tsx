@@ -174,10 +174,10 @@ const Header = () => {
           <>
             <NavbarItem className="hidden gap-2 sm:flex">
               <Button as={HeroLink} color="primary" to="/login" variant="flat">
-                {t("header.login")}
+                {t("auth.login")}
               </Button>
               <Button as={HeroLink} color="primary" to="/signup" variant="flat">
-                {t("header.signup")}
+                {t("auth.signup")}
               </Button>
             </NavbarItem>
           </>
