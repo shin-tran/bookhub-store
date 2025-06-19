@@ -1,6 +1,5 @@
 import {
   Avatar,
-  Button,
   Dropdown,
   DropdownItem,
   DropdownMenu,
@@ -9,12 +8,15 @@ import {
 } from "@heroui/react";
 import { useAuth } from "@hooks/useAuth";
 import { useLogout } from "@hooks/useLogout";
-import { Link, useNavigate } from "react-router";
+import { useConstants } from "@dashboard/hooks/useConstants";
+import { useNavigate } from "react-router";
+import { useTranslation } from "react-i18next";
 
 export const UserDropdown = () => {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const { handleLogout: originalHandleLogout, isLoggingOut } = useLogout();
-  const { isAuthenticated } = useAuth();
+  const { dashboardMenuItems } = useConstants();
   const navigate = useNavigate();
 
   const handleCustomLogout = async () => {
@@ -23,50 +25,51 @@ export const UserDropdown = () => {
   };
 
   return (
-    <>
-      {isAuthenticated ? (
-        <Dropdown>
-          <NavbarItem>
-            <DropdownTrigger>
-              <Avatar
-                as="button"
-                size="md"
-                src={`${import.meta.env.VITE_API_URL}/images/avatar/${user?.avatar}`}
-              />
-            </DropdownTrigger>
-          </NavbarItem>
-          <DropdownMenu
-            aria-label="User menu actions"
-            onAction={(actionKey) => console.log({ actionKey })}
-          >
-            <DropdownItem
-              key="profile"
-              className="flex w-full flex-col items-start justify-start"
-            >
-              <p>Signed in as</p>
-              <p>{user?.email}</p>
-            </DropdownItem>
-            <DropdownItem key="settings">My Settings</DropdownItem>
-            <DropdownItem key="team_settings">Team Settings</DropdownItem>
-            <DropdownItem key="analytics">Analytics</DropdownItem>
-            <DropdownItem key="system">System</DropdownItem>
-            <DropdownItem key="configurations">Configurations</DropdownItem>
-            <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem>
-            <DropdownItem
-              key="logout"
-              color="danger"
-              className="text-danger"
-              onPress={handleCustomLogout}
-            >
-              {isLoggingOut ? "Logging out..." : "Log Out"}
-            </DropdownItem>
-          </DropdownMenu>
-        </Dropdown>
-      ) : (
-        <Button as={Link} color="primary" to={"/login"}>
-          Login
-        </Button>
-      )}
-    </>
+    <Dropdown>
+      <NavbarItem>
+        <DropdownTrigger>
+          <Avatar
+            as="button"
+            size="md"
+            src={`${import.meta.env.VITE_API_URL}/images/avatar/${user?.avatar}`}
+          />
+        </DropdownTrigger>
+      </NavbarItem>
+      <DropdownMenu
+        aria-label="User menu actions"
+        onAction={(actionKey) => {
+          if (actionKey === "logout") {
+            handleCustomLogout();
+          } else {
+            console.log({ actionKey });
+          }
+        }}
+      >
+        {dashboardMenuItems.map((item) => {
+          if (item.isProfile) {
+            return (
+              <DropdownItem key={item.action} className={item.className}>
+                <p>{t("menu.signedInAs")}</p>
+                <p>{user?.email}</p>
+              </DropdownItem>
+            );
+          }
+
+          if (item.action === "logout") {
+            return (
+              <DropdownItem
+                key={item.action}
+                color={item.color as "danger"}
+                className={item.className}
+              >
+                {isLoggingOut ? t("auth.loggingOut") : item.label}
+              </DropdownItem>
+            );
+          }
+
+          return <DropdownItem key={item.action}>{item.label}</DropdownItem>;
+        })}
+      </DropdownMenu>
+    </Dropdown>
   );
 };

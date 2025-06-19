@@ -3,19 +3,20 @@
     "home": "Trang chủ",
     "about": "Giới thiệu",
     "books": "Sách"
-  },
-  "auth": {
+  },  "auth": {
     "login": "Đăng nhập",
     "signup": "Đăng ký",
     "logout": "Đăng xuất",
-    "logoutSuccess": "Đăng xuất thành công"
+    "logoutSuccess": "Đăng xuất thành công",
+    "loggingOut": "Đang đăng xuất..."
   },
   "menu": {
     "profile": "Cá Nhân",
-    "dashboard": "Dashboard",
+    "dashboard": "Quản trị",
     "checkout": "Thanh toán",
     "favorites": "Yêu thích",
-    "settings": "Cài đặt"
+    "settings": "Cài đặt",
+    "signedInAs": "Đã đăng nhập với"
   },
   "login": {
     "tagline": "Đăng nhập vào tài khoản của bạn để tiếp tục",

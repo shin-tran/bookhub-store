@@ -3,19 +3,20 @@
     "home": "Home",
     "about": "About",
     "books": "Books"
-  },
-  "auth": {
+  },  "auth": {
     "login": "Login",
     "signup": "Signup",
     "logout": "Logout",
-    "logoutSuccess": "Logout success"
+    "logoutSuccess": "Logout success",
+    "loggingOut": "Logging out..."
   },
   "menu": {
     "profile": "Profile",
     "dashboard": "Dashboard",
     "checkout": "Checkout",
     "favorites": "Favorites",
-    "settings": "Settings"
+    "settings": "Settings",
+    "signedInAs": "Signed in as"
   },
   "login": {
     "tagline": "Log in to your account to continue",

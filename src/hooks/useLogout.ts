@@ -13,7 +13,7 @@ export const useLogout = () => {
   const handleLogout = async () => {
     const res = await logoutMutation.mutateAsync();
     if (res) {
-      addToast({ title: t("header.logout"), color: "success" });
+      addToast({ title: t("auth.logout"), color: "success" });
       queryClient.clear();
       logout();
     }
