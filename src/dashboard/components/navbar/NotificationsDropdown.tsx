@@ -6,7 +6,7 @@ import {
   DropdownTrigger,
   NavbarItem,
 } from "@heroui/react";
-import { Icon } from "@iconify/react/dist/iconify.js";
+import { Icon } from "@iconify/react";
 
 export const NotificationsDropdown = () => {
   return (

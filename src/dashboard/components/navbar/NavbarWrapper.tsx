@@ -1,6 +1,6 @@
 import { Input, Link, Navbar, NavbarContent } from "@heroui/react";
 import { BurguerButton } from "./BurguerButton";
-import { Icon } from "@iconify/react/dist/iconify.js";
+import { Icon } from "@iconify/react";
 import { UserDropdown } from "./UserDropdown";
 import { NotificationsDropdown } from "./NotificationsDropdown";
 

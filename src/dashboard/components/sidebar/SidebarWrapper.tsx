@@ -2,7 +2,7 @@ import { useSidebarContext } from "@dashboard/layouts/DashboardProvider";
 import { useLocation } from "react-router";
 import { Sidebar } from "./sidebarStyles";
 import { CompaniesDropdown } from "./CompaniesDropdown";
-import { Icon } from "@iconify/react/dist/iconify.js";
+import { Icon } from "@iconify/react";
 import { SidebarItem } from "./SidebarItem";
 import { SidebarMenu } from "./SidebarMenu";
 import { Avatar, Tooltip } from "@heroui/react";

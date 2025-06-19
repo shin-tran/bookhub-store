@@ -1,5 +1,5 @@
 import { Accordion, AccordionItem } from "@heroui/react";
-import { Icon } from "@iconify/react/dist/iconify.js";
+import { Icon } from "@iconify/react";
 
 interface Props {
   icon: React.ReactNode;
