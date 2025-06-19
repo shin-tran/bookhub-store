@@ -6,7 +6,7 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import { SidebarItem } from "./SidebarItem";
 import { SidebarMenu } from "./SidebarMenu";
 import { Avatar, Tooltip } from "@heroui/react";
-import { CollapseItems } from "./CollapseItems";
+import { CollapseMenu } from "./CollapseMenu";
 import { useAuth } from "@hooks/useAuth";
 
 const SidebarWrapper = () => {
@@ -54,11 +54,17 @@ const SidebarWrapper = () => {
                 icon={<Icon icon={"mdi:accounts"} />}
                 href="/admin/manage-orders"
               />
-              <CollapseItems
+              <CollapseMenu
                 icon={<Icon icon={"mdi:accounts"} />}
-                items={["Banks Accounts", "Credit Cards", "Loans"]}
                 title="Balances"
-              />
+              >
+                <SidebarItem
+                  isActive={location.pathname === "/admin/manage-orders"}
+                  title="Manage orders"
+                  icon={<Icon icon={"mdi:accounts"} />}
+                  href="/admin/manage-orders"
+                />
+              </CollapseMenu>
             </SidebarMenu>
           </div>
           <div className={Sidebar.Footer()}>

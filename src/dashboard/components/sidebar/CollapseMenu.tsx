@@ -4,10 +4,11 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 interface Props {
   icon: React.ReactNode;
   title: string;
-  items: string[];
+  // items: string[];
+  children?: React.ReactNode;
 }
 
-export const CollapseItems = ({ icon, items, title }: Props) => {
+export const CollapseMenu = ({ icon, title, children }: Props) => {
   return (
     <div className="flex h-full cursor-pointer items-center gap-4">
       <Accordion className="px-0">
@@ -29,16 +30,7 @@ export const CollapseItems = ({ icon, items, title }: Props) => {
             </div>
           }
         >
-          <div className="pl-12">
-            {items.map((item, index) => (
-              <span
-                key={index}
-                className="text-default-500 hover:text-default-900 flex w-full transition-colors"
-              >
-                {item}
-              </span>
-            ))}
-          </div>
+          <div className="pl-6">{children}</div>
         </AccordionItem>
       </Accordion>
     </div>
