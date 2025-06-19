@@ -13,7 +13,12 @@ export const useLogout = () => {
   const handleLogout = async () => {
     const res = await logoutMutation.mutateAsync();
     if (res) {
-      addToast({ title: t("auth.logout"), color: "success" });
+      addToast({
+        title: t("auth.logout"),
+        color: "success",
+        timeout: 3000,
+        shouldShowTimeoutProgress: true,
+      });
       queryClient.clear();
       logout();
     }

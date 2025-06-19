@@ -16,7 +16,7 @@ import {
   Spinner,
 } from "@heroui/react";
 import ThemeToggle from "@components/ThemeToggle";
-import HeroLink from "@components/HeroLink";
+import { Link as HeroLink } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import LanguageSwitcher from "@components/LanguageSwitcher";
 import { useTranslation } from "react-i18next";
@@ -56,23 +56,16 @@ const Header = () => {
       onMenuOpenChange={setIsMenuOpen}
       maxWidth="2xl"
     >
-      {/* Mobie menu btn */}
-      <NavbarContent className="sm:hidden" justify="start">
-        <NavbarMenuToggle
-          aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-        />
-      </NavbarContent>
-
       {/* Logo */}
       <NavbarBrand>
-        <HeroLink to="/" className="text-xl font-bold text-inherit">
+        <HeroLink href="/" className="text-xl font-bold text-inherit">
           <Icon icon="oi:book" className="mr-2" />
           BookHub Store
         </HeroLink>
       </NavbarBrand>
 
       {/* Navigation Links - Desktop */}
-      <NavbarContent className="hidden gap-2 sm:flex" justify="center">
+      <NavbarContent className="hidden gap-2 md:flex" justify="center">
         {navigationItems.map((item) => (
           <NavbarItem key={item.path}>
             <NavLink
@@ -171,20 +164,19 @@ const Header = () => {
             )}
           </>
         ) : (
-          <>
-            <NavbarItem className="hidden gap-2 sm:flex">
-              <Button as={HeroLink} color="primary" to="/login" variant="flat">
-                {t("auth.login")}
-              </Button>
-              <Button as={HeroLink} color="primary" to="/signup" variant="flat">
-                {t("auth.signup")}
-              </Button>
-            </NavbarItem>
-          </>
+          // Login, signup btn
+          <NavbarItem className="hidden gap-2 md:flex">
+            <Button as={Link} color="primary" to="/login" variant="flat">
+              {t("auth.login")}
+            </Button>
+            <Button as={Link} color="primary" to="/signup" variant="flat">
+              {t("auth.signup")}
+            </Button>
+          </NavbarItem>
         )}
 
         {/* Theme Toggle & Language Switcher */}
-        <NavbarItem>
+        <NavbarItem className="hidden md:flex">
           <div className="flex items-center space-x-2 rounded-lg">
             <LanguageSwitcher />
             <div className="h-6 w-px"></div>
@@ -193,12 +185,18 @@ const Header = () => {
         </NavbarItem>
       </NavbarContent>
 
-      {/* Nav menu mobile */}
+      {/* Mobie menu btn */}
+      <NavbarContent className="md:hidden" justify="end">
+        <NavbarMenuToggle
+          aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+        />
+      </NavbarContent>
+
       <NavbarMenu>
         {menuItems.map((item, index) => (
           <NavbarMenuItem key={`${item}-${index}`}>
             <HeroLink
-              className="w-full"
+              className="w-full justify-center"
               color={
                 index === 2
                   ? "warning"
@@ -206,7 +204,7 @@ const Header = () => {
                     ? "danger"
                     : "foreground"
               }
-              to="#"
+              href="#"
               size="lg"
             >
               {item}
