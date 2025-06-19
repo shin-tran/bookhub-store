@@ -4,7 +4,6 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 interface Props {
   icon: React.ReactNode;
   title: string;
-  // items: string[];
   children?: React.ReactNode;
 }
 
