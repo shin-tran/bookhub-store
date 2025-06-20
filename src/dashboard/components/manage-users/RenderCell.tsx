@@ -17,9 +17,7 @@ export const RenderCell = ({ user, columnKey }: Props) => {
             src: `${import.meta.env.VITE_API_URL}/images/avatar/${user?.avatar}`,
           }}
           name={cellValue}
-        >
-          {user.email}
-        </User>
+        />
       );
     case "role":
       return <span>{cellValue}</span>;
@@ -35,19 +33,28 @@ export const RenderCell = ({ user, columnKey }: Props) => {
       return (
         <div className="flex items-center justify-center gap-4">
           <Tooltip content="Details">
-            <button className="cursor-pointer" onClick={() => console.log("View user", user.id)}>
+            <span
+              className="cursor-pointer active:opacity-50"
+              onClick={() => console.log("View user", user.id)}
+            >
               <Icon icon={"mdi:eye"} fontSize={18} />
-            </button>
+            </span>
           </Tooltip>
           <Tooltip content="Edit user" color="secondary">
-            <button className="cursor-pointer" onClick={() => console.log("Edit user", user.id)}>
+            <span
+              className="cursor-pointer active:opacity-50"
+              onClick={() => console.log("Edit user", user.id)}
+            >
               <Icon icon={"tabler:edit"} fontSize={18} />
-            </button>
+            </span>
           </Tooltip>
           <Tooltip content="Delete user" color="danger">
-            <button className="cursor-pointer" onClick={() => console.log("Delete user", user.id)}>
-              <Icon icon={"material-symbols:delete"} fontSize={18} className="text-red-400" />
-            </button>
+            <span
+              className="text-danger cursor-pointer active:opacity-50"
+              onClick={() => console.log("Delete user", user.id)}
+            >
+              <Icon icon={"material-symbols:delete"} fontSize={18} />
+            </span>
           </Tooltip>
         </div>
       );
