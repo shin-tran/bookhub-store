@@ -1,5 +1,13 @@
 import type { UserDetail } from "@/types/api";
-import { User, Tooltip, Chip } from "@heroui/react";
+import {
+  User,
+  Chip,
+  Dropdown,
+  DropdownTrigger,
+  Button,
+  DropdownMenu,
+  DropdownItem,
+} from "@heroui/react";
 import { Icon } from "@iconify/react";
 
 interface Props {
@@ -31,31 +39,25 @@ export const RenderCell = ({ user, columnKey }: Props) => {
       );
     case "actions":
       return (
-        <div className="flex items-center justify-center gap-4">
-          <Tooltip content="Details">
-            <span
-              className="cursor-pointer active:opacity-50"
-              onClick={() => console.log("View user", user.id)}
-            >
-              <Icon icon={"mdi:eye"} fontSize={18} />
-            </span>
-          </Tooltip>
-          <Tooltip content="Edit user" color="secondary">
-            <span
-              className="cursor-pointer active:opacity-50"
-              onClick={() => console.log("Edit user", user.id)}
-            >
-              <Icon icon={"tabler:edit"} fontSize={18} />
-            </span>
-          </Tooltip>
-          <Tooltip content="Delete user" color="danger">
-            <span
-              className="text-danger cursor-pointer active:opacity-50"
-              onClick={() => console.log("Delete user", user.id)}
-            >
-              <Icon icon={"material-symbols:delete"} fontSize={18} />
-            </span>
-          </Tooltip>
+        <div className="relative flex items-center justify-center gap-2">
+          <Dropdown>
+            <DropdownTrigger>
+              <Button isIconOnly size="sm" variant="light">
+                <Icon
+                  icon={"entypo:dots-three-vertical"}
+                  fontSize={20}
+                  className="text-default-300"
+                />
+              </Button>
+            </DropdownTrigger>
+            <DropdownMenu>
+              <DropdownItem key="view">View</DropdownItem>
+              <DropdownItem key="edit">Edit</DropdownItem>
+              <DropdownItem key="delete" color="danger">
+                Delete
+              </DropdownItem>
+            </DropdownMenu>
+          </Dropdown>
         </div>
       );
     default:
