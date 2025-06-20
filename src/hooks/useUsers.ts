@@ -84,3 +84,14 @@ export const useLogoutUser = () => {
     mutationFn: () => userService.logoutUser(),
   });
 };
+
+export const useReloadPaginations = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async () => {
+      return queryClient.refetchQueries({
+        queryKey: USER_QUERY_KEYS.paginations(),
+      });
+    },
+  });
+};

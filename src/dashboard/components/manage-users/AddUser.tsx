@@ -8,6 +8,7 @@ import {
   ModalHeader,
   useDisclosure,
 } from "@heroui/react";
+import { Icon } from "@iconify/react/dist/iconify.js";
 
 export const AddUser = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -15,7 +16,11 @@ export const AddUser = () => {
   return (
     <div>
       <>
-        <Button onPress={onOpen} color="primary">
+        <Button
+          onPress={onOpen}
+          color="primary"
+          startContent={<Icon icon={"humbleicons:user-add"} fontSize={20} />}
+        >
           Add User
         </Button>
         <Modal
