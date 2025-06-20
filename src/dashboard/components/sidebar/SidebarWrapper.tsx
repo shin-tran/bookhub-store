@@ -1,17 +1,13 @@
 import { useSidebarContext } from "@dashboard/layouts/DashboardProvider";
 import { useLocation } from "react-router";
 import { Sidebar } from "./sidebarStyles";
-import { CompaniesDropdown } from "./CompaniesDropdown";
 import { Icon } from "@iconify/react";
 import { SidebarItem } from "./SidebarItem";
 import { SidebarMenu } from "./SidebarMenu";
-import { Avatar, Tooltip } from "@heroui/react";
 import { CollapseMenu } from "./CollapseMenu";
-import { useAuth } from "@hooks/useAuth";
 
 const SidebarWrapper = () => {
   const location = useLocation();
-  const { user } = useAuth();
   const { collapsed, setCollapsed } = useSidebarContext();
 
   return (
@@ -24,9 +20,7 @@ const SidebarWrapper = () => {
           collapsed: collapsed,
         })}
       >
-        <div className={Sidebar.Header()}>
-          <CompaniesDropdown />
-        </div>
+        <div className={Sidebar.Header()}></div>
         <div className="flex h-full flex-col justify-between">
           <div className={Sidebar.Body()}>
             <SidebarItem
@@ -66,24 +60,6 @@ const SidebarWrapper = () => {
                 />
               </CollapseMenu>
             </SidebarMenu>
-          </div>
-          <div className={Sidebar.Footer()}>
-            <Tooltip content={"Settings"} color="primary">
-              <div className="max-w-fit">
-                <Icon icon={"weui:setting-filled"} fontSize={25} />
-              </div>
-            </Tooltip>
-            <Tooltip content={"Adjustments"} color="primary">
-              <div className="max-w-fit">
-                <Icon icon={"ri:filter-fill"} fontSize={25} />
-              </div>
-            </Tooltip>
-            <Tooltip content={"Profile"} color="primary">
-              <Avatar
-                src={`${import.meta.env.VITE_API_URL}/images/avatar/${user?.avatar}`}
-                size="sm"
-              />
-            </Tooltip>
           </div>
         </div>
       </div>
