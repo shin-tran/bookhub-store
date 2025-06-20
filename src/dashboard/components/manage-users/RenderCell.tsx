@@ -37,6 +37,10 @@ export const RenderCell = ({ user, columnKey }: Props) => {
           </span>
         </Chip>
       );
+    case "createdAt": {
+      const date = new Date(cellValue as string);
+      return <span>{date.toLocaleDateString("vi-VN")}</span>;
+    }
     case "actions":
       return (
         <div className="relative flex items-center justify-center gap-2">

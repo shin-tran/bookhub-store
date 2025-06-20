@@ -137,9 +137,7 @@ export const TableWrapper = () => {
             color="secondary"
             page={currPage}
             total={totalPages}
-            onChange={(page) => {
-              setCurrPage(page);
-            }}
+            onChange={setCurrPage}
           />
         )}
 
