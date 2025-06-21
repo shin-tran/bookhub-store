@@ -17,7 +17,7 @@ import { RenderCell } from "./RenderCell";
 import { STATIC_CONSTANTS } from "@/constants/staticConstants";
 import { useGetPaginations, useReloadPaginations } from "@hooks/useUsers";
 import { useMemo, useState } from "react";
-import { Icon } from "@iconify/react/dist/iconify.js";
+import { Icon } from "@iconify/react";
 import { AddUser } from "./AddUser";
 
 export const TableWrapper = () => {

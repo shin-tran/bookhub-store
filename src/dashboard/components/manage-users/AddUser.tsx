@@ -8,7 +8,7 @@ import {
   ModalHeader,
   useDisclosure,
 } from "@heroui/react";
-import { Icon } from "@iconify/react/dist/iconify.js";
+import { Icon } from "@iconify/react";
 
 export const AddUser = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
