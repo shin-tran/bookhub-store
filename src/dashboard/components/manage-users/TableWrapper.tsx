@@ -12,19 +12,32 @@ import {
   Input,
   Button,
   DateRangePicker,
+  Dropdown,
+  DropdownTrigger,
+  DropdownMenu,
+  DropdownItem,
+  type Selection,
+  Form,
 } from "@heroui/react";
 import { RenderCell } from "./RenderCell";
-import { STATIC_CONSTANTS } from "@/constants/staticConstants";
 import { useGetPaginations, useReloadPaginations } from "@hooks/useUsers";
 import { useMemo, useState } from "react";
 import { Icon } from "@iconify/react";
 import { AddUser } from "./AddUser";
+import {
+  capitalize,
+  INITIAL_VISIBLE_USERS_COLUMNS,
+  UsersTableColumns,
+} from "@dashboard/constants/dashboardContansts";
 
 export const TableWrapper = () => {
   const [currPage, setCurrPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const { data: users, isLoading } = useGetPaginations(currPage, pageSize);
   const reloadPaginations = useReloadPaginations();
+  const [visibleColumns, setVisibleColumns] = useState<Selection>(
+    new Set(INITIAL_VISIBLE_USERS_COLUMNS),
+  );
 
   const totalPages = users?.meta?.pages || 1;
   const totalItems = users?.meta?.total || 0;
@@ -32,6 +45,18 @@ export const TableWrapper = () => {
   const handlePageSizeChange = (newPageSize: number) => {
     setPageSize(newPageSize);
     setCurrPage(1);
+  };
+
+  const headerColumns = useMemo(() => {
+    return UsersTableColumns.filter((column) =>
+      Array.from(visibleColumns).includes(column.uid),
+    );
+  }, [visibleColumns]);
+
+  const handleSubmitForm = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const data = Object.fromEntries(new FormData(e.currentTarget));
+    console.log(data);
   };
 
   const topContent = useMemo(() => {
@@ -45,7 +70,11 @@ export const TableWrapper = () => {
     return (
       <>
         <div className="flex flex-wrap items-center justify-between gap-4">
-          <div className="flex flex-wrap items-center gap-3 md:flex-nowrap">
+          <Form
+            onReset={handleSubmitForm}
+            onSubmit={handleSubmitForm}
+            className="flex-row flex-wrap items-center lg:flex-nowrap"
+          >
             <Input
               isClearable
               startContent={<Icon icon={"mdi:users"} fontSize={24} />}
@@ -53,6 +82,7 @@ export const TableWrapper = () => {
                 input: "w-full",
                 mainWrapper: "w-full",
               }}
+              name="fullName"
               placeholder="Search by full name..."
             />
             <Input
@@ -62,11 +92,53 @@ export const TableWrapper = () => {
                 input: "w-full",
                 mainWrapper: "w-full",
               }}
+              name="email"
               placeholder="Search by email..."
             />
-            <DateRangePicker className="max-w-xs" label="Created at" />
-          </div>
+            <DateRangePicker
+              aria-label="Date Range"
+              className="max-w-xs"
+              startName="startDate"
+              endName="endDate"
+              label="Created at"
+            />
+            <Button type="reset">
+              <span>
+                <Icon icon={"ci:arrows-reload-01"} fontSize={20} />
+              </span>
+              Reset
+            </Button>
+            <Button type="submit">
+              <span>
+                <Icon icon={"mdi:sql-query"} fontSize={20} />
+              </span>
+              Query
+            </Button>
+          </Form>
           <div className="flex flex-row flex-wrap gap-3.5">
+            <Dropdown>
+              <DropdownTrigger className="hidden sm:flex">
+                <Button
+                  endContent={<Icon icon={"mdi:chevron-down"} />}
+                  variant="flat"
+                >
+                  Columns
+                </Button>
+              </DropdownTrigger>
+              <DropdownMenu
+                disallowEmptySelection
+                closeOnSelect={false}
+                selectedKeys={visibleColumns}
+                selectionMode="multiple"
+                onSelectionChange={setVisibleColumns}
+              >
+                {UsersTableColumns.map((column) => (
+                  <DropdownItem key={column.uid} className="capitalize">
+                    {capitalize(column.name)}
+                  </DropdownItem>
+                ))}
+              </DropdownMenu>
+            </Dropdown>
             <AddUser />
             <Button
               color="primary"
@@ -110,7 +182,6 @@ export const TableWrapper = () => {
             {/* Page Size Selector */}
             <Select
               aria-label="Page Size Selector"
-              // size="sm"
               className="max-w-[150px]"
               selectedKeys={[pageSize.toString()]}
               onSelectionChange={(keys) => {
@@ -129,7 +200,14 @@ export const TableWrapper = () => {
         </div>
       </>
     );
-  }, [currPage, isLoading, pageSize, reloadPaginations, totalItems]);
+  }, [
+    currPage,
+    isLoading,
+    pageSize,
+    reloadPaginations,
+    totalItems,
+    visibleColumns,
+  ]);
 
   const bottomContent = useMemo(() => {
     return (
@@ -183,8 +261,9 @@ export const TableWrapper = () => {
           topContentPlacement="outside"
           bottomContent={bottomContent}
           bottomContentPlacement={"outside"}
+          onSortChange={(descriptor) => console.log(descriptor)}
         >
-          <TableHeader columns={[...STATIC_CONSTANTS.COLUMNS]}>
+          <TableHeader columns={headerColumns}>
             {(column) => (
               <TableColumn
                 key={column.uid}
@@ -193,6 +272,7 @@ export const TableWrapper = () => {
                     ? "center"
                     : "start"
                 }
+                allowsSorting={column.sortable}
               >
                 {column.name}
               </TableColumn>

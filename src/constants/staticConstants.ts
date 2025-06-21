@@ -49,13 +49,4 @@ export const STATIC_CONSTANTS = {
       key: "logout",
     },
   ],
-
-  COLUMNS: [
-    { name: "FULL NAME", uid: "fullName" },
-    { name: "ROLE", uid: "role" },
-    { name: "EMAIL", uid: "email" },
-    { name: "STATUS", uid: "isActive" },
-    { name: "CREATED AT", uid: "createdAt" },
-    { name: "ACTIONS", uid: "actions" },
-  ],
 } as const;

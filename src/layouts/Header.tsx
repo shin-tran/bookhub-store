@@ -24,14 +24,14 @@ import { useState } from "react";
 import { useAuth } from "@hooks/useAuth";
 import { useLogout } from "@hooks/useLogout";
 import { Link, NavLink } from "react-router";
-import { useConstants } from "@dashboard/hooks/useConstants";
+import { useGlobalConstants } from "@hooks/useGlobalConstants";
 
 const Header = () => {
   const { t } = useTranslation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { user, isAuthenticated, isUserLoading } = useAuth();
   const { handleLogout } = useLogout();
-  const { navigationItems, userMenuItems, menuItems } = useConstants();
+  const { navigationItems, userMenuItems, menuItems } = useGlobalConstants();
 
   const handleUserMenuAction = (action: string) => {
     switch (action) {

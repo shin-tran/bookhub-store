@@ -8,15 +8,15 @@ import {
 } from "@heroui/react";
 import { useAuth } from "@hooks/useAuth";
 import { useLogout } from "@hooks/useLogout";
-import { useConstants } from "@dashboard/hooks/useConstants";
 import { useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
+import { useDashboardConstants } from "@dashboard/hooks/useDashboardContants";
 
 export const UserDropdown = () => {
   const { t } = useTranslation();
   const { user } = useAuth();
   const { handleLogout: originalHandleLogout, isLoggingOut } = useLogout();
-  const { dashboardMenuItems } = useConstants();
+  const { dashboardMenuItems } = useDashboardConstants();
   const navigate = useNavigate();
 
   const handleCustomLogout = async () => {
