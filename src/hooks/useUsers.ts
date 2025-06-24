@@ -8,8 +8,23 @@ export const USER_QUERY_KEYS = {
   current: () => [...USER_QUERY_KEYS.all, "current"] as const,
   // Pagination
   paginations: () => [...USER_QUERY_KEYS.all, "pagination"] as const,
-  pagination: (current: number, pageSize: number) =>
-    [...USER_QUERY_KEYS.paginations(), current, pageSize] as const,
+  pagination: (
+    current: number,
+    pageSize: number,
+    fullName?: string,
+    email?: string,
+    dateRange?: { startDate?: string; endDate?: string },
+    sortBy?: string,
+  ) =>
+    [
+      ...USER_QUERY_KEYS.paginations(),
+      current,
+      pageSize,
+      fullName,
+      email,
+      dateRange,
+      sortBy,
+    ] as const,
 };
 
 export const useGetUser = () => {
@@ -25,10 +40,32 @@ export const useGetUser = () => {
   });
 };
 
-export const useGetPaginations = (current: number, pageSize: number) => {
+export const useGetPaginations = (
+  current: number,
+  pageSize: number,
+  fullName?: string,
+  email?: string,
+  dateRange?: { startDate?: string; endDate?: string },
+  sortBy?: string,
+) => {
   return useQuery({
-    queryKey: USER_QUERY_KEYS.pagination(current, pageSize),
-    queryFn: () => userService.getPaginations(current, pageSize),
+    queryKey: USER_QUERY_KEYS.pagination(
+      current,
+      pageSize,
+      fullName,
+      email,
+      dateRange,
+      sortBy,
+    ),
+    queryFn: () =>
+      userService.getPaginations(
+        current,
+        pageSize,
+        fullName,
+        email,
+        dateRange,
+        sortBy,
+      ),
     staleTime: 5 * 60 * 1000,
     gcTime: 10 * 60 * 1000,
   });
