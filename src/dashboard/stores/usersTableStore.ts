@@ -33,7 +33,7 @@ const initialSearchFilters: SearchFilters = {
   fullName: "",
   email: "",
   dateRange: undefined,
-  sortBy: undefined,
+  sortBy: "createdAt",
 };
 
 export const useUsersTableStore = create<UsersTableState>()(

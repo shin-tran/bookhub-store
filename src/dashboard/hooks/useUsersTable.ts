@@ -15,8 +15,8 @@ export const useUsersTable = () => {
   const { data: users, isLoading } = useGetPaginations(
     currPage,
     pageSize,
-    searchFilters.fullName || undefined,
-    searchFilters.email || undefined,
+    searchFilters.fullName,
+    searchFilters.email,
     searchFilters.dateRange,
     searchFilters.sortBy,
   );
@@ -26,7 +26,6 @@ export const useUsersTable = () => {
 
   useEffect(() => {
     if (sortDescriptor && sortDescriptor.column && sortDescriptor.direction) {
-      console.log(sortDescriptor.direction);
       const sortBy =
         sortDescriptor.direction === "ascending"
           ? String(sortDescriptor.column)

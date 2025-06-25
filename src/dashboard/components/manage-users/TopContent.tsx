@@ -170,7 +170,9 @@ export const TopContent = ({ totalItems, isLoading }: TopContentProps) => {
                 ))}
               </DropdownMenu>
             </Dropdown>
+
             <AddUser />
+
             <Button
               color="primary"
               startContent={<Icon icon={"pajamas:export"} fontSize={16} />}
