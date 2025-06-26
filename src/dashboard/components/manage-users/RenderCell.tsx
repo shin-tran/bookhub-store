@@ -1,21 +1,13 @@
 import type { UserDetail } from "@/types/api";
-import {
-  User,
-  Chip,
-  Dropdown,
-  DropdownTrigger,
-  Button,
-  DropdownMenu,
-  DropdownItem,
-} from "@heroui/react";
-import { Icon } from "@iconify/react";
+import { User, Chip } from "@heroui/react";
+import ActionsMenu from "./ActionsMenu";
 
 interface Props {
   user: UserDetail;
   columnKey: string | React.Key;
 }
 
-export const RenderCell = ({ user, columnKey }: Props) => {
+const RenderCell = ({ user, columnKey }: Props) => {
   const cellValue = user[columnKey as keyof UserDetail];
   switch (columnKey) {
     case "fullName":
@@ -42,29 +34,9 @@ export const RenderCell = ({ user, columnKey }: Props) => {
       return <span>{date.toLocaleDateString("vi-VN")}</span>;
     }
     case "actions":
-      return (
-        <div className="relative flex items-center justify-center gap-2">
-          <Dropdown>
-            <DropdownTrigger>
-              <Button isIconOnly size="sm" variant="light">
-                <Icon
-                  icon={"entypo:dots-three-vertical"}
-                  fontSize={20}
-                  className="text-default-300"
-                />
-              </Button>
-            </DropdownTrigger>
-            <DropdownMenu>
-              <DropdownItem key="view">View</DropdownItem>
-              <DropdownItem key="edit">Edit</DropdownItem>
-              <DropdownItem key="delete" color="danger">
-                Delete
-              </DropdownItem>
-            </DropdownMenu>
-          </Dropdown>
-        </div>
-      );
+      return <ActionsMenu user={user} />;
     default:
       return cellValue;
   }
 };
+export default RenderCell;

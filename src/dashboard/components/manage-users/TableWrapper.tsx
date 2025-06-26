@@ -7,7 +7,7 @@ import {
   TableRow,
   Skeleton,
 } from "@heroui/react";
-import { RenderCell } from "./RenderCell";
+import RenderCell from "./RenderCell";
 import { useMemo } from "react";
 import { UsersTableColumns } from "@dashboard/constants/dashboardContansts";
 import RenderSkeletonCell from "./RenderSkeletonCell";
