@@ -3,12 +3,14 @@ import {
   DrawerContent,
   DrawerHeader,
   DrawerBody,
-  DrawerFooter,
   Button,
   Image,
   Tooltip,
+  Chip,
+  Snippet,
 } from "@heroui/react";
 import type { UserDetail } from "@/types/api";
+import { Icon } from "@iconify/react/dist/iconify.js";
 
 interface ViewDetailsProps {
   isOpen: boolean;
@@ -74,50 +76,60 @@ const ViewDetails = ({ isOpen, onOpenChange, user }: ViewDetailsProps) => {
                 <Image
                   isBlurred
                   isZoomed
-                  className="aspect-square w-full hover:scale-110"
+                  radius="full"
+                  className="aspect-square w-full"
                   height={300}
                   alt="Avatar"
                   src={`${import.meta.env.VITE_API_URL}/images/avatar/${user.avatar}`}
                 />
               </div>
-              <div>
-                <h4 className="text-sm font-semibold">Full Name:</h4>
+              <div className="flex items-center">
+                <h4 className="w-30 text-sm font-semibold">ID:</h4>
+                <Snippet hideSymbol>{user._id}</Snippet>
+              </div>
+              <div className="flex">
+                <h4 className="w-30 text-sm font-semibold">Full Name:</h4>
                 <p className="text-default-600 text-sm">{user.fullName}</p>
               </div>
-              <div>
-                <h4 className="text-sm font-semibold">Email:</h4>
-                <p className="text-default-600 text-sm">{user.email}</p>
+              <div className="flex items-center">
+                <h4 className="w-30 text-sm font-semibold">Email:</h4>
+                <Snippet hideSymbol>{user.email}</Snippet>
               </div>
-              <div>
-                <h4 className="text-sm font-semibold">Phone:</h4>
+              <div className="flex">
+                <h4 className="w-30 text-sm font-semibold">Phone:</h4>
                 <p className="text-default-600 text-sm">{user.phone}</p>
               </div>
-              <div>
-                <h4 className="text-sm font-semibold">Role:</h4>
+              <div className="flex">
+                <h4 className="w-30 text-sm font-semibold">Role:</h4>
                 <p className="text-default-600 text-sm">{user.role}</p>
               </div>
-              <div>
-                <h4 className="text-sm font-semibold">Status:</h4>
-                <p className="text-default-600 text-sm">
-                  {user.isActive ? "Active" : "Inactive"}
-                </p>
+              <div className="flex">
+                <h4 className="w-30 text-sm font-semibold">Status:</h4>
+                <Chip
+                  size="sm"
+                  variant="flat"
+                  color={user.isActive ? "success" : "danger"}
+                >
+                  <span className="text-xs capitalize">
+                    {user.isActive ? "Active" : "Inactive"}
+                  </span>
+                </Chip>
               </div>
-              <div>
-                <h4 className="text-sm font-semibold">Created At:</h4>
-                <p className="text-default-600 text-sm">
+              <div className="flex">
+                <h4 className="w-30 text-sm font-semibold">Created At:</h4>
+                <p className="text-default-600 flex items-center gap-1 text-sm">
+                  <Icon icon={"line-md:calendar"} fontSize={20} />
                   {new Date(user.createdAt).toLocaleDateString("vi-VN")}
                 </p>
               </div>
-              <div>
-                <h4 className="text-sm font-semibold">Updated At:</h4>
-                <p className="text-default-600 text-sm">
+              <div className="flex">
+                <h4 className="w-30 text-sm font-semibold">Updated At:</h4>
+                <p className="text-default-600 flex items-center gap-1 text-sm">
+                  <Icon icon={"line-md:calendar"} fontSize={20} />
                   {new Date(user.updatedAt).toLocaleDateString("vi-VN")}
                 </p>
               </div>
             </DrawerBody>
-            <DrawerFooter>
-              <p className="font-bold text-center">Made with love by NgocDepTrai</p>
-            </DrawerFooter>
           </>
         )}
       </DrawerContent>
