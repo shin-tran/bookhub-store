@@ -18,6 +18,15 @@ interface ViewDetailsProps {
   user: UserDetail;
 }
 
+type FieldType = "text" | "snippet" | "chip" | "date";
+
+interface UserField {
+  key: string;
+  label: string;
+  value: string | boolean;
+  type: FieldType;
+}
+
 const ViewDetails = ({ isOpen, onOpenChange, user }: ViewDetailsProps) => {
   const motionProps = {
     variants: {
@@ -33,6 +42,85 @@ const ViewDetails = ({ isOpen, onOpenChange, user }: ViewDetailsProps) => {
     transition: {
       duration: 0.2,
     },
+  };
+
+  const userFields: UserField[] = [
+    {
+      key: "id",
+      label: "ID:",
+      value: user._id,
+      type: "snippet",
+    },
+    {
+      key: "fullName",
+      label: "Full Name:",
+      value: user.fullName,
+      type: "text",
+    },
+    {
+      key: "email",
+      label: "Email:",
+      value: user.email,
+      type: "snippet",
+    },
+    {
+      key: "phone",
+      label: "Phone:",
+      value: user.phone,
+      type: "text",
+    },
+    {
+      key: "role",
+      label: "Role:",
+      value: user.role,
+      type: "text",
+    },
+    {
+      key: "status",
+      label: "Status:",
+      value: user.isActive,
+      type: "chip",
+    },
+    {
+      key: "createdAt",
+      label: "Created At:",
+      value: new Date(user.createdAt).toLocaleDateString("vi-VN"),
+      type: "date",
+    },
+    {
+      key: "updatedAt",
+      label: "Updated At:",
+      value: new Date(user.updatedAt).toLocaleDateString("vi-VN"),
+      type: "date",
+    },
+  ];
+
+  const renderFieldValue = (field: UserField) => {
+    switch (field.type) {
+      case "snippet":
+        return <Snippet hideSymbol>{field.value}</Snippet>;
+      case "chip":
+        return (
+          <Chip
+            size="sm"
+            variant="flat"
+            color={(field.value as boolean) ? "success" : "danger"}
+          >
+            <span className="text-xs capitalize">
+              {(field.value as boolean) ? "Active" : "Inactive"}
+            </span>
+          </Chip>
+        );
+      case "date":
+        return (
+          <p className="text-default-600 flex items-center gap-1 text-sm">
+            <Icon icon={"line-md:calendar"} fontSize={20} />
+            {field.value}
+          </p>
+        );
+      default:
+        return <p className="text-default-600 text-sm">{field.value}</p>;
+    }
   };
 
   return (
@@ -83,52 +171,16 @@ const ViewDetails = ({ isOpen, onOpenChange, user }: ViewDetailsProps) => {
                   src={`${import.meta.env.VITE_API_URL}/images/avatar/${user.avatar}`}
                 />
               </div>
-              <div className="flex items-center">
-                <h4 className="w-30 text-sm font-semibold">ID:</h4>
-                <Snippet hideSymbol>{user._id}</Snippet>
-              </div>
-              <div className="flex">
-                <h4 className="w-30 text-sm font-semibold">Full Name:</h4>
-                <p className="text-default-600 text-sm">{user.fullName}</p>
-              </div>
-              <div className="flex items-center">
-                <h4 className="w-30 text-sm font-semibold">Email:</h4>
-                <Snippet hideSymbol>{user.email}</Snippet>
-              </div>
-              <div className="flex">
-                <h4 className="w-30 text-sm font-semibold">Phone:</h4>
-                <p className="text-default-600 text-sm">{user.phone}</p>
-              </div>
-              <div className="flex">
-                <h4 className="w-30 text-sm font-semibold">Role:</h4>
-                <p className="text-default-600 text-sm">{user.role}</p>
-              </div>
-              <div className="flex">
-                <h4 className="w-30 text-sm font-semibold">Status:</h4>
-                <Chip
-                  size="sm"
-                  variant="flat"
-                  color={user.isActive ? "success" : "danger"}
+
+              {userFields.map((field) => (
+                <div
+                  key={field.key}
+                  className={`flex ${field.type === "snippet" ? "items-center" : ""}`}
                 >
-                  <span className="text-xs capitalize">
-                    {user.isActive ? "Active" : "Inactive"}
-                  </span>
-                </Chip>
-              </div>
-              <div className="flex">
-                <h4 className="w-30 text-sm font-semibold">Created At:</h4>
-                <p className="text-default-600 flex items-center gap-1 text-sm">
-                  <Icon icon={"line-md:calendar"} fontSize={20} />
-                  {new Date(user.createdAt).toLocaleDateString("vi-VN")}
-                </p>
-              </div>
-              <div className="flex">
-                <h4 className="w-30 text-sm font-semibold">Updated At:</h4>
-                <p className="text-default-600 flex items-center gap-1 text-sm">
-                  <Icon icon={"line-md:calendar"} fontSize={20} />
-                  {new Date(user.updatedAt).toLocaleDateString("vi-VN")}
-                </p>
-              </div>
+                  <h4 className="w-30 text-sm font-semibold">{field.label}</h4>
+                  {renderFieldValue(field)}
+                </div>
+              ))}
             </DrawerBody>
           </>
         )}
