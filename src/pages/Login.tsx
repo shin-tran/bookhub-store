@@ -73,6 +73,9 @@ const Login = () => {
             placeholder={t("login.emailPlaceholder")}
             type="email"
             variant="bordered"
+            classNames={{
+              inputWrapper: "rounded-b-none",
+            }}
           />
           <Input
             isRequired
@@ -96,6 +99,9 @@ const Login = () => {
             placeholder={t("login.passwordPlaceholder")}
             type={isVisible ? "text" : "password"}
             variant="bordered"
+            classNames={{
+              inputWrapper: "rounded-t-none",
+            }}
           />
           <div className="flex w-full items-center justify-between px-1 py-2">
             <Checkbox name="remember" size="sm">

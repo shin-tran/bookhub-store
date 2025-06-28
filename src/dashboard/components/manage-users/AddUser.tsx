@@ -1,17 +1,46 @@
 import {
   Button,
+  Form,
   Input,
   Modal,
   ModalBody,
   ModalContent,
-  ModalFooter,
   ModalHeader,
   useDisclosure,
 } from "@heroui/react";
 import { Icon } from "@iconify/react";
+import type { HTMLMotionProps } from "framer-motion";
 
 export const AddUser = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
+  const motionProps: HTMLMotionProps<"section"> = {
+    variants: {
+      enter: {
+        y: 0,
+        opacity: 1,
+        transition: {
+          duration: 0.3,
+          ease: "easeOut",
+        },
+      },
+      exit: {
+        y: -20,
+        opacity: 0,
+        transition: {
+          duration: 0.2,
+          ease: "easeIn",
+        },
+      },
+    },
+  };
+
+  const handleSignupSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const data = Object.fromEntries(new FormData(form));
+    console.log(data);
+  };
 
   return (
     <div>
@@ -24,37 +53,61 @@ export const AddUser = () => {
           Add User
         </Button>
         <Modal
+          hideCloseButton
           isOpen={isOpen}
           onOpenChange={onOpenChange}
           placement="top-center"
+          motionProps={motionProps}
         >
           <ModalContent>
             {(onClose) => (
               <>
                 <ModalHeader className="flex flex-col gap-1">
-                  Add User
+                  Add New User
                 </ModalHeader>
                 <ModalBody>
-                  <Input label="Email" variant="bordered" />
-                  <Input label="First Name" variant="bordered" />
-                  <Input label="Last Name" variant="bordered" />
-                  <Input label="Phone Number" variant="bordered" />
-
-                  <Input label="Password" type="password" variant="bordered" />
-                  <Input
-                    label="Confirm Password"
-                    type="password"
-                    variant="bordered"
-                  />
+                  <Form
+                    className="flex flex-col gap-3"
+                    onSubmit={handleSignupSubmit}
+                  >
+                    <Input
+                      isRequired
+                      label="Full Name"
+                      name="fullName"
+                      type="text"
+                      variant="bordered"
+                    />
+                    <Input
+                      isRequired
+                      label="Password"
+                      name="password"
+                      type="text"
+                      variant="bordered"
+                    />
+                    <Input
+                      isRequired
+                      label="Email"
+                      name="email"
+                      type="email"
+                      variant="bordered"
+                    />
+                    <Input
+                      isRequired
+                      label="Phone Number"
+                      name="phone"
+                      type="tel"
+                      variant="bordered"
+                    />
+                    <div className="flex w-full items-center justify-end gap-4 py-4">
+                      <Button color="danger" variant="flat" onPress={onClose}>
+                        Close
+                      </Button>
+                      <Button color="primary" type="submit">
+                        Add User
+                      </Button>
+                    </div>
+                  </Form>
                 </ModalBody>
-                <ModalFooter>
-                  <Button color="danger" variant="flat" onClick={onClose}>
-                    Close
-                  </Button>
-                  <Button color="primary" onPress={onClose}>
-                    Add User
-                  </Button>
-                </ModalFooter>
               </>
             )}
           </ModalContent>
