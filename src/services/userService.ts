@@ -3,6 +3,7 @@ import type {
   LoginResponse,
   SignupResponse,
   User,
+  UserDetail,
   UsersPaginatedResponse,
 } from "@/types/api";
 import instance from "./axiosCustomize";
@@ -68,7 +69,18 @@ export const userService = {
     return response.data;
   },
 
-  // Update book
-  // Delete book
-  // Search books
+  createUser: async (
+    fullName: string,
+    email: string,
+    password: string,
+    phone: string,
+  ): Promise<ApiResult<UserDetail>> => {
+    const response = await instance.post("/api/v1/user", {
+      fullName,
+      email,
+      password,
+      phone,
+    });
+    return response.data;
+  },
 };

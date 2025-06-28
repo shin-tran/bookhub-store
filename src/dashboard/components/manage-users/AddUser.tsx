@@ -1,4 +1,5 @@
 import {
+  addToast,
   Button,
   Form,
   Input,
@@ -8,11 +9,13 @@ import {
   ModalHeader,
   useDisclosure,
 } from "@heroui/react";
+import { useCreateUser } from "@hooks/useUsers";
 import { Icon } from "@iconify/react";
 import type { HTMLMotionProps } from "framer-motion";
 
 export const AddUser = () => {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
+  const createUserMutation = useCreateUser();
 
   const motionProps: HTMLMotionProps<"section"> = {
     variants: {
@@ -39,7 +42,26 @@ export const AddUser = () => {
     e.preventDefault();
     const form = e.currentTarget;
     const data = Object.fromEntries(new FormData(form));
-    console.log(data);
+    const res = await createUserMutation.mutateAsync({
+      fullName: String(data.fullName),
+      email: String(data.email),
+      password: String(data.password),
+      phone: String(data.phone),
+    });
+    if (res?.data) {
+      addToast({ title: "Create New User Success", color: "success" });
+      onClose();
+    } else {
+      addToast({
+        title: "Error Create New User",
+        description:
+          res.message && Array.isArray(res.message)
+            ? res.message[0]
+            : res.message,
+        color: "danger",
+        timeout: 2000,
+      });
+    }
   };
 
   return (

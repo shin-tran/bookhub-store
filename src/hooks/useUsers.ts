@@ -104,11 +104,35 @@ export const useSignupUser = () => {
       password: string;
       phone: string;
     }) => userService.signupUser(fullName, email, password, phone),
-    onSuccess(data) {
-      console.log("data", data);
+    onSuccess() {
       if (localStorage.getItem("isAuthenticated")) {
         queryClient.invalidateQueries({ queryKey: USER_QUERY_KEYS.current() });
       }
+    },
+    onError(error) {
+      console.log("error", error);
+    },
+  });
+};
+
+export const useCreateUser = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({
+      fullName,
+      email,
+      password,
+      phone,
+    }: {
+      fullName: string;
+      email: string;
+      password: string;
+      phone: string;
+    }) => userService.createUser(fullName, email, password, phone),
+    onSuccess() {
+      return queryClient.refetchQueries({
+        queryKey: USER_QUERY_KEYS.paginations(),
+      });
     },
     onError(error) {
       console.log("error", error);
