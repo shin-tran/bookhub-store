@@ -116,11 +116,8 @@ export default function FileUploadButton({
       e.stopPropagation();
 
       const droppedFiles = Array.from(e.dataTransfer.files);
-      console.log("Files dropped:", droppedFiles.length);
 
       const validFiles = validateFiles(droppedFiles, accept);
-
-      console.log("Valid files after validation:", validFiles.length);
 
       if (validFiles.length > 0) {
         onUpload?.(validFiles);
