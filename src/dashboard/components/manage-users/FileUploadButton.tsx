@@ -116,7 +116,7 @@ export default function FileUploadButton({
       e.stopPropagation();
 
       const droppedFiles = Array.from(e.dataTransfer.files);
-      if (!multiple) {
+      if (!multiple && droppedFiles.length >= 2) {
         addToast({
           title: "Only support for a single file upload",
           color: "danger",
