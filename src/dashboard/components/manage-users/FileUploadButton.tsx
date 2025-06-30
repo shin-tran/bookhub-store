@@ -9,7 +9,6 @@ const doesAccept = (type: string, accept?: string) => {
   if (!accept) return true;
 
   const acceptList = accept.split(",").map((c) => c.trim());
-  console.log(acceptList);
 
   let cond = false;
   for (const acceptor of acceptList) {
@@ -41,7 +40,6 @@ const hasFiles = (dt: DataTransfer) => {
   return dt.types.includes("Files") && isAllFiles(dt);
 };
 
-// Validate files - chỉ dùng trong onDrop
 const validateFiles = (files: File[], accept?: string): File[] => {
   if (!accept) return files;
 
@@ -49,15 +47,6 @@ const validateFiles = (files: File[], accept?: string): File[] => {
     const mimeValid = doesAccept(file.type, accept);
     const extValid = doesAcceptByExtension(file.name, accept);
     const isValid = mimeValid || extValid;
-
-    console.log("File validation:", {
-      name: file.name,
-      type: file.type,
-      mimeValid,
-      extValid,
-      isValid,
-    });
-
     return isValid;
   });
 };

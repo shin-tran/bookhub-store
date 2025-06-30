@@ -38,12 +38,6 @@ const Header = () => {
       case "logout":
         handleLogout();
         break;
-      case "profile":
-        // Navigate to profile
-        break;
-      case "dashboard":
-        // Navigate to dashboard
-        break;
       default:
         console.log(`Action: ${action}`);
     }

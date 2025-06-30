@@ -82,7 +82,6 @@ export const TableWrapper = () => {
           <TableBody
             items={isLoading ? skeletonRows : users?.result || []}
             loadingContent={<Skeleton className="h-16 w-full rounded" />}
-            isLoading={false}
             emptyContent={"No rows to display."}
           >
             {(item) => (
