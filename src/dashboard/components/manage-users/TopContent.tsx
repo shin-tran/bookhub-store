@@ -22,6 +22,7 @@ import {
 } from "@dashboard/constants/dashboardContansts";
 import { useUsersTableStore } from "@dashboard/stores/usersTableStore";
 import { useReloadPaginations } from "@hooks/useUsers";
+import FileImport from "./FileImport";
 
 dayjs.extend(utc);
 
@@ -177,8 +178,9 @@ export const TopContent = ({ totalItems, isLoading }: TopContentProps) => {
               color="primary"
               startContent={<Icon icon={"pajamas:export"} fontSize={16} />}
             >
-              Export to CSV
+              Export
             </Button>
+            <FileImport />
           </>
         </div>
       </div>

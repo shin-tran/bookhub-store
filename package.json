@@ -16,6 +16,7 @@
     "@tanstack/react-query-devtools": "^5.80.7",
     "axios": "^1.10.0",
     "dayjs": "^1.11.13",
+    "exceljs": "^4.4.0",
     "framer-motion": "^12.18.1",
     "i18next": "^25.2.1",
     "i18next-browser-languagedetector": "^8.2.0",

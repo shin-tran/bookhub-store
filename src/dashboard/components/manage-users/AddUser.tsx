@@ -78,7 +78,6 @@ export const AddUser = () => {
           hideCloseButton
           isOpen={isOpen}
           onOpenChange={onOpenChange}
-          placement="top-center"
           motionProps={motionProps}
         >
           <ModalContent>
