@@ -116,6 +116,15 @@ export default function FileUploadButton({
       e.stopPropagation();
 
       const droppedFiles = Array.from(e.dataTransfer.files);
+      if (!multiple) {
+        addToast({
+          title: "Only support for a single file upload",
+          color: "danger",
+          timeout: 3000,
+        });
+        setAcceptance(null);
+        return;
+      }
 
       const validFiles = validateFiles(droppedFiles, accept);
 
@@ -124,7 +133,7 @@ export default function FileUploadButton({
       } else {
         addToast({
           title: "Invalid file format",
-          description: `Support for a single upload. Only accept .csv, xls, xlsx`,
+          description: `Only accept .csv, xls, xlsx`,
           color: "danger",
           timeout: 3000,
         });
@@ -132,7 +141,7 @@ export default function FileUploadButton({
 
       setAcceptance(null);
     },
-    [accept, onUpload, setAcceptance],
+    [accept, multiple, onUpload],
   );
 
   const onFileChosen = useCallback(
