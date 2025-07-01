@@ -1,4 +1,5 @@
 import {
+  addToast,
   Button,
   Modal,
   ModalBody,
@@ -19,23 +20,20 @@ import { Buffer } from "Buffer";
 import { Workbook } from "exceljs";
 import { useState } from "react";
 import Papa from "papaparse";
+import type { UserList } from "@/types/api";
+import { useCreateUserList } from "@hooks/useUsers";
 
 interface UploadFile {
   name: string;
   arrayBuffer(): Promise<ArrayBuffer>;
 }
 
-interface UserList {
-  fullName: string;
-  email: string;
-  password: string;
-  phone: string;
-}
-
 const FileImport = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [userList, setUserList] = useState<UserList[]>([]);
   const [fileName, setFileName] = useState<string>("");
+  const createUserListMutation = useCreateUserList();
+  const [isImpostLoading, setIsImportLoading] = useState(false);
 
   const handleOnUpload = async (files: UploadFile[]): Promise<void> => {
     try {
@@ -125,10 +123,27 @@ const FileImport = () => {
     }
   };
 
-  const handleImport = (onClose: () => void) => {
+  const handleImport = async (onClose: () => void) => {
+    setIsImportLoading(true);
+    const res = await createUserListMutation.mutateAsync(userList);
+    console.log(res);
+    if (res.data?.countSuccess) {
+      addToast({
+        title: `Create success ${res.data.countSuccess} users`,
+        color: "success",
+        timeout: 3000,
+      });
+    } else {
+      addToast({
+        title: `Only create success ${res.data?.detail?.insertedCount} users`,
+        color: "success",
+        timeout: 3000,
+      });
+    }
     setUserList([]);
     setFileName("");
     onClose();
+    setIsImportLoading(false);
   };
 
   return (
@@ -257,7 +272,11 @@ const FileImport = () => {
                 <Button color="danger" variant="light" onPress={onClose}>
                   Close
                 </Button>
-                <Button color="primary" onPress={() => handleImport(onClose)}>
+                <Button
+                  color="primary"
+                  isLoading={isImpostLoading}
+                  onPress={() => handleImport(onClose)}
+                >
                   Import
                 </Button>
               </ModalFooter>

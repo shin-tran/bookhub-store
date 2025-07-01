@@ -15,6 +15,13 @@ export interface UserDetail extends User {
   updatedAt: string;
 }
 
+export interface UserList {
+  fullName: string;
+  email: string;
+  password: string;
+  phone: string;
+}
+
 // API Response types
 export interface LoginResponse {
   access_token: string;
@@ -25,6 +32,16 @@ export interface SignupResponse {
   _id: string;
   email: string;
   fullName: string;
+}
+
+export interface BulkCreateResponse {
+  countSuccess?: number;
+  countError: number | null;
+  message?: string | null;
+  detail?: {
+    insertedCount: number;
+    insertedIds: object;
+  };
 }
 
 // Generic API wrapper

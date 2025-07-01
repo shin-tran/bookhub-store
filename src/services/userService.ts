@@ -1,9 +1,11 @@
 import type {
   ApiResult,
+  BulkCreateResponse,
   LoginResponse,
   SignupResponse,
   User,
   UserDetail,
+  UserList,
   UsersPaginatedResponse,
 } from "@/types/api";
 import instance from "./axiosCustomize";
@@ -81,6 +83,13 @@ export const userService = {
       password,
       phone,
     });
+    return response.data;
+  },
+
+  createUserList: async (
+    userList: UserList[],
+  ): Promise<ApiResult<BulkCreateResponse>> => {
+    const response = await instance.post("/api/v1/user/bulk-create", userList);
     return response.data;
   },
 };
