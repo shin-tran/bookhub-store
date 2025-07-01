@@ -197,7 +197,7 @@ const FileImport = () => {
                   className="hover:border-primary h-full w-full rounded-lg border-2 border-dashed border-gray-300 transition-colors duration-200 dark:border-gray-600"
                 />
 
-                {fileName && (
+                {fileName ? (
                   <div className="my-4 rounded-lg bg-gray-50 p-4 dark:bg-gray-800">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
@@ -219,6 +219,23 @@ const FileImport = () => {
                         {userList.length} users found
                       </div>
                     </div>
+                  </div>
+                ) : (
+                  <div className="mt-2 space-x-2 text-center">
+                    <a
+                      href="/public/sample-users.xlsx"
+                      download={true}
+                      className="text-sm text-blue-600 underline hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
+                    >
+                      Excel sample file
+                    </a>
+                    <a
+                      href="/public/sample-users.csv"
+                      download={true}
+                      className="text-sm text-blue-600 underline hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
+                    >
+                      CSV sample file
+                    </a>
                   </div>
                 )}
 
