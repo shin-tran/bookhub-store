@@ -28,6 +28,22 @@ export const USER_QUERY_KEYS = {
     ] as const,
 };
 
+// Helper function to invalidate user queries
+const useUserQueryInvalidation = () => {
+  const queryClient = useQueryClient();
+
+  return {
+    invalidateCurrentUser: () =>
+      queryClient.invalidateQueries({ queryKey: USER_QUERY_KEYS.current() }),
+
+    refetchPaginations: () =>
+      queryClient.refetchQueries({ queryKey: USER_QUERY_KEYS.paginations() }),
+
+    invalidateAll: () =>
+      queryClient.invalidateQueries({ queryKey: USER_QUERY_KEYS.all }),
+  };
+};
+
 export const useGetUser = () => {
   return useQuery({
     queryKey: USER_QUERY_KEYS.current(),
@@ -73,7 +89,8 @@ export const useGetPaginations = (
 };
 
 export const useLoginUser = () => {
-  const queryClient = useQueryClient();
+  const { invalidateCurrentUser } = useUserQueryInvalidation();
+
   return useMutation({
     mutationFn: ({
       username,
@@ -82,9 +99,7 @@ export const useLoginUser = () => {
       username: string;
       password: string;
     }) => userService.loginUser(username, password),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: USER_QUERY_KEYS.current() });
-    },
+    onSuccess: invalidateCurrentUser,
     onError(error) {
       console.log("error", error);
     },
@@ -92,7 +107,8 @@ export const useLoginUser = () => {
 };
 
 export const useSignupUser = () => {
-  const queryClient = useQueryClient();
+  const { invalidateCurrentUser } = useUserQueryInvalidation();
+
   return useMutation({
     mutationFn: ({
       fullName,
@@ -107,7 +123,7 @@ export const useSignupUser = () => {
     }) => userService.signupUser(fullName, email, password, phone),
     onSuccess() {
       if (localStorage.getItem("isAuthenticated")) {
-        queryClient.invalidateQueries({ queryKey: USER_QUERY_KEYS.current() });
+        invalidateCurrentUser();
       }
     },
     onError(error) {
@@ -117,7 +133,8 @@ export const useSignupUser = () => {
 };
 
 export const useCreateUser = () => {
-  const queryClient = useQueryClient();
+  const { refetchPaginations } = useUserQueryInvalidation();
+
   return useMutation({
     mutationFn: ({
       fullName,
@@ -130,11 +147,7 @@ export const useCreateUser = () => {
       password: string;
       phone: string;
     }) => userService.createUser(fullName, email, password, phone),
-    onSuccess() {
-      return queryClient.refetchQueries({
-        queryKey: USER_QUERY_KEYS.paginations(),
-      });
-    },
+    onSuccess: refetchPaginations,
     onError(error) {
       console.log("error", error);
     },
@@ -148,49 +161,37 @@ export const useLogoutUser = () => {
 };
 
 export const useReloadPaginations = () => {
-  const queryClient = useQueryClient();
+  const { refetchPaginations } = useUserQueryInvalidation();
+
   return useMutation({
-    mutationFn: async () => {
-      return queryClient.refetchQueries({
-        queryKey: USER_QUERY_KEYS.paginations(),
-      });
-    },
+    mutationFn: refetchPaginations,
   });
 };
 
 export const useCreateUserList = () => {
-  const queryClient = useQueryClient();
+  const { refetchPaginations } = useUserQueryInvalidation();
+
   return useMutation({
     mutationFn: async (userList: UserList[]) =>
       userService.createUserList(userList),
-    onSuccess() {
-      return queryClient.refetchQueries({
-        queryKey: USER_QUERY_KEYS.paginations(),
-      });
-    },
+    onSuccess: refetchPaginations,
   });
 };
 
 export const useUpdateUser = () => {
-  const queryClient = useQueryClient();
+  const { refetchPaginations } = useUserQueryInvalidation();
+
   return useMutation({
     mutationFn: async (user: UserUpdate) => userService.updateUser(user),
-    onSuccess() {
-      return queryClient.refetchQueries({
-        queryKey: USER_QUERY_KEYS.paginations(),
-      });
-    },
+    onSuccess: refetchPaginations,
   });
 };
 
 export const useDeleteUser = () => {
-  const queryClient = useQueryClient();
+  const { refetchPaginations } = useUserQueryInvalidation();
+
   return useMutation({
     mutationFn: async (id: string) => userService.deleteUser(id),
-    onSuccess() {
-      return queryClient.refetchQueries({
-        queryKey: USER_QUERY_KEYS.paginations(),
-      });
-    },
+    onSuccess: refetchPaginations,
   });
 };
