@@ -23,15 +23,12 @@ import {
 import { useUsersTableStore } from "@dashboard/stores/usersTableStore";
 import { useReloadPaginations } from "@hooks/useUsers";
 import FileImport from "./FileImport";
+import { CSVLink } from "react-csv";
+import { useUsersTable } from "@dashboard/hooks/useUsersTable";
 
 dayjs.extend(utc);
 
-interface TopContentProps {
-  totalItems: number;
-  isLoading: boolean;
-}
-
-export const TopContent = ({ totalItems, isLoading }: TopContentProps) => {
+export const TopContent = () => {
   const {
     currPage,
     pageSize,
@@ -43,6 +40,7 @@ export const TopContent = ({ totalItems, isLoading }: TopContentProps) => {
     handlePageSizeChange,
     resetFilters,
   } = useUsersTableStore();
+  const { users, totalItems, isLoading } = useUsersTable();
 
   const reloadPaginations = useReloadPaginations();
 
@@ -178,7 +176,9 @@ export const TopContent = ({ totalItems, isLoading }: TopContentProps) => {
               color="primary"
               startContent={<Icon icon={"pajamas:export"} fontSize={16} />}
             >
-              Export
+              <CSVLink data={users?.result || []} filename="users-data">
+                Export
+              </CSVLink>
             </Button>
             <FileImport />
           </>

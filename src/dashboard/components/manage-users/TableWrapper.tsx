@@ -18,14 +18,8 @@ import { useUsersTable } from "@dashboard/hooks/useUsersTable";
 
 export const TableWrapper = () => {
   const { visibleColumns, pageSize } = useUsersTableStore();
-  const {
-    users,
-    isLoading,
-    totalPages,
-    totalItems,
-    sortDescriptor,
-    setSortDescriptor,
-  } = useUsersTable();
+  const { users, isLoading, totalPages, sortDescriptor, setSortDescriptor } =
+    useUsersTable();
 
   const headerColumns = useMemo(() => {
     return UsersTableColumns.filter((column) =>
@@ -53,9 +47,7 @@ export const TableWrapper = () => {
       <div className="flex w-full flex-col gap-4">
         <Table
           aria-label="Manage Users"
-          topContent={
-            <TopContent totalItems={totalItems} isLoading={isLoading} />
-          }
+          topContent={<TopContent />}
           topContentPlacement="outside"
           bottomContent={
             <BottomContent
