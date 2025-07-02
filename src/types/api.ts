@@ -59,6 +59,11 @@ export interface UpdateUserResponse {
   matchedCount: number;
 }
 
+export interface DeleteUser {
+  acknowledged: boolean;
+  deletedCount: number;
+}
+
 // Generic API wrapper
 export interface ApiResult<T> {
   error?: string | string[];

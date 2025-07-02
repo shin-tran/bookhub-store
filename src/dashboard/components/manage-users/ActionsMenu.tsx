@@ -1,4 +1,5 @@
 import {
+  addToast,
   Button,
   Dropdown,
   DropdownItem,
@@ -10,6 +11,7 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import ViewDetails from "./ViewDetails";
 import type { UserDetail } from "@/types/api";
 import UpdateUser from "./UpdateUser";
+import { useDeleteUser } from "@hooks/useUsers";
 
 interface ActionsMenuProps {
   user: UserDetail;
@@ -28,6 +30,25 @@ const ActionsMenu = ({ user }: ActionsMenuProps) => {
     onClose: onUpdateClose,
     onOpenChange: onUpdateOpenChange,
   } = useDisclosure();
+
+  const deleteUserMutation = useDeleteUser();
+
+  const handleDeleteUser = async () => {
+    const res = await deleteUserMutation.mutateAsync(user._id);
+    if (res.data) {
+      addToast({
+        title: "Delete User Success",
+        color: "success",
+        timeout: 3000,
+      });
+    } else {
+      addToast({
+        title: res.message,
+        color: "danger",
+        timeout: 3000,
+      });
+    }
+  };
 
   return (
     <>
@@ -54,7 +75,12 @@ const ActionsMenu = ({ user }: ActionsMenuProps) => {
             >
               Update
             </DropdownItem>
-            <DropdownItem key="delete" color="danger" textValue="delete">
+            <DropdownItem
+              key="delete"
+              color="danger"
+              textValue="delete"
+              onPress={handleDeleteUser}
+            >
               Delete
             </DropdownItem>
           </DropdownMenu>

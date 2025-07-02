@@ -182,3 +182,15 @@ export const useUpdateUser = () => {
     },
   });
 };
+
+export const useDeleteUser = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (id: string) => userService.deleteUser(id),
+    onSuccess() {
+      return queryClient.refetchQueries({
+        queryKey: USER_QUERY_KEYS.paginations(),
+      });
+    },
+  });
+};

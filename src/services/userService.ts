@@ -1,6 +1,7 @@
 import type {
   ApiResult,
   BulkCreateResponse,
+  DeleteUser,
   LoginResponse,
   SignupResponse,
   UpdateUserResponse,
@@ -99,6 +100,11 @@ export const userService = {
     user: UserUpdate,
   ): Promise<ApiResult<UpdateUserResponse>> => {
     const response = await instance.put("/api/v1/user", user);
+    return response.data;
+  },
+
+  deleteUser: async (id: string): Promise<ApiResult<DeleteUser>> => {
+    const response = await instance.delete(`/api/v1/user/${id}`);
     return response.data;
   },
 };
