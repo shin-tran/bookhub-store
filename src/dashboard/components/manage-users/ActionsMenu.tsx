@@ -9,13 +9,25 @@ import {
 import { Icon } from "@iconify/react/dist/iconify.js";
 import ViewDetails from "./ViewDetails";
 import type { UserDetail } from "@/types/api";
+import UpdateUser from "./UpdateUser";
 
 interface ActionsMenuProps {
   user: UserDetail;
 }
 
 const ActionsMenu = ({ user }: ActionsMenuProps) => {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const {
+    isOpen: isViewOpen,
+    onOpen: onViewOpen,
+    onOpenChange: onViewOpenChange,
+  } = useDisclosure();
+
+  const {
+    isOpen: isUpdateOpen,
+    onOpen: onUpdateOpen,
+    onClose: onUpdateClose,
+    onOpenChange: onUpdateOpenChange,
+  } = useDisclosure();
 
   return (
     <>
@@ -32,17 +44,14 @@ const ActionsMenu = ({ user }: ActionsMenuProps) => {
             </Button>
           </DropdownTrigger>
           <DropdownMenu>
-            <DropdownItem
-              key="view"
-              textValue="view"
-              onPress={() => {
-                console.log("Viewing user:", user);
-                onOpen();
-              }}
-            >
+            <DropdownItem key="view" textValue="view" onPress={onViewOpen}>
               View details
             </DropdownItem>
-            <DropdownItem key="update" textValue="update">
+            <DropdownItem
+              key="update"
+              textValue="update"
+              onPress={onUpdateOpen}
+            >
               Update
             </DropdownItem>
             <DropdownItem key="delete" color="danger" textValue="delete">
@@ -52,7 +61,17 @@ const ActionsMenu = ({ user }: ActionsMenuProps) => {
         </Dropdown>
       </div>
 
-      <ViewDetails isOpen={isOpen} onOpenChange={onOpenChange} user={user} />
+      <ViewDetails
+        isOpen={isViewOpen}
+        onOpenChange={onViewOpenChange}
+        user={user}
+      />
+      <UpdateUser
+        isOpen={isUpdateOpen}
+        onOpenChange={onUpdateOpenChange}
+        onClose={onUpdateClose}
+        user={user}
+      />
     </>
   );
 };

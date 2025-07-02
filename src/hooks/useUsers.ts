@@ -1,4 +1,4 @@
-import type { UserList } from "@/types/api";
+import type { UserList, UserUpdate } from "@/types/api";
 import { userService } from "@services/userService";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
@@ -163,6 +163,18 @@ export const useCreateUserList = () => {
   return useMutation({
     mutationFn: async (userList: UserList[]) =>
       userService.createUserList(userList),
+    onSuccess() {
+      return queryClient.refetchQueries({
+        queryKey: USER_QUERY_KEYS.paginations(),
+      });
+    },
+  });
+};
+
+export const useUpdateUser = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (user: UserUpdate) => userService.updateUser(user),
     onSuccess() {
       return queryClient.refetchQueries({
         queryKey: USER_QUERY_KEYS.paginations(),

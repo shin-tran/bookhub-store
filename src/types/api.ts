@@ -8,17 +8,24 @@ export interface User {
   avatar: string;
 }
 
-export interface UserDetail extends User {
+export type UserDetail = Omit<User, "id"> & {
   _id: string;
   isActive: boolean;
   createdAt: string;
   updatedAt: string;
-}
+};
 
 export interface UserList {
   fullName: string;
   email: string;
   password: string;
+  phone: string;
+}
+
+export interface UserUpdate {
+  _id: string;
+  fullName: string;
+  email: string;
   phone: string;
 }
 
@@ -42,6 +49,14 @@ export interface BulkCreateResponse {
     insertedCount: number;
     insertedIds: object;
   };
+}
+
+export interface UpdateUserResponse {
+  acknowledged: boolean;
+  modifiedCount: number;
+  upsertedId: null;
+  upsertedCount: number;
+  matchedCount: number;
 }
 
 // Generic API wrapper

@@ -1,3 +1,4 @@
+import type { ActionsProps } from "@/types/manage-users";
 import {
   Drawer,
   DrawerContent,
@@ -9,14 +10,7 @@ import {
   Chip,
   Snippet,
 } from "@heroui/react";
-import type { UserDetail } from "@/types/api";
 import { Icon } from "@iconify/react/dist/iconify.js";
-
-interface ViewDetailsProps {
-  isOpen: boolean;
-  onOpenChange: () => void;
-  user: UserDetail;
-}
 
 type FieldType = "text" | "snippet" | "chip" | "date";
 
@@ -27,7 +21,7 @@ interface UserField {
   type: FieldType;
 }
 
-const ViewDetails = ({ isOpen, onOpenChange, user }: ViewDetailsProps) => {
+const ViewDetails = ({ isOpen, onOpenChange, user }: ActionsProps) => {
   const motionProps = {
     variants: {
       enter: {

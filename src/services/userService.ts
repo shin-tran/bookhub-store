@@ -3,10 +3,12 @@ import type {
   BulkCreateResponse,
   LoginResponse,
   SignupResponse,
+  UpdateUserResponse,
   User,
   UserDetail,
   UserList,
   UsersPaginatedResponse,
+  UserUpdate,
 } from "@/types/api";
 import instance from "./axiosCustomize";
 
@@ -90,6 +92,13 @@ export const userService = {
     userList: UserList[],
   ): Promise<ApiResult<BulkCreateResponse>> => {
     const response = await instance.post("/api/v1/user/bulk-create", userList);
+    return response.data;
+  },
+
+  updateUser: async (
+    user: UserUpdate,
+  ): Promise<ApiResult<UpdateUserResponse>> => {
+    const response = await instance.put("/api/v1/user", user);
     return response.data;
   },
 };
