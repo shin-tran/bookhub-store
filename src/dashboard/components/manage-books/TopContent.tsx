@@ -3,7 +3,6 @@ import {
   SelectItem,
   Input,
   Button,
-  DateRangePicker,
   Dropdown,
   DropdownTrigger,
   DropdownMenu,
@@ -13,20 +12,14 @@ import {
 } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import { useCallback } from "react";
-import dayjs from "dayjs";
-import utc from "dayjs/plugin/utc";
-import CreateUser from "./CreateUser";
 import {
   capitalize,
-  UsersTableColumns,
+  BooksTableColumns,
 } from "@dashboard/constants/dashboardContansts";
-import { useUsersTableStore } from "@dashboard/stores/usersTableStore";
-import { useReloadPaginations } from "@hooks/useUsers";
-import FileImport from "./FileImport";
-import { CSVLink } from "react-csv";
-import { useUsersTable } from "@dashboard/hooks/useUsersTable";
-
-dayjs.extend(utc);
+import useBooksTableStore from "@dashboard/stores/booksTableStore";
+import useBooksTable from "@dashboard/hooks/useBooksTable";
+import { useReloadPaginations } from "@hooks/useBooks";
+import CreateBook from "./CreateBook";
 
 export const TopContent = () => {
   const {
@@ -39,23 +32,10 @@ export const TopContent = () => {
     setVisibleColumns,
     handlePageSizeChange,
     resetFilters,
-  } = useUsersTableStore();
-  const { users, totalItems, isLoading } = useUsersTable();
+  } = useBooksTableStore();
+  const { totalItems, isLoading } = useBooksTable();
 
   const reloadPaginations = useReloadPaginations();
-
-  const formatDateForAPI = useCallback(
-    (dateString: string, isEndDate = false) => {
-      const date = dayjs(dateString);
-
-      if (isEndDate) {
-        return date.endOf("day").toISOString();
-      } else {
-        return date.startOf("day").toISOString();
-      }
-    },
-    [],
-  );
 
   const handleSubmitForm = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
@@ -63,24 +43,15 @@ export const TopContent = () => {
       const formData = new FormData(e.currentTarget);
       const data = Object.fromEntries(formData);
 
-      let dateRange: { startDate?: string; endDate?: string } | undefined;
-      if (data.startDate && data.endDate) {
-        dateRange = {
-          startDate: formatDateForAPI(data.startDate as string, false),
-          endDate: formatDateForAPI(data.endDate as string, true),
-        };
-      }
-
       setSearchFilters({
-        fullName: (data.fullName as string) || "",
-        email: (data.email as string) || "",
-        dateRange,
+        mainText: (data.mainText as string) || "",
+        author: (data.author as string) || "",
         sortBy: searchFilters.sortBy,
       });
 
       setCurrPage(1);
     },
-    [formatDateForAPI, searchFilters.sortBy, setSearchFilters, setCurrPage],
+    [searchFilters.sortBy, setSearchFilters, setCurrPage],
   );
 
   const handleResetForm = useCallback(() => {
@@ -109,27 +80,20 @@ export const TopContent = () => {
               input: "w-full",
               mainWrapper: "w-full",
             }}
-            name="fullName"
-            placeholder="Search by full name..."
-            defaultValue={searchFilters.fullName}
+            name="mainText"
+            placeholder="Search by book name..."
+            defaultValue={searchFilters.mainText}
           />
           <Input
             isClearable
-            startContent={<Icon icon={"ic:outline-email"} fontSize={24} />}
+            startContent={<Icon icon={"fa6-solid:user-tag"} fontSize={19} />}
             classNames={{
               input: "w-full",
               mainWrapper: "w-full",
             }}
-            name="email"
-            placeholder="Search by email..."
-            defaultValue={searchFilters.email}
-          />
-          <DateRangePicker
-            aria-label="Date Range"
-            className="max-w-xs"
-            startName="startDate"
-            endName="endDate"
-            label="Created at"
+            name="author"
+            placeholder="Search by author..."
+            defaultValue={searchFilters.author}
           />
           <Button type="reset">
             <span>
@@ -162,7 +126,7 @@ export const TopContent = () => {
                 selectionMode="multiple"
                 onSelectionChange={setVisibleColumns}
               >
-                {UsersTableColumns.map((column) => (
+                {BooksTableColumns.map((column) => (
                   <DropdownItem key={column.uid} className="capitalize">
                     {capitalize(column.name)}
                   </DropdownItem>
@@ -170,17 +134,7 @@ export const TopContent = () => {
               </DropdownMenu>
             </Dropdown>
 
-            <CreateUser />
-
-            <Button
-              color="primary"
-              startContent={<Icon icon={"pajamas:export"} fontSize={16} />}
-            >
-              <CSVLink data={users?.result || []} filename="users-data">
-                Export
-              </CSVLink>
-            </Button>
-            <FileImport />
+            <CreateBook />
           </>
         </div>
       </div>
@@ -191,7 +145,7 @@ export const TopContent = () => {
             <Skeleton className="h-5 w-60 rounded" />
           ) : (
             <>
-              Total {totalItems} users
+              Total {totalItems} books
               {totalItems > 0 && (
                 <span className="ml-2">
                   (Showing {Math.min((currPage - 1) * pageSize + 1, totalItems)}

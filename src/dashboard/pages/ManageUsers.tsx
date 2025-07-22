@@ -15,7 +15,7 @@ const ManageUsers = () => {
         <BreadcrumbItem>Manage Users</BreadcrumbItem>
       </Breadcrumbs>
 
-      <h3 className="text-xl font-semibold">All Accounts</h3>
+      <h3 className="text-xl font-semibold">Manage Users</h3>
       <div className="mx-auto w-full max-w-[95rem]">
         <TableWrapper />
       </div>

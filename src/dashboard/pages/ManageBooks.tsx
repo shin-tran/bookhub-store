@@ -1,6 +1,25 @@
+import TableWrapper from "@dashboard/components/manage-books/TableWrapper";
+import { BreadcrumbItem, Breadcrumbs } from "@heroui/react";
+import { Link } from "react-router";
+
 const ManageBooks = () => {
   return (
-    <div>ManageBooks</div>
-  )
-}
-export default ManageBooks
+    <div className="mx-auto my-10 flex w-full max-w-[95rem] flex-col gap-4 px-4 lg:px-6">
+      <Breadcrumbs>
+        <BreadcrumbItem>
+          <Link to={"/"}>Home</Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem>
+          <Link to={"/admin"}>Dashboard</Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem>Manage Books</BreadcrumbItem>
+      </Breadcrumbs>
+
+      <h3 className="text-xl font-semibold">Manage Books</h3>
+      <div className="mx-auto w-full max-w-[95rem]">
+        <TableWrapper />
+      </div>
+    </div>
+  );
+};
+export default ManageBooks;

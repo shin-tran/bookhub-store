@@ -1,4 +1,4 @@
-import type { InputFieldConfig } from "@/types/manage-users";
+import type { InputFieldConfig } from "@/types/config";
 import {
   addToast,
   Button,
@@ -14,7 +14,7 @@ import { useCreateUser } from "@hooks/useUsers";
 import { Icon } from "@iconify/react";
 import type { HTMLMotionProps } from "framer-motion";
 
-export const AddUser = () => {
+const CreateUser = () => {
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
   const createUserMutation = useCreateUser();
 
@@ -123,7 +123,7 @@ export const AddUser = () => {
           color="primary"
           startContent={<Icon icon={"humbleicons:user-add"} fontSize={20} />}
         >
-          Add User
+          Create User
         </Button>
         <Modal
           hideCloseButton
@@ -135,7 +135,7 @@ export const AddUser = () => {
             {() => (
               <>
                 <ModalHeader className="flex flex-col gap-1">
-                  Add New User
+                  Create New User
                 </ModalHeader>
                 <ModalBody>
                   <Form
@@ -170,8 +170,8 @@ export const AddUser = () => {
                         isLoading={createUserMutation.isPending}
                       >
                         {createUserMutation.isPending
-                          ? "Adding..."
-                          : "Add User"}
+                          ? "Creating..."
+                          : "Create User"}
                       </Button>
                     </div>
                   </Form>
@@ -184,3 +184,4 @@ export const AddUser = () => {
     </div>
   );
 };
+export default CreateUser;

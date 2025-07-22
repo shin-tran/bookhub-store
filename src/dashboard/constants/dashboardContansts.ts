@@ -6,6 +6,20 @@ export const UsersTableColumns = [
   { name: "ROLE", uid: "role", sortable: true },
   { name: "STATUS", uid: "isActive", sortable: true },
   { name: "CREATED AT", uid: "createdAt", sortable: true },
+  { name: "UPDATED AT", uid: "updatedAt", sortable: true },
+  { name: "ACTIONS", uid: "actions" },
+];
+
+export const BooksTableColumns = [
+  { name: "ID", uid: "_id" },
+  { name: "BOOK NAME", uid: "mainText", sortable: true },
+  { name: "AUTHOR", uid: "author", sortable: true },
+  { name: "PRICE", uid: "price" },
+  { name: "SOLD", uid: "sold", sortable: true },
+  { name: "QUANTITY", uid: "quantity", sortable: true },
+  { name: "CATEGORY", uid: "category", sortable: true },
+  { name: "CREATED AT", uid: "createdAt", sortable: true },
+  { name: "UPDATED AT", uid: "updatedAt", sortable: true },
   { name: "ACTIONS", uid: "actions" },
 ];
 
@@ -18,6 +32,16 @@ export const INITIAL_VISIBLE_USERS_COLUMNS = [
   "role",
   "email",
   "isActive",
+  "createdAt",
+  "actions",
+];
+
+export const INITIAL_VISIBLE_BOOKS_COLUMNS = [
+  "mainText",
+  "author",
+  "category",
+  "price",
+  "quantity",
   "createdAt",
   "actions",
 ];

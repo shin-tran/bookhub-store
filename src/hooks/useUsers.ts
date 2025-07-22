@@ -2,7 +2,7 @@ import type { UserList, UserUpdate } from "@/types/api";
 import { userService } from "@services/userService";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
-export const USER_QUERY_KEYS = {
+const USER_QUERY_KEYS = {
   // Base key
   all: ["user"] as const,
   // Current user
@@ -31,14 +31,11 @@ export const USER_QUERY_KEYS = {
 // Helper function to invalidate user queries
 const useUserQueryInvalidation = () => {
   const queryClient = useQueryClient();
-
   return {
     invalidateCurrentUser: () =>
       queryClient.invalidateQueries({ queryKey: USER_QUERY_KEYS.current() }),
-
     refetchPaginations: () =>
       queryClient.refetchQueries({ queryKey: USER_QUERY_KEYS.paginations() }),
-
     invalidateAll: () =>
       queryClient.invalidateQueries({ queryKey: USER_QUERY_KEYS.all }),
   };
@@ -57,7 +54,7 @@ export const useGetUser = () => {
   });
 };
 
-export const useGetPaginations = (
+export const useGetUserPaginations = (
   current: number,
   pageSize: number,
   fullName?: string,

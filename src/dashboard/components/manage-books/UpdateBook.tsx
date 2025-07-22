@@ -1,4 +1,4 @@
-import type { UserActionsProps, InputFieldConfig } from "@/types/config";
+import type { BookActionsProps, InputFieldConfig } from "@/types/config";
 import {
   addToast,
   Button,
@@ -9,38 +9,44 @@ import {
   ModalContent,
   ModalHeader,
 } from "@heroui/react";
-import { useUpdateUser } from "@hooks/useUsers";
+import { useUpdateBook } from "@hooks/useBooks";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import type { HTMLMotionProps } from "framer-motion";
 
-const UpdateUser = ({
+const UpdateBook = ({
   isOpen,
   onOpenChange,
   onClose,
-  user,
-}: UserActionsProps) => {
-  const updateUserMutation = useUpdateUser();
+  book,
+}: BookActionsProps) => {
+  const updateBookMutation = useUpdateBook();
 
   const handleUpdateSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget;
     const data = Object.fromEntries(new FormData(form));
-    const res = await updateUserMutation.mutateAsync({
-      _id: String(user._id),
-      fullName: String(data.fullName),
-      email: String(data.email),
-      phone: String(data.phone),
+    console.log("Update Book data:",data);
+    const res = await updateBookMutation.mutateAsync({
+      id: String(book._id),
+      thumbnail: "",
+      slider: [],
+      mainText: String(data.mainText),
+      author: String(data.author),
+      price: Number(data.price),
+      category: String(data.category),
+      quantity: Number(data.quantity),
+      sold: Number(data.sold),
     });
     if (res?.data) {
       addToast({
-        title: "Update User Success",
+        title: "Update Book Success",
         color: "success",
         timeout: 3000,
       });
       onClose?.();
     } else {
       addToast({
-        title: "Update User Error",
+        title: "Update Book Error",
         color: "danger",
         timeout: 3000,
       });
@@ -71,36 +77,85 @@ const UpdateUser = ({
   const inputFields: InputFieldConfig[] = [
     {
       isRequired: true,
-      label: "Full Name",
-      name: "fullName",
+      name: "mainText",
+      label: "Book Name",
       type: "text",
+      placeholder: "Enter book name",
       variant: "bordered",
-      defaultValue: user.fullName,
+      defaultValue: book.mainText,
       startContent: (
-        <Icon icon="solar:user-bold" className="text-default-400 text-xl" />
-      ),
-    },
-    {
-      isDisabled: true,
-      isRequired: true,
-      label: "Email",
-      name: "email",
-      type: "email",
-      variant: "bordered",
-      defaultValue: user.email,
-      startContent: (
-        <Icon icon="solar:letter-bold" className="text-default-400 text-xl" />
+        <Icon icon="tdesign:book-filled" className="text-default-400 text-xl" />
       ),
     },
     {
       isRequired: true,
-      label: "Phone Number",
-      name: "phone",
-      type: "tel",
+      name: "author",
+      label: "Author",
+      type: "text",
+      placeholder: "Enter author name",
       variant: "bordered",
-      defaultValue: user.phone,
+      defaultValue: book.author,
       startContent: (
-        <Icon icon="solar:phone-bold" className="text-default-400 text-xl" />
+        <Icon icon="fa-solid:user-tag" className="text-default-400 text-xl" />
+      ),
+    },
+    {
+      isRequired: true,
+      name: "price",
+      label: "Price",
+      type: "text",
+      placeholder: "Enter price",
+      variant: "bordered",
+      defaultValue: String(book.price),
+      startContent: (
+        <Icon
+          icon="solar:tag-price-bold"
+          className="text-default-400 text-xl"
+        />
+      ),
+      endContent: (
+        <div className="pointer-events-none flex items-center">
+          <span className="text-default-400 text-small">đ</span>
+        </div>
+      ),
+    },
+    {
+      isRequired: true,
+      name: "category",
+      label: "Category",
+      type: "text",
+      placeholder: "Choose price",
+      variant: "bordered",
+      defaultValue: book.category,
+      startContent: (
+        <Icon icon="bxs:category" className="text-default-400 text-xl" />
+      ),
+    },
+    {
+      isRequired: true,
+      name: "quantity",
+      label: "Quantity",
+      type: "text",
+      placeholder: "Enter quantity",
+      variant: "bordered",
+      defaultValue: String(book.quantity),
+      startContent: (
+        <Icon
+          icon="fluent-mdl2:quantity"
+          className="text-default-400 text-xl"
+        />
+      ),
+    },
+    {
+      isRequired: true,
+      name: "sold",
+      label: "Sold",
+      type: "text",
+      placeholder: "Enter sold",
+      variant: "bordered",
+      defaultValue: String(book.sold),
+      startContent: (
+        <Icon icon="ep:sold-out" className="text-default-400 text-xl" />
       ),
     },
   ];
@@ -116,7 +171,7 @@ const UpdateUser = ({
         {() => (
           <>
             <ModalHeader className="flex flex-col gap-1">
-              Update User
+              Update Book
             </ModalHeader>
             <ModalBody>
               <Form
@@ -142,9 +197,9 @@ const UpdateUser = ({
                   <Button
                     color="primary"
                     type="submit"
-                    isLoading={updateUserMutation.isPending}
+                    isLoading={updateBookMutation.isPending}
                   >
-                    {updateUserMutation.isPending ? "Updating..." : "Update"}
+                    {updateBookMutation.isPending ? "Updating..." : "Update"}
                   </Button>
                 </div>
               </Form>
@@ -155,4 +210,4 @@ const UpdateUser = ({
     </Modal>
   );
 };
-export default UpdateUser;
+export default UpdateBook;

@@ -1,4 +1,4 @@
-import type { ActionsProps } from "@/types/manage-users";
+import type { UserActionsProps } from "@/types/config";
 import {
   Drawer,
   DrawerContent,
@@ -21,7 +21,7 @@ interface UserField {
   type: FieldType;
 }
 
-const ViewDetails = ({ isOpen, onOpenChange, user }: ActionsProps) => {
+const ViewDetails = ({ isOpen, onOpenChange, user }: UserActionsProps) => {
   const motionProps = {
     variants: {
       enter: {

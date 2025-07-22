@@ -1,16 +1,15 @@
+import { INITIAL_VISIBLE_BOOKS_COLUMNS } from "@dashboard/constants/dashboardContansts";
+import type { Selection, SortDescriptor } from "@heroui/react";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
-import type { Selection, SortDescriptor } from "@heroui/react";
-import { INITIAL_VISIBLE_USERS_COLUMNS } from "@dashboard/constants/dashboardContansts";
 
 interface SearchFilters {
-  fullName: string;
-  email: string;
-  dateRange?: { startDate?: string; endDate?: string };
-  sortBy: string;
+  mainText: string;
+  author: string;
+  sortBy?: string;
 }
 
-interface UsersTableState {
+interface BooksTableState {
   currPage: number;
   pageSize: number;
   sortDescriptor: SortDescriptor;
@@ -30,13 +29,12 @@ interface UsersTableState {
 }
 
 const initialSearchFilters: SearchFilters = {
-  fullName: "",
-  email: "",
-  dateRange: undefined,
+  mainText: "",
+  author: "",
   sortBy: "createdAt",
 };
 
-export const useUsersTableStore = create<UsersTableState>()(
+const useBooksTableStore = create<BooksTableState>()(
   devtools(
     (set) => ({
       // Initial state
@@ -47,7 +45,7 @@ export const useUsersTableStore = create<UsersTableState>()(
         direction: "ascending",
       },
       searchFilters: initialSearchFilters,
-      visibleColumns: new Set(INITIAL_VISIBLE_USERS_COLUMNS),
+      visibleColumns: new Set(INITIAL_VISIBLE_BOOKS_COLUMNS),
 
       // Actions
       setCurrPage: (page: number) => set({ currPage: page }),
@@ -75,7 +73,8 @@ export const useUsersTableStore = create<UsersTableState>()(
         }),
     }),
     {
-      name: "users-table-store",
+      name: "books-table-store",
     },
   ),
 );
+export default useBooksTableStore;

@@ -29,6 +29,44 @@ export interface UserUpdate {
   phone: string;
 }
 
+export interface BookDetail {
+  _id: string;
+  thumbnail: string;
+  slider: string[] | null;
+  mainText: string;
+  author: string;
+  price: number;
+  sold: number;
+  quantity: number;
+  category: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export type CategoryData =
+  | "Arts"
+  | "Business"
+  | "Comics"
+  | "Cooking"
+  | "Entertainment"
+  | "History"
+  | "Music"
+  | "Sports"
+  | "Teen"
+  | "Travel";
+
+export interface DeleteData {
+  acknowledged: string;
+  deletedCount: number;
+}
+
+// Payload
+export type CreateBookPayload = Omit<BookDetail, "createdAt" | "updatedAt" | "_id">;
+
+export type UpdateBookPayload = CreateBookPayload & {
+  id: string;
+};
+
 // API Response types
 export interface LoginResponse {
   access_token: string;
@@ -84,3 +122,8 @@ export interface PaginatedResponse<T> {
 
 // Specific response types
 export type UsersPaginatedResponse = PaginatedResponse<UserDetail>;
+export type BooksPaginatedResponse = PaginatedResponse<BookDetail>;
+export type CategoryResponse = ApiResult<CategoryData[]>;
+export type CreateBookResponse = ApiResult<BookDetail>;
+export type UpdateBookResponse = CreateBookResponse;
+export type DeleteBookResponse = ApiResult<DeleteData>;

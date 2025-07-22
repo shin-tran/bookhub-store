@@ -1,8 +1,8 @@
+import useBooksTableStore from "@dashboard/stores/booksTableStore";
+import { useGetBookPaginations } from "@hooks/useBooks";
 import { useEffect } from "react";
-import { useUsersTableStore } from "@dashboard/stores/usersTableStore";
-import { useGetUserPaginations } from "@hooks/useUsers";
 
-export const useUsersTable = () => {
+const useBooksTable = () => {
   const {
     currPage,
     pageSize,
@@ -10,19 +10,18 @@ export const useUsersTable = () => {
     sortDescriptor,
     setSortDescriptor,
     setSearchFilters,
-  } = useUsersTableStore();
+  } = useBooksTableStore();
 
-  const { data: users, isLoading } = useGetUserPaginations(
+  const { data: books, isLoading } = useGetBookPaginations(
     currPage,
     pageSize,
-    searchFilters.fullName,
-    searchFilters.email,
-    searchFilters.dateRange,
+    searchFilters.mainText,
+    searchFilters.author,
     searchFilters.sortBy,
   );
 
-  const totalPages = users?.meta?.pages || 1;
-  const totalItems = users?.meta?.total || 0;
+  const totalPages = books?.meta?.pages || 1;
+  const totalItems = books?.meta?.total || 0;
 
   useEffect(() => {
     if (sortDescriptor && sortDescriptor.column && sortDescriptor.direction) {
@@ -38,7 +37,7 @@ export const useUsersTable = () => {
   }, [sortDescriptor, setSearchFilters]);
 
   return {
-    users,
+    books,
     isLoading,
     totalPages,
     totalItems,
@@ -46,3 +45,4 @@ export const useUsersTable = () => {
     setSortDescriptor,
   };
 };
+export default useBooksTable;

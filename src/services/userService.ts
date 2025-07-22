@@ -19,6 +19,7 @@ export const userService = {
     const response = await instance.get("/api/v1/auth/account");
     return response.data.data.user;
   },
+
   getPaginations: async (
     current: number,
     pageSize: number,

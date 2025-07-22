@@ -1,28 +1,28 @@
 import {
+  Skeleton,
   Table,
   TableBody,
   TableCell,
   TableColumn,
   TableHeader,
   TableRow,
-  Skeleton,
 } from "@heroui/react";
-import RenderCell from "./RenderCell";
+import { BottomContent } from "./BottomContent";
 import { useMemo } from "react";
-import { UsersTableColumns } from "@dashboard/constants/dashboardContansts";
+import useBooksTableStore from "@dashboard/stores/booksTableStore";
+import { BooksTableColumns } from "@dashboard/constants/dashboardContansts";
+import useBooksTable from "@dashboard/hooks/useBooksTable";
+import RenderCell from "./RenderCell";
 import RenderSkeletonCell from "./RenderSkeletonCell";
 import { TopContent } from "./TopContent";
-import { BottomContent } from "./BottomContent";
-import { useUsersTableStore } from "@dashboard/stores/usersTableStore";
-import { useUsersTable } from "@dashboard/hooks/useUsersTable";
 
-export const TableWrapper = () => {
-  const { visibleColumns, pageSize } = useUsersTableStore();
-  const { users, isLoading, totalPages, sortDescriptor, setSortDescriptor } =
-    useUsersTable();
+const TableWrapper = () => {
+  const { visibleColumns, pageSize } = useBooksTableStore();
+  const { books, isLoading, totalPages, sortDescriptor, setSortDescriptor } =
+    useBooksTable();
 
   const headerColumns = useMemo(() => {
-    return UsersTableColumns.filter((column) =>
+    return BooksTableColumns.filter((column) =>
       Array.from(visibleColumns).includes(column.uid),
     );
   }, [visibleColumns]);
@@ -30,14 +30,16 @@ export const TableWrapper = () => {
   const skeletonRows = useMemo(() => {
     return Array.from({ length: pageSize }, (_, index) => ({
       _id: `skeleton-${index}`,
-      fullName: "",
-      email: "",
-      phone: "",
-      role: "",
-      isActive: false,
-      avatar: "",
+      mainText: "",
+      author: "",
+      price: 0,
+      sold: 0,
+      quantity: 0,
+      category: "",
       createdAt: "",
       updatedAt: "",
+      thumbnail: "",
+      slider: [],
     }));
   }, [pageSize]);
 
@@ -52,7 +54,7 @@ export const TableWrapper = () => {
             <BottomContent
               isLoading={isLoading}
               totalPages={totalPages}
-              users={users}
+              books={books}
             />
           }
           bottomContentPlacement={"outside"}
@@ -71,7 +73,7 @@ export const TableWrapper = () => {
             )}
           </TableHeader>
           <TableBody
-            items={isLoading ? skeletonRows : users?.result || []}
+            items={isLoading ? skeletonRows : books?.result || []}
             loadingContent={<Skeleton className="h-16 w-full rounded" />}
             emptyContent={"No rows to display."}
           >
@@ -81,7 +83,7 @@ export const TableWrapper = () => {
                   <TableCell>
                     {isLoading
                       ? RenderSkeletonCell(columnKey)
-                      : RenderCell({ user: item, columnKey: columnKey })}
+                      : RenderCell({ book: item, columnKey: columnKey })}
                   </TableCell>
                 )}
               </TableRow>
@@ -92,3 +94,4 @@ export const TableWrapper = () => {
     </>
   );
 };
+export default TableWrapper;
