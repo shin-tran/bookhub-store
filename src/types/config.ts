@@ -2,7 +2,7 @@ import type { BookDetail, UserDetail } from "./api";
 
 export interface BaseActionsProps {
   isOpen: boolean;
-  onOpenChange: () => void;
+  onOpenChange: (open: boolean) => void;
   onClose?: () => void;
 }
 

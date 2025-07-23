@@ -5,14 +5,13 @@ import {
   DrawerHeader,
   DrawerBody,
   Button,
-  Image,
   Tooltip,
   Snippet,
   Chip,
 } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import { useCallback, useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import ImagePreviewGallery from "@components/ImagePreviewGallery";
 
 type FieldType = "text" | "snippet" | "chip" | "date";
 
@@ -24,15 +23,26 @@ interface UserField {
 }
 
 const ViewDetails = ({ isOpen, onOpenChange, book }: BookActionsProps) => {
-  const [currThumbnail, setCurrThumbnail] = useState("");
+  const [currThumbnail, setCurrThumbnail] = useState<string | null>(null);
 
   const ImageList = useCallback(() => {
-    return [book.thumbnail, ...(book.slider || [])];
-  }, [book.slider, book.thumbnail]);
+    if (!book) return [];
+    const sliderImages = Array.isArray(book.slider)
+      ? book.slider.map(
+          (img: string) => `${import.meta.env.VITE_API_URL}/images/book/${img}`,
+        )
+      : book.slider
+        ? [`${import.meta.env.VITE_API_URL}/images/book/${book.slider}`]
+        : [];
+    return [
+      `${import.meta.env.VITE_API_URL}/images/book/${book.thumbnail}`,
+      ...sliderImages,
+    ];
+  }, [book]);
 
   useEffect(() => {
-    if (currThumbnail === "" || !ImageList().includes(currThumbnail)) {
-      setCurrThumbnail(ImageList()[0]);
+    if (currThumbnail === null || !ImageList().includes(currThumbnail)) {
+      setCurrThumbnail(ImageList()[0] ?? null);
     }
   }, [ImageList, book, currThumbnail]);
 
@@ -180,51 +190,13 @@ const ViewDetails = ({ isOpen, onOpenChange, book }: BookActionsProps) => {
               Book Details
             </DrawerHeader>
             <DrawerBody className="space-y-4">
-              <div className="flex w-full flex-col items-center justify-center pt-4">
-                <div className="relative overflow-hidden rounded-lg">
-                  <AnimatePresence mode="wait">
-                    <motion.div
-                      key={currThumbnail}
-                      initial={{ opacity: 0, x: 100 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: -100 }}
-                      transition={{ duration: 0.3, ease: "easeInOut" }}
-                    >
-                      <Image
-                        height={360}
-                        alt="Thumbnail"
-                        src={`${import.meta.env.VITE_API_URL}/images/book/${currThumbnail}`}
-                        className="rounded-lg shadow-lg"
-                      />
-                    </motion.div>
-                  </AnimatePresence>
-                </div>
-
-                <div className="mt-4 flex items-center justify-center gap-3">
-                  {ImageList().length > 1 &&
-                    ImageList().map((image, index) => (
-                      <motion.div
-                        key={image}
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ delay: index * 0.1 }}
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.95 }}
-                      >
-                        <Image
-                          height={70}
-                          src={`${import.meta.env.VITE_API_URL}/images/book/${image}`}
-                          className={`cursor-pointer rounded-md transition-all duration-200 ${
-                            currThumbnail === image
-                              ? "ring-2 ring-blue-500 ring-offset-2"
-                              : "opacity-70 hover:opacity-100"
-                          }`}
-                          onClick={() => setCurrThumbnail(image)}
-                        />
-                      </motion.div>
-                    ))}
-                </div>
-              </div>
+              <ImagePreviewGallery
+                images={ImageList().filter(
+                  (img): img is string => typeof img === "string",
+                )}
+                currPreview={currThumbnail}
+                setCurrPreview={setCurrThumbnail}
+              />
 
               {userFields.map((field) => (
                 <div

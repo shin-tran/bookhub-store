@@ -15,7 +15,7 @@ import {
   useDisclosure,
 } from "@heroui/react";
 import { Icon } from "@iconify/react";
-import FileUploadButton from "./FileUploadButton";
+import FileUploadButton from "../FileUploadButton";
 import { Buffer } from "Buffer";
 import { Workbook } from "exceljs";
 import { useState } from "react";

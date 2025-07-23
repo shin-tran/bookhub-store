@@ -1,5 +1,5 @@
 import type { BookDetail } from "@/types/api";
-import { User } from "@heroui/react";
+import { Image } from "@heroui/react";
 import ActionsMenu from "./ActionsMenu";
 
 interface Props {
@@ -12,12 +12,21 @@ const RenderCell = ({ book, columnKey }: Props) => {
   switch (columnKey) {
     case "mainText":
       return (
-        <User
-          avatarProps={{
-            src: `${import.meta.env.VITE_API_URL}/images/book/${book?.thumbnail}`,
-          }}
-          name={cellValue}
-        />
+        <div className="flex max-w-fit items-center gap-2">
+          <div className="flex-shrink-0">
+            <Image
+              src={`${import.meta.env.VITE_API_URL}/images/book/${book?.thumbnail}`}
+              className="size-22 object-contain"
+            />
+          </div>
+          <span className="max-w-[300px] break-words">{cellValue}</span>
+        </div>
+      );
+    case "author":
+      return (
+        <span className="inline-block max-w-[200px] break-words">
+          {cellValue}
+        </span>
       );
     case "price":
       return new Intl.NumberFormat("vi-VN", {
@@ -26,7 +35,7 @@ const RenderCell = ({ book, columnKey }: Props) => {
       }).format(Number(cellValue));
     case "quantity":
     case "sold":
-      return (cellValue || 0).toLocaleString()
+      return (cellValue || 0).toLocaleString();
     case "createdAt": {
       const date = new Date(cellValue as string);
       return <span>{date.toLocaleDateString("vi-VN")}</span>;

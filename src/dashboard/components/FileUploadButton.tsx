@@ -171,8 +171,8 @@ export default function FileUploadButton({
   }, [inputRef]);
 
   return (
-    <form className={classNames?.wrapper}>
-      <label htmlFor="_upload">
+    <div className={classNames?.wrapper}>
+      <label>
         <Button
           {...props}
           {...(acceptance === "ACCEPT"
@@ -227,6 +227,6 @@ export default function FileUploadButton({
         multiple={multiple}
         className="hidden"
       />
-    </form>
+    </div>
   );
 }

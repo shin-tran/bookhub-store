@@ -172,14 +172,14 @@ export const TopContent = () => {
 
             <CreateUser />
 
-            <Button
-              color="primary"
-              startContent={<Icon icon={"pajamas:export"} fontSize={16} />}
-            >
-              <CSVLink data={users?.result || []} filename="users-data">
+            <CSVLink data={users?.result || []} filename="users-data">
+              <Button
+                color="primary"
+                startContent={<Icon icon={"pajamas:export"} fontSize={16} />}
+              >
                 Export
-              </CSVLink>
-            </Button>
+              </Button>
+            </CSVLink>
             <FileImport />
           </>
         </div>

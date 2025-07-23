@@ -14,7 +14,7 @@ export const BooksTableColumns = [
   { name: "ID", uid: "_id" },
   { name: "BOOK NAME", uid: "mainText", sortable: true },
   { name: "AUTHOR", uid: "author", sortable: true },
-  { name: "PRICE", uid: "price" },
+  { name: "PRICE", uid: "price", sortable: true },
   { name: "SOLD", uid: "sold", sortable: true },
   { name: "QUANTITY", uid: "quantity", sortable: true },
   { name: "CATEGORY", uid: "category", sortable: true },

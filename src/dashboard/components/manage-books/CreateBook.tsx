@@ -17,13 +17,33 @@ import {
 import { useCreateBook } from "@hooks/useBooks";
 import { Icon } from "@iconify/react";
 import { bookService } from "@services/bookService";
-import type { HTMLMotionProps } from "framer-motion";
-import { useEffect, useState } from "react";
+import { type HTMLMotionProps } from "framer-motion";
+import ImagePreviewGallery from "@/components/ImagePreviewGallery";
+import { useCallback, useEffect, useState } from "react";
+import FileUploadButton from "../FileUploadButton";
+import { useUploadFile } from "@hooks/useUploadFile";
 
 const CreateBook = () => {
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
   const createBookMutation = useCreateBook();
   const [categoryData, setCategoryData] = useState<CategoryData[]>();
+  const [currPreview, setCurrPreview] = useState<string | null>(null);
+  const [isFirstTimeUpload, setIsFirstTimeUpload] = useState(true);
+  const [thumbnailSelectedFile, setThumbnailSelectedFile] = useState<
+    File | undefined
+  >();
+  const [sliderSelectedFiles, setSliderSelectedFiles] = useState<
+    File[] | undefined
+  >();
+  const [thumbnailPreview, setThumbnailPreview] = useState<string>();
+  const [slidersPreview, setSlidersPreview] = useState<string[]>([]);
+  const uploadFileMutation = useUploadFile();
+
+  const PreviewImageList = useCallback(() => {
+    if (thumbnailPreview || slidersPreview) {
+      return [thumbnailPreview, ...(slidersPreview || [])];
+    } else return [];
+  }, [slidersPreview, thumbnailPreview]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -37,34 +57,79 @@ const CreateBook = () => {
     e.preventDefault();
     const form = e.currentTarget;
     const data = Object.fromEntries(new FormData(form));
-    console.log(data);
-    const res = await createBookMutation.mutateAsync({
-      mainText: String(data.mainText),
-      author: String(data.author),
-      price: Number(data.price),
-      category: String(data.category) as CategoryData,
-      quantity: Number(data.quantity),
-      sold: Number(data.sold),
-      thumbnail: "",
-      slider: [],
-    });
-    if (res?.data) {
-      addToast({ title: "Create New Book Success", color: "success" });
-      onClose();
-    } else {
-      addToast({
-        title: "Create New Book Error",
-        description:
-          res.message && Array.isArray(res.message)
-            ? res.message[0]
-            : res.message,
-        color: "danger",
-        timeout: 2000,
+    if (thumbnailSelectedFile) {
+      const resThumbnailFile = uploadFileMutation.mutate({
+        file: thumbnailSelectedFile,
+        folder: "book",
       });
+      console.log(resThumbnailFile);
+
+      if (sliderSelectedFiles) {
+        console.log(sliderSelectedFiles);
+      }
+
+      const res = await createBookMutation.mutateAsync({
+        mainText: String(data.mainText),
+        author: String(data.author),
+        price: Number(data.price),
+        category: String(data.category) as CategoryData,
+        quantity: Number(data.quantity),
+        sold: Number(data.sold),
+        thumbnail: "",
+        slider: [],
+      });
+
+      if (res?.data) {
+        addToast({ title: "Create New Book Success", color: "success" });
+        onClose();
+      } else {
+        addToast({
+          title: "Create New Book Error",
+          description:
+            res.message && Array.isArray(res.message)
+              ? res.message[0]
+              : res.message,
+          color: "danger",
+          timeout: 2000,
+        });
+      }
     }
   };
 
+  const handleOnUploadThumbnail = (files: File[]) => {
+    if (isFirstTimeUpload) {
+      setCurrPreview(URL.createObjectURL(files[0]));
+      setIsFirstTimeUpload(false);
+    }
+    setThumbnailSelectedFile(files[0]);
+    setThumbnailPreview(URL.createObjectURL(files[0]));
+  };
+
+  const handleOnUploadSlider = (files: File[]) => {
+    if (isFirstTimeUpload) {
+      setCurrPreview(URL.createObjectURL(files[0]));
+      setIsFirstTimeUpload(false);
+    }
+    setSliderSelectedFiles([...files]);
+    setSlidersPreview([
+      ...(slidersPreview ?? []),
+      ...files.map((file) => URL.createObjectURL(file)),
+    ]);
+  };
+
+  const handleOnClose = () => {
+    setSlidersPreview([]);
+    setThumbnailPreview(undefined);
+    setCurrPreview(null);
+    setIsFirstTimeUpload(true);
+    onClose();
+  };
+
   const inputFields: InputFieldConfig[] = [
+    {
+      name: "imageUpload",
+      label: "Image Upload",
+    },
     {
       isRequired: true,
       name: "mainText",
@@ -180,6 +245,9 @@ const CreateBook = () => {
           isOpen={isOpen}
           onOpenChange={onOpenChange}
           motionProps={motionProps}
+          scrollBehavior="inside"
+          size="xl"
+          onClose={handleOnClose}
         >
           <ModalContent>
             {() => (
@@ -193,7 +261,65 @@ const CreateBook = () => {
                     onSubmit={handleSignupSubmit}
                   >
                     {inputFields.map((field) => {
-                      if (["price", "sold", "quantity"].includes(field.name)) {
+                      if (field.name === "imageUpload") {
+                        return (
+                          <div
+                            key={field.name}
+                            className="flex w-full flex-col gap-2 overflow-hidden"
+                          >
+                            <ImagePreviewGallery
+                              images={PreviewImageList().filter(
+                                (img): img is string => typeof img === "string",
+                              )}
+                              currPreview={currPreview}
+                              setCurrPreview={setCurrPreview}
+                            />
+                            {(() => {
+                              const uploadConfigs = [
+                                {
+                                  label: "Upload thumbnail",
+                                  onUpload: handleOnUploadThumbnail,
+                                  multiple: false,
+                                },
+                                {
+                                  label: "Upload slider",
+                                  onUpload: handleOnUploadSlider,
+                                  multiple: true,
+                                },
+                              ];
+                              return (
+                                <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2">
+                                  {uploadConfigs.map((cfg) => (
+                                    <div
+                                      key={cfg.label}
+                                      className="flex flex-col items-center gap-2"
+                                    >
+                                      <label className="text-xs font-medium text-gray-600 dark:text-gray-300">
+                                        {cfg.label}
+                                      </label>
+                                      <FileUploadButton
+                                        size="sm"
+                                        accept="image/png,image/jpeg"
+                                        startContent={
+                                          <Icon
+                                            icon="ic:baseline-cloud-upload"
+                                            className="text-primary text-2xl opacity-70"
+                                          />
+                                        }
+                                        onUpload={cfg.onUpload}
+                                        multiple={cfg.multiple}
+                                        className="hover:border-primary w-full rounded-lg border-2 border-dashed border-gray-300 transition-colors duration-200 dark:border-gray-600"
+                                      />
+                                    </div>
+                                  ))}
+                                </div>
+                              );
+                            })()}
+                          </div>
+                        );
+                      } else if (
+                        ["price", "sold", "quantity"].includes(field.name)
+                      ) {
                         return (
                           <NumberInput
                             key={field.name}
@@ -250,7 +376,7 @@ const CreateBook = () => {
                       <Button
                         color="danger"
                         variant="flat"
-                        onPress={onClose}
+                        onPress={handleOnClose}
                         isDisabled={createBookMutation.isPending}
                       >
                         Close
