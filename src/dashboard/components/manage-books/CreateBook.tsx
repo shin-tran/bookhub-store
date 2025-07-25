@@ -19,7 +19,7 @@ import { Icon } from "@iconify/react";
 import { bookService } from "@services/bookService";
 import { type HTMLMotionProps } from "framer-motion";
 import ImagePreviewGallery from "@/components/ImagePreviewGallery";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import FileUploadButton from "../FileUploadButton";
 import { useUploadFile } from "@hooks/useUploadFile";
 
@@ -28,6 +28,7 @@ const CreateBook = () => {
   const createBookMutation = useCreateBook();
   const [categoryData, setCategoryData] = useState<CategoryData[]>();
   const [currPreview, setCurrPreview] = useState<string | null>(null);
+  const [previewImageList, setPreviewImageList] = useState<string[]>([]);
   const [isFirstTimeUpload, setIsFirstTimeUpload] = useState(true);
   const [thumbnailSelectedFile, setThumbnailSelectedFile] = useState<
     File | undefined
@@ -39,10 +40,13 @@ const CreateBook = () => {
   const [slidersPreview, setSlidersPreview] = useState<string[]>([]);
   const uploadFileMutation = useUploadFile();
 
-  const PreviewImageList = useCallback(() => {
+  useEffect(() => {
     if (thumbnailPreview || slidersPreview) {
-      return [thumbnailPreview, ...(slidersPreview || [])];
-    } else return [];
+      setPreviewImageList([
+        ...(thumbnailPreview ? [thumbnailPreview] : []),
+        ...(slidersPreview || []),
+      ]);
+    }
   }, [slidersPreview, thumbnailPreview]);
 
   useEffect(() => {
@@ -110,11 +114,22 @@ const CreateBook = () => {
       setCurrPreview(URL.createObjectURL(files[0]));
       setIsFirstTimeUpload(false);
     }
-    setSliderSelectedFiles([...files]);
-    setSlidersPreview([
-      ...(slidersPreview ?? []),
-      ...files.map((file) => URL.createObjectURL(file)),
-    ]);
+    const newUrls = files.map((file) => URL.createObjectURL(file));
+    setSliderSelectedFiles(files);
+    setSlidersPreview(newUrls);
+  };
+
+  const handleDeletePreview = (img: string) => {
+    if (thumbnailPreview === img) {
+      setThumbnailPreview(undefined);
+      setThumbnailSelectedFile(undefined);
+    }
+    const idx = slidersPreview.indexOf(img);
+    if (idx !== -1) {
+      setSlidersPreview(slidersPreview.filter((_, i) => i !== idx));
+      setSliderSelectedFiles(sliderSelectedFiles?.filter((_, i) => i !== idx));
+    }
+    setCurrPreview(previewImageList[0]);
   };
 
   const handleOnClose = () => {
@@ -230,6 +245,9 @@ const CreateBook = () => {
     },
   };
 
+  console.log("currPreview", currPreview);
+  console.log("PreviewImageList: ", previewImageList);
+
   return (
     <div>
       <>
@@ -268,7 +286,7 @@ const CreateBook = () => {
                             className="flex w-full flex-col gap-2 overflow-hidden"
                           >
                             <ImagePreviewGallery
-                              images={PreviewImageList().filter(
+                              images={previewImageList.filter(
                                 (img): img is string => typeof img === "string",
                               )}
                               currPreview={currPreview}
@@ -277,41 +295,82 @@ const CreateBook = () => {
                             {(() => {
                               const uploadConfigs = [
                                 {
+                                  name: "thumbnail",
                                   label: "Upload thumbnail",
                                   onUpload: handleOnUploadThumbnail,
                                   multiple: false,
                                 },
                                 {
+                                  name: "delete",
+                                  label: "Delete",
+                                },
+                                {
+                                  name: "slider",
                                   label: "Upload slider",
                                   onUpload: handleOnUploadSlider,
                                   multiple: true,
                                 },
                               ];
                               return (
-                                <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2">
-                                  {uploadConfigs.map((cfg) => (
-                                    <div
-                                      key={cfg.label}
-                                      className="flex flex-col items-center gap-2"
-                                    >
-                                      <label className="text-xs font-medium text-gray-600 dark:text-gray-300">
-                                        {cfg.label}
-                                      </label>
-                                      <FileUploadButton
-                                        size="sm"
-                                        accept="image/png,image/jpeg"
-                                        startContent={
-                                          <Icon
-                                            icon="ic:baseline-cloud-upload"
-                                            className="text-primary text-2xl opacity-70"
+                                <div
+                                  className={`grid w-full grid-cols-1 gap-4 ${previewImageList[0] !== undefined || previewImageList.length > 1 ? "md:grid-cols-3" : "md:grid-cols-2"}`}
+                                >
+                                  {uploadConfigs.map((cfg) => {
+                                    if (cfg.name === "delete") {
+                                      return previewImageList[0] !==
+                                        undefined ||
+                                        previewImageList.length > 1 ? (
+                                        <div
+                                          key={cfg.label}
+                                          className="flex flex-col items-center gap-2"
+                                        >
+                                          <label className="text-xs font-medium text-gray-600 dark:text-gray-300">
+                                            {cfg.label}
+                                          </label>
+                                          <Button
+                                            variant="flat"
+                                            size="sm"
+                                            className="max-w-fit rounded-lg border-2 border-dashed border-gray-300 transition-colors duration-200 hover:border-red-400 dark:border-gray-600"
+                                            onPress={() => {
+                                              if (currPreview)
+                                                handleDeletePreview(
+                                                  currPreview,
+                                                );
+                                            }}
+                                          >
+                                            <Icon
+                                              icon="pixel:trash-solid"
+                                              className="text-2xl text-red-400 opacity-70"
+                                            />
+                                          </Button>
+                                        </div>
+                                      ) : null;
+                                    } else {
+                                      return (
+                                        <div
+                                          key={cfg.label}
+                                          className="flex flex-col items-center gap-2"
+                                        >
+                                          <label className="text-xs font-medium text-gray-600 dark:text-gray-300">
+                                            {cfg.label}
+                                          </label>
+                                          <FileUploadButton
+                                            size="sm"
+                                            accept="image/png,image/jpeg"
+                                            startContent={
+                                              <Icon
+                                                icon="ic:baseline-cloud-upload"
+                                                className="text-primary text-2xl opacity-70"
+                                              />
+                                            }
+                                            onUpload={cfg.onUpload}
+                                            multiple={cfg.multiple}
+                                            className="hover:border-primary w-full rounded-lg border-2 border-dashed border-gray-300 transition-colors duration-200 dark:border-gray-600"
                                           />
-                                        }
-                                        onUpload={cfg.onUpload}
-                                        multiple={cfg.multiple}
-                                        className="hover:border-primary w-full rounded-lg border-2 border-dashed border-gray-300 transition-colors duration-200 dark:border-gray-600"
-                                      />
-                                    </div>
-                                  ))}
+                                        </div>
+                                      );
+                                    }
+                                  })}
                                 </div>
                               );
                             })()}
