@@ -63,9 +63,7 @@ export interface DeleteData {
 // Payload
 export type CreateBookPayload = Omit<BookDetail, "createdAt" | "updatedAt" | "_id">;
 
-export type UpdateBookPayload = CreateBookPayload & {
-  id: string;
-};
+export type UpdateBookPayload = Omit<BookDetail, "createdAt" | "updatedAt">;
 
 // API Response types
 export interface LoginResponse {

@@ -46,7 +46,7 @@ export const bookService = {
   updateBook: async (
     payload: UpdateBookPayload,
   ): Promise<UpdateBookResponse> => {
-    const response = await instance.put(`/api/v1/book/${payload.id}`, payload);
+    const response = await instance.put(`/api/v1/book`, payload);
     return response.data;
   },
 

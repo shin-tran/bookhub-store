@@ -18,9 +18,8 @@ import { useCreateBook } from "@hooks/useBooks";
 import { Icon } from "@iconify/react";
 import { bookService } from "@services/bookService";
 import { type HTMLMotionProps } from "framer-motion";
-import ImagePreviewGallery from "@/components/ImagePreviewGallery";
+import ImageUploadSection from "./ImageUploadSection";
 import { useEffect, useState } from "react";
-import FileUploadButton from "../FileUploadButton";
 import { useUploadFile } from "@hooks/useUploadFile";
 
 const CreateBook = () => {
@@ -62,13 +61,21 @@ const CreateBook = () => {
     const form = e.currentTarget;
     const data = Object.fromEntries(new FormData(form));
     if (thumbnailSelectedFile) {
-      const resThumbnailFile = uploadFileMutation.mutate({
+      const resThumbnailFile = await uploadFileMutation.mutateAsync({
         file: thumbnailSelectedFile,
         folder: "book",
       });
-      console.log(resThumbnailFile);
+
+      const resSliderFile: string[] = [];
 
       if (sliderSelectedFiles) {
+        sliderSelectedFiles.map(async (slider) => {
+          const res = await uploadFileMutation.mutateAsync({
+            file: slider,
+            folder: "book",
+          });
+          resSliderFile.push(res.data?.fileUploaded || "");
+        });
         console.log(sliderSelectedFiles);
       }
 
@@ -79,8 +86,8 @@ const CreateBook = () => {
         category: String(data.category) as CategoryData,
         quantity: Number(data.quantity),
         sold: Number(data.sold),
-        thumbnail: "",
-        slider: [],
+        thumbnail: resThumbnailFile.data?.fileUploaded || "",
+        slider: resSliderFile,
       });
 
       if (res?.data) {
@@ -191,7 +198,7 @@ const CreateBook = () => {
       name: "category",
       label: "Category",
       type: "text",
-      placeholder: "Choose price",
+      placeholder: "Select a category",
       variant: "bordered",
       startContent: (
         <Icon icon="bxs:category" className="text-default-400 text-xl" />
@@ -245,9 +252,6 @@ const CreateBook = () => {
     },
   };
 
-  console.log("currPreview", currPreview);
-  console.log("PreviewImageList: ", previewImageList);
-
   return (
     <div>
       <>
@@ -281,100 +285,15 @@ const CreateBook = () => {
                     {inputFields.map((field) => {
                       if (field.name === "imageUpload") {
                         return (
-                          <div
+                          <ImageUploadSection
                             key={field.name}
-                            className="flex w-full flex-col gap-2 overflow-hidden"
-                          >
-                            <ImagePreviewGallery
-                              images={previewImageList.filter(
-                                (img): img is string => typeof img === "string",
-                              )}
-                              currPreview={currPreview}
-                              setCurrPreview={setCurrPreview}
-                            />
-                            {(() => {
-                              const uploadConfigs = [
-                                {
-                                  name: "thumbnail",
-                                  label: "Upload thumbnail",
-                                  onUpload: handleOnUploadThumbnail,
-                                  multiple: false,
-                                },
-                                {
-                                  name: "delete",
-                                  label: "Delete",
-                                },
-                                {
-                                  name: "slider",
-                                  label: "Upload slider",
-                                  onUpload: handleOnUploadSlider,
-                                  multiple: true,
-                                },
-                              ];
-                              return (
-                                <div
-                                  className={`grid w-full grid-cols-1 gap-4 ${previewImageList[0] !== undefined || previewImageList.length > 1 ? "md:grid-cols-3" : "md:grid-cols-2"}`}
-                                >
-                                  {uploadConfigs.map((cfg) => {
-                                    if (cfg.name === "delete") {
-                                      return previewImageList[0] !==
-                                        undefined ||
-                                        previewImageList.length > 1 ? (
-                                        <div
-                                          key={cfg.label}
-                                          className="flex flex-col items-center gap-2"
-                                        >
-                                          <label className="text-xs font-medium text-gray-600 dark:text-gray-300">
-                                            {cfg.label}
-                                          </label>
-                                          <Button
-                                            variant="flat"
-                                            size="sm"
-                                            className="max-w-fit rounded-lg border-2 border-dashed border-gray-300 transition-colors duration-200 hover:border-red-400 dark:border-gray-600"
-                                            onPress={() => {
-                                              if (currPreview)
-                                                handleDeletePreview(
-                                                  currPreview,
-                                                );
-                                            }}
-                                          >
-                                            <Icon
-                                              icon="pixel:trash-solid"
-                                              className="text-2xl text-red-400 opacity-70"
-                                            />
-                                          </Button>
-                                        </div>
-                                      ) : null;
-                                    } else {
-                                      return (
-                                        <div
-                                          key={cfg.label}
-                                          className="flex flex-col items-center gap-2"
-                                        >
-                                          <label className="text-xs font-medium text-gray-600 dark:text-gray-300">
-                                            {cfg.label}
-                                          </label>
-                                          <FileUploadButton
-                                            size="sm"
-                                            accept="image/png,image/jpeg"
-                                            startContent={
-                                              <Icon
-                                                icon="ic:baseline-cloud-upload"
-                                                className="text-primary text-2xl opacity-70"
-                                              />
-                                            }
-                                            onUpload={cfg.onUpload}
-                                            multiple={cfg.multiple}
-                                            className="hover:border-primary w-full rounded-lg border-2 border-dashed border-gray-300 transition-colors duration-200 dark:border-gray-600"
-                                          />
-                                        </div>
-                                      );
-                                    }
-                                  })}
-                                </div>
-                              );
-                            })()}
-                          </div>
+                            previewImageList={previewImageList}
+                            currPreview={currPreview}
+                            setCurrPreview={setCurrPreview}
+                            handleOnUploadThumbnail={handleOnUploadThumbnail}
+                            handleOnUploadSlider={handleOnUploadSlider}
+                            handleDeletePreview={handleDeletePreview}
+                          />
                         );
                       } else if (
                         ["price", "sold", "quantity"].includes(field.name)

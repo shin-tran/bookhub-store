@@ -77,7 +77,17 @@ export const useReloadPaginations = () => {
 export const useUpdateBook = () => {
   const { refetchPaginations } = useBookQueryInvalidation();
   return useMutation({
-    mutationFn: async (book: UpdateBookPayload) => bookService.updateBook(book),
+    mutationFn: async (book: UpdateBookPayload) => {
+      return bookService.updateBook(book);
+    },
     onSuccess: refetchPaginations
   })
 }
+
+export const useDeleteBook = () => {
+  const { refetchPaginations } = useBookQueryInvalidation();
+  return useMutation({
+    mutationFn: async (id: string) => bookService.deleteBook(id),
+    onSuccess: refetchPaginations,
+  });
+};

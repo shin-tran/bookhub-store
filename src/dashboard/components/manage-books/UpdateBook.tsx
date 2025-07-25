@@ -1,4 +1,5 @@
 import type { BookActionsProps, InputFieldConfig } from "@/types/config";
+import ImagePreviewGallery from "@components/ImagePreviewGallery";
 import {
   addToast,
   Button,
@@ -12,6 +13,7 @@ import {
 import { useUpdateBook } from "@hooks/useBooks";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import type { HTMLMotionProps } from "framer-motion";
+import { useState } from "react";
 
 const UpdateBook = ({
   isOpen,
@@ -19,17 +21,23 @@ const UpdateBook = ({
   onClose,
   book,
 }: BookActionsProps) => {
+  const [imageList, setImageList] = useState([
+    book.thumbnail,
+    ...(book.slider || []),
+  ]);
+  const [currPreview, setCurrPreview] = useState<string | null>(
+    `${import.meta.env.VITE_API_URL}/images/book/${book.thumbnail}`,
+  );
   const updateBookMutation = useUpdateBook();
 
   const handleUpdateSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget;
     const data = Object.fromEntries(new FormData(form));
-    console.log("Update Book data:",data);
     const res = await updateBookMutation.mutateAsync({
-      id: String(book._id),
-      thumbnail: "",
-      slider: [],
+      _id: book._id,
+      thumbnail: book.thumbnail,
+      slider: book.slider,
       mainText: String(data.mainText),
       author: String(data.author),
       price: Number(data.price),
@@ -47,6 +55,7 @@ const UpdateBook = ({
     } else {
       addToast({
         title: "Update Book Error",
+        description: res.message,
         color: "danger",
         timeout: 3000,
       });
@@ -166,6 +175,8 @@ const UpdateBook = ({
       isOpen={isOpen}
       onOpenChange={onOpenChange}
       motionProps={motionProps}
+      scrollBehavior="inside"
+      size="xl"
     >
       <ModalContent>
         {() => (
@@ -178,6 +189,17 @@ const UpdateBook = ({
                 className="flex flex-col gap-3"
                 onSubmit={handleUpdateSubmit}
               >
+                <div className="w-full">
+                  <ImagePreviewGallery
+                    images={imageList.map(
+                      (img) =>
+                        `${import.meta.env.VITE_API_URL}/images/book/${img}`,
+                    )}
+                    currPreview={currPreview}
+                    setCurrPreview={setCurrPreview}
+                  />
+                </div>
+
                 {inputFields.map((field) => (
                   <Input
                     key={field.name}

@@ -9,9 +9,9 @@ import {
 } from "@heroui/react";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import type { BookDetail } from "@/types/api";
-import { useDeleteUser } from "@hooks/useUsers";
 import ViewDetails from "./ViewDetails";
 import UpdateBook from "./UpdateBook";
+import { useDeleteBook } from "@hooks/useBooks";
 
 interface ActionsMenuProps {
   book: BookDetail;
@@ -31,10 +31,10 @@ const ActionsMenu = ({ book }: ActionsMenuProps) => {
     onOpenChange: onUpdateOpenChange,
   } = useDisclosure();
 
-  const deleteUserMutation = useDeleteUser();
+  const deleteBookMutation = useDeleteBook();
 
   const handleDeleteBook = async () => {
-    const res = await deleteUserMutation.mutateAsync(book._id);
+    const res = await deleteBookMutation.mutateAsync(book._id);
     if (res.data) {
       addToast({
         title: "Delete Book Success",
